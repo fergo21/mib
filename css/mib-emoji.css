@@ -1,0 +1,36 @@
+#emojis {
+    height: 100px;
+    overflow-y: scroll;
+    display: none;
+    flex-flow: wrap;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 2px;
+    padding: 8px;
+    box-shadow: 4px 3px 7px #222222;
+    background: #2e2e2e;
+    position: absolute;
+    z-index: 9;
+}
+#emojis span {
+	cursor: pointer;
+    font-size: 18px;
+    padding: 2px;
+    width: 25px;
+    text-align: center;
+}
+
+#emojis span:hover {
+    transition: 0.5s;
+    background: #00000066;
+}
+
+.inputEmoji > i{
+	position: absolute;
+    right: 0;
+    bottom: 24px;
+    background: #0000002e;
+    border-radius: 3px;
+    padding: 3px;
+    cursor: pointer;
+}

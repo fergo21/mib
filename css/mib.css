@@ -1,0 +1,225 @@
+.getmdl-select .mdl-menu__container{
+	overflow: visible;
+}
+.mdl-selectfield--floating-label.is-focused .mdl-selectfield__label, .mdl-selectfield--floating-label.is-dirty .mdl-selectfield__label {
+	color: #00bcd4;
+}
+.mdl-selectfield__label:after {
+	background-color: #00bcd4;
+}
+.mdl-selectfield.mdl-selectfield--floating-label .mdl-menu__container{
+	top: 90px !important;
+}
+
+.mdl-card .row.buttons{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0px;
+}
+table td.button-column{
+	display: flex;
+    justify-content: space-around;
+    min-width: 150px;
+}
+table td.button-column a{
+	color: #ffc107;	
+}
+.errorMessage{
+	color: #ff6666;
+    font-size: 12px;
+}
+.big-icon{
+	font-size: 90px;
+}
+.mib-box .mdl-card__supporting-text{
+	display: flex;
+	justify-content: space-between;
+}
+.mib-box .mdl-card__supporting-text a{
+	display: block;
+	color: white;
+	margin: 5px 0px;
+}
+.mib-box .mdl-card__supporting-text a:hover{
+	color: #ffc107;
+}
+form .mdl-selectfield.full-size{
+	width: 100%;
+}
+.mdl-selectfield__select{
+	border-bottom: 1px solid rgba(255,255,255,.2);
+}
+.mdl-selectfield__label{
+	color: rgba(255,255,255,.2);
+}
+.mdl-selectfield__placeholder{
+	color: rgba(255,255,255,.2);
+}
+
+/*SELECT2 */
+.select2-container{
+	z-index: 998;
+    display: block !important;
+	/*width: 100% !important;*/
+}
+.select2 .selection .select2-selection--single, .select2-container--default .select2-search--dropdown .select2-search__field {
+    border-width: 0 0 1px 0 !important;
+    border-radius: 0 !important;
+    height: 2.05rem;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #696969;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+	color: white !important;
+	padding-left: 0px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b{
+	border-style: none !important;
+}
+
+.select2-container--default .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-width: 0 0 1px 0 !important;
+    border-radius: 0 !important;
+}
+
+.select2-results__option {
+    color: white;
+    padding: 8px 16px !important;
+    font-size: 16px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #eee !important;
+    color: white !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #444444 !important;
+}
+
+.select2-dropdown {
+	border-radius: unset !important;
+    border: none !important;
+    background-color: #444444 !important;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.select2-container--default .select2-results__option[role=group] .select2-results__group {
+    background-color: #333333;
+    color: #fff;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    margin-top: 0 !important;
+}
+
+.select2-container .select2-search--inline .select2-search__field:focus {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.select2-container .select2-selection--multiple {
+    min-height: 2.05rem !important;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--single {
+    background-color: #ddd !important;
+    color: rgba(0,0,0,0.26);
+    border-bottom: 1px dotted rgba(0,0,0,0.26);
+}
+.input-group>i {
+    margin: 20px 0px 0px;
+}
+.mib-background-modal {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    background: #000000c2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+}
+.mdl-dialog {
+    display: none;
+    position: absolute;
+    box-shadow: unset;
+    width: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+
+}
+.mib-product {
+    padding: 16px;
+}
+.mib-product .mdl-checkbox.is-upgraded{
+    width: 315px;
+}
+.mib-product .mdl-list__item{
+    height: 65px;
+}
+.mib-rest-detail{
+    display: none;
+    align-items: center;
+}
+.mib-grid{
+    display: flex;
+}
+.mib-grid.dialog{
+    /*height: 300px;
+    overflow: auto;*/
+    align-items: center;
+}
+.mib-order-img{
+    width: 150px;
+}
+.product-ltab{
+    display: none;
+}
+.color-text--black{
+    color:  #252525 !important;
+}
+.overflow-y--hidden{
+    overflow-y: hidden;
+}
+#saldo_ticket {
+    position: absolute;
+    font-size: 11px;
+    right: 0px;
+    top: 0px;
+}
+#saldo_ticket.green{
+    color: #00d45acc;
+}
+#saldo_ticket.red {
+    color: #f44336;
+}
+.pills-estados{
+    display: flex;
+    gap: 8px;
+}
+.pills-estados .label{
+    margin: 0;
+}
+.mib-vuelto{
+    font-weight: bold;
+    font-size: 16px;
+}
+.mib-tooltip{
+    max-width: unset;
+    text-align: left;
+}
+@media (max-width: 768px) {
+    .mdl-dialog {
+        width: 100%;
+    }
+    #ticket_dues_paid .mdl-list{
+        display: block !important;
+    }
+}
