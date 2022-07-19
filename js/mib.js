@@ -80,13 +80,16 @@ const actionAjax = (url, method, table_id, data = null) => {
 
 
 $(document).ready(function(){
-   let table = $('.mdl-data-table').DataTable({
+    if($('.mdl-data-table tbody tr td').hasClass('empty')){
+        $('.mdl-data-table tbody tr').remove();
+    }
+   let table = $('.mdl-data-table:not(.table-products-selected)').DataTable({
         "order": [],
         "responsive": true,
         "autoWidth": false,
         "retrieve": true,
         "stateSave": false,
-        language: {
+        "language": {
             lengthMenu: 'Mostrar _MENU_ registros por página',
             zeroRecords: 'Sin resultados',
             info: 'Página _PAGE_ de _PAGES_',

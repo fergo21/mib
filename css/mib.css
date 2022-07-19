@@ -287,4 +287,30 @@ form .mdl-selectfield.full-size{
     #ticket_dues_paid .mdl-list{
         display: block !important;
     }
+    .mdl-card .dataTables_wrapper{
+        overflow: auto;
+    }
+    .mdl-card .dataTables_filter {
+        display: block;
+        position: relative;
+        /*padding: 20px;*/
+        right: unset;
+    }
+    .mdl-card .dataTables_filter label{
+        display: block;
+    }
+    .mdl-card .dataTables_filter, .mdl-card .dataTables_length{
+        position: sticky;
+        left: 20px;
+        right: 20px;
+        width: 310px;
+        padding: 15px 0;
+    }
+    .mdl-card .dataTables_length{
+        display: block;
+        /*padding: 20px;*/
+    }
+    .mdl-card > .mdl-card__title.mib-table--title.mib-content-actions{
+        display: block;
+    }
 }

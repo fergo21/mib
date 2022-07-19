@@ -20,19 +20,19 @@ $('.search-button').click(function(){
 
 	return false;
 });
-$('.search-form form').submit(function(){
+/*$('.search-form form').submit(function(){
 	$.fn.yiiGridView.update('#schools-grid', {
 		data: $(this).serialize()
 	});
 	return false;
-});
+});*/
 ");
 ?>
 <div class="mdl-grid ui-tables">
 	<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone">
 		<?php echo CHtml::link('Búsqueda avanzada','#',array('class'=>'search-button')); ?>
 	</div>
-	<div class="search-form mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--12-col-phone form__article" style="display:none">
+	<div class="search-form mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--12-col-phone form__article" style="display:none">
 	<?php $this->renderPartial('_search',array(
 		'model'=>$model,
 	)); ?>

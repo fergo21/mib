@@ -82,7 +82,7 @@ class TicketsController extends Controller
 
 				switch(Utils::calculatePercentDue($lastDue, $order->dues)){
 					case "50":
-						if($order->status == 'Pedido'){
+						if($order->status == 'Pedido' || $order->status == '0'){
 							$order->status = 'Producción';
 							$order->save();
 						}

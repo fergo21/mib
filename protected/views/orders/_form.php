@@ -187,7 +187,7 @@ array_unshift($listTallesAbajo, 'Seleccionar');
 		                </div>
 			        </div>
 			        <div class="mdl-card__supporting-text no-padding">
-	                    <table class="mdl-data-table mdl-js-data-table">
+	                    <table class="mdl-data-table mdl-js-data-table table-products-selected">
 	                        <thead>
 	                            <tr>
 	                                <th class="mdl-data-table__cell--non-numeric">Producto</th>

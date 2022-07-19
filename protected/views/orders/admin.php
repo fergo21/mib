@@ -74,17 +74,17 @@ $('#downloadFile').click(function(){
 	<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone">
 		<?php echo CHtml::link('Búsqueda avanzada','#',array('class'=>'search-button')); ?>
 	</div>
-	<div class="search-form mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--12-col-phone form__article" style="display:none">
+	<div class="search-form mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--12-col-phone form__article" style="display:none">
 	<?php $this->renderPartial('_search',array(
 		'model'=>$model,
 		'modelSchool'=>$modelSchool
 	)); ?>
 	</div><!-- search-form -->
-	<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article mib-table">
+	<div class="mdl-cell mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article mib-table">
 		<div class="mdl-grid ui-tables">
 			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone">
 		        <div class="mdl-card mdl-shadow--2dp">
-		            <div class="mdl-card__title mib-table--title">
+		            <div class="mdl-card__title mib-table--title mib-content-actions">
 			            <h1 class="mdl-card__title-text table">Pedido</h1>
 		                <div class="mib-actions">
 		                	<a href="<?= Yii::app()->baseUrl; ?>/orders/create" class="mdl-button mdl-js-button mdl-js-ripple-effect color-text--orange">Agregar Pedido</a>
