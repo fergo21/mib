@@ -137,8 +137,11 @@ class YearsController extends Controller
 		$model_division = new Divisions('search');
 		$model_division->unsetAttributes();  // clear any default values
 
-		// if(isset($_GET['Years']))
-		// 	$model->attributes=$_GET['Years'];
+		if(isset($_GET['Years']))
+			$model->attributes=$_GET['Years'];
+
+		if(isset($_GET['Divisions']))
+			$model_division->attributes=$_GET['Divisions'];
 
 		$this->render('index',array(
 			'model'=>$model,

@@ -15,6 +15,7 @@
         <div class="mdl-card__supporting-text no-padding">
 			<?php $this->widget('zii.widgets.grid.CGridView', array(
 				'id'=>'divisions-grid',
+				'summaryText' => '',
 				'itemsCssClass' => 'mdl-data-table mdl-js-data-table stripped-table',
 				'dataProvider'=>$model->search(),
 				// 'filter'=>$model,
@@ -43,3 +44,8 @@
 		</div>
 	</div>
 </div>
+<!-- <script type="text/javascript">
+	$(function () {
+		renderFootTable("#divisions-grid", ['División']);
+	});
+</script> -->

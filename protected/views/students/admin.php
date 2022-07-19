@@ -19,12 +19,12 @@ $('.search-button').click(function(){
 
 	return false;
 });
-$('.search-form form').submit(function(){
+/*$('.search-form form').submit(function(){
 	$.fn.yiiGridView.update('#students-grid', {
 		data: $(this).serialize()
 	});
 	return false;
-});
+});*/
 ");
 // echo "<pre>";
 // print_r($model);die;
@@ -49,6 +49,7 @@ $('.search-form form').submit(function(){
             <div class="mdl-card__supporting-text no-padding">
             	<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'id'=>'students-grid',
+					'summaryText' => '',
 					'itemsCssClass' => 'mdl-data-table mdl-js-data-table stripped-table',
 					'dataProvider'=>$model->search(),
 					'columns'=>array(

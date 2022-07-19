@@ -78,7 +78,67 @@ const actionAjax = (url, method, table_id, data = null) => {
     })
 }
 
+
 $(document).ready(function(){
+   let table = $('.mdl-data-table').DataTable({
+        "order": [],
+        "responsive": true,
+        "autoWidth": false,
+        "retrieve": true,
+        "stateSave": false,
+        language: {
+            lengthMenu: 'Mostrar _MENU_ registros por página',
+            zeroRecords: 'Sin resultados',
+            info: 'Página _PAGE_ de _PAGES_',
+            infoEmpty: 'Sin registros',
+            infoFiltered: '(filtrado desde _MAX_ total de registros)',
+            paginate: {
+              previous: "<",
+              next: ">"
+            },
+            search: "Buscar:"
+        },
+    });
+   const searchData = () => {
+       // Filtro para tabla
+        $("form input[type='text']").each(function(index,el) {
+            //$(this).on('keyup', function () {
+                column = table.column(index);
+                // console.log(column);
+                if (column.search() !== this.value) {
+                    column
+                        .search(this.value)
+                        .draw();
+                }
+            // });
+        });    
+   }
+
+   $('.search-form form').submit(function(e){
+        e.preventDefault();
+        searchData();
+    });
+   $('.search-form .actionClear').click(()=>{
+        $('.search-form form').trigger('reset');
+        searchData();
+   });
+
+   $("#downloadFile").click(function(e){
+    e.preventDefault();
+       if($(".mdl-card form #Schools_name").val()){
+            // let data = $(".mdl-grid form").serialize();
+            console.log($(".mdl-card form #Schools_name").val());
+            $(".mib-actions form input#downloadFileData").val($(".mdl-card form #Schools_name").val());
+            $(".mib-actions form").trigger('submit');
+       }else{
+            actionAlert("Debe ingresar datos de la escuela en Búsqueda avanzada.", "warning");
+       }
+   });
+
+   $('.grid-view input[type="search"]').addClass('mdl-textfield__input');
+   $('.grid-view select').addClass('mdl-selectfield__select select2');
+
+
     $('.select2').select2();
     $('.select2-container').css('width','100%');
 
@@ -91,8 +151,6 @@ $(document).ready(function(){
     let total = 0.0;
 
     let listProduct = $("#Orders_size").val() === "" || $("#Orders_size").val() === undefined ? "" : JSON.parse($("#Orders_size").val());
-
-
 
     const validateListProduct = (listProduct) => {
         if(typeof listProduct == 'object'){

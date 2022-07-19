@@ -219,7 +219,7 @@ class Utils{
 		$division = Divisions::model()->findByPk($data->idstudents0->iddivision);
 		$shift = Shifts::model()->findByPk($data->idstudents0->idshifts);
 
-		return $school->name.' - '.$year->year.$division->division.' - '.$shift->shift;
+		return $school->name.' - '.$year->year.' - '.$division->division.' - '.$shift->shift. ' - '.$data->idstudents0->graduation_year;
 	}
 	public static function formatPercent($data, $encode=true){
 		if($encode){

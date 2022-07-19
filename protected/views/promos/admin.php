@@ -38,6 +38,7 @@ $('.search-form form').submit(function(){
             <div class="mdl-card__supporting-text no-padding">
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'id'=>'promos-grid',
+					'summaryText' => '',
 					'itemsCssClass' => 'mdl-data-table mdl-js-data-table stripped-table',
 					'dataProvider'=>$modelPromo->search(),
 					'columns'=>array(

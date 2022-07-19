@@ -18,12 +18,14 @@ $('.search-button').click(function(){
 	$('.mib-table').toggleClass('mdl-cell--12-col-desktop mdl-cell--9-col-desktop  mdl-cell--12-col-tablet  mdl-cell--9-col-tablet');
 	return false;
 });
-$('.search-form form').submit(function(){
+/*$('.search-form form').submit(function(e){
+	e.preventDefault();
+	searchData();
 	$.fn.yiiGridView.update('#orders-grid', {
 		data: $(this).serialize()
 	});
 	return false;
-});
+});*/
 
 $('[type=checkbox]').change(function(){
 	console.log($(this)[0].checked);
@@ -84,17 +86,21 @@ $('#downloadFile').click(function(){
 		        <div class="mdl-card mdl-shadow--2dp">
 		            <div class="mdl-card__title mib-table--title">
 			            <h1 class="mdl-card__title-text table">Pedido</h1>
-		                <div>
+		                <div class="mib-actions">
 		                	<a href="<?= Yii::app()->baseUrl; ?>/orders/create" class="mdl-button mdl-js-button mdl-js-ripple-effect color-text--orange">Agregar Pedido</a>
-		                	<a href="<?= Yii::app()->baseUrl.'/orders/downloadlist' ?>" title="Descargar listado para producción" id="downloadFile" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange">
-                                <i class="material-icons">file_download</i>
-                                Descargar
-                            </a>
+		                	<form action="<?= Yii::app()->baseUrl.'/orders/downloadlist' ?>" method="post">
+		                		<input type="hidden" id="downloadFileData" name="data_download">
+			                	<button title="Descargar listado para producción" id="downloadFile" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange">
+	                                <i class="material-icons">file_download</i>
+	                                Descargar
+	                            </button>
+		                	</form>
 		                </div>
 		            </div>
 		            <div class="mdl-card__supporting-text no-padding">
 						<?php $this->widget('zii.widgets.grid.CGridView', array(
 							'id'=>'orders-grid',
+							'summaryText' => '',
 							'dataProvider'=>$model->search(),
 							// 'filter'=>$model,
 							'itemsCssClass' => 'mdl-data-table mdl-js-data-table stripped-table',
@@ -189,12 +195,10 @@ $('#downloadFile').click(function(){
 		</div>
 	</div>
 </div>
-
-<!-- <div class="mib-background-modal"></div>
-<div class="mdl-dialog">
-	<div class="mdl-dialog__content">
-		<form action="<?= Yii::app()->baseUrl.'/orders/downloadlist' ?>" method="POST">
-			
-		</form>
-	</div>
-</div> -->
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() {
+		<?php if(Yii::app()->user->getFlash("warning") == 'ok'){ ?>
+			actionAlert("No se encontraron registros para descargar.", "warning");
+		<?php } ?>	
+	});
+</script>

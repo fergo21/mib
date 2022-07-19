@@ -329,29 +329,61 @@ class OrdersController extends Controller
 	public function actionDownloadList()
 	{
 		if(isset($_POST)){
+			$data = preg_split("/- /",$_POST['data_download']);
+		
+			$responseSchools = Schools::model()->find("name=:name", array(":name"=>$data[0]));
+			$responseYears = Years::model()->find("year=:year", array(":year"=>$data[1]));
+			$responseDivisions = Divisions::model()->find("division=:division", array(":division"=>$data[2]));
+			$responseShifts = Shifts::model()->find("shift=:shift", array(":shift"=>$data[3]));
+			
+			$criteria = new CDbCriteria();
+			$criteria->condition = "year_promo='$data[4]' AND idyears=$responseYears->idyears AND idschools=$responseSchools->idschools AND iddivision=$responseDivisions->iddivision AND idshifts=$responseShifts->idshifts";
+			$responsePromos = Promos::model()->find($criteria);
+			// print_r($responsePromos);die;
 
-			$query = "SELECT CONCAT(students.name,' ', students.surname) as fullName, students.ci, students.graduation_year, schools.name as schools, years.year, divisions.division, shifts.shift, orders.size, orders.dues,
-				    (SELECT tickets.dues FROM tickets WHERE orders.idorders = tickets.idorders ORDER BY tickets.idtickets DESC LIMIT 1) as duespaid
-				FROM orders, students, schools, years, divisions, shifts, promos
-				WHERE orders.idstudents = students.idstudents 
-				AND students.idschools = schools.idschools 
-				AND students.idyears = years.idyears
-				AND students.iddivision = divisions.iddivision
-				AND students.idshifts = shifts.idshifts
-				AND promos.idschools = schools.idschools
-				AND promos.year_promo
-				AND schools.idschools = 20 
-				AND divisions.iddivision = 1
-				AND promos.idpromos = 6
-				AND orders.status LIKE 'Produccion'";
+			if($responseSchools && $responseYears && $responseDivisions && $responseShifts && $responsePromos){
+				$query = "SELECT CONCAT(students.name,' ', students.surname) as fullName, students.ci, students.graduation_year, schools.name as schools, years.year, divisions.division, shifts.shift, orders.size, orders.dues,
+					    (SELECT tickets.dues FROM tickets WHERE orders.idorders = tickets.idorders ORDER BY tickets.idtickets DESC LIMIT 1) as duespaid
+					FROM orders, students, schools, years, divisions, shifts, promos
+					WHERE orders.idstudents = students.idstudents 
+					AND students.idschools = schools.idschools 
+					AND students.idyears = years.idyears
+					AND students.iddivision = divisions.iddivision
+					AND students.idshifts = shifts.idshifts
+					AND promos.idschools = schools.idschools
+					AND promos.year_promo
+					AND schools.idschools = $responseSchools->idschools
+					AND divisions.iddivision = $responseDivisions->iddivision
+					AND promos.idpromos = $responsePromos->idpromos
+					AND orders.status LIKE 'Produccion'";
 
-			$response=Yii::app()->db->createCommand($query)->queryAll();
-			// echo "<pre>";
-			// print_r($response);die;
+				$response=Yii::app()->db->createCommand($query)->queryAll();
 
-
-			self::outputCsv($response);
+				if(count($response)>0){
+					self::outputCsv($response);
+					// self::downloadImage($responsePromos->image_promo);
+				}else{
+					Yii::app()->user->setFlash('warning', 'ok');
+					$this->redirect(array('/orders/admin'));
+				}
+			}else{
+				Yii::app()->user->setFlash('warning', 'ok');
+				$this->redirect(array('/orders/admin'));
+			}
 		}
+	}
+
+	public function downloadImage($base64Image){
+define('UPLOAD_DIR', 'images/');
+$image_parts = explode(";base64,", $base64Image);
+$image_type_aux = explode("image/", $image_parts[0]);
+$image_type = $image_type_aux[1];
+$image_base64 = base64_decode($image_parts[1]);
+$file = UPLOAD_DIR . uniqid() . '.png';
+file_put_contents($file, $image_base64);
+
+//falta descargarla :(
+
 	}
 
 	public function outputCsv($response){

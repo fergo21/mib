@@ -25,6 +25,16 @@ table td.button-column{
 table td.button-column a{
 	color: #ffc107;	
 }
+table.dataTable > thead > tr:last-child > th[class*="sort"]:last-child:before,
+table.dataTable > thead > tr:last-child > th[class*="sort"]:last-child:after {
+    content: "" !important;
+    display: none;
+}
+table.dataTable > thead > tr:last-child > th[class*="sort"]:last-child,
+table.dataTable > thead > tr:last-child > th[class*="sort"]:last-child{
+    text-align:center;
+    /*padding: 11px 20px;*/
+}
 .errorMessage{
 	color: #ff6666;
     font-size: 12px;
@@ -32,7 +42,7 @@ table td.button-column a{
 .big-icon{
 	font-size: 90px;
 }
-.mib-box .mdl-card__supporting-text{
+.mib-box .mdl-card__supporting-text, .mib-actions{
 	display: flex;
 	justify-content: space-between;
 }
@@ -214,6 +224,61 @@ form .mdl-selectfield.full-size{
 .mib-tooltip{
     max-width: unset;
     text-align: left;
+}
+.mdl-card .dataTables_length{
+    display: inline-block;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+.mdl-card .dataTables_length label{
+    width: 100%;
+    height: 24px;
+    gap: 8px;
+    display: flex;
+}
+.mdl-card .dataTables_length .select2{
+    width: 50px !important;
+}
+.mdl-card .dataTables_filter {
+    display: inline-block;
+    position: absolute;
+    right: 20px;
+    padding-bottom: 20px;
+}
+.mdl-card .dataTables_filter label{
+    display: flex;
+}
+.mdl-card .dataTables_filter label select{
+    width: 30px;
+}
+.mdl-card .dataTables_info{
+    padding-left: 20px;
+}
+.mdl-card .dataTables_paginate{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+.mdl-card .dataTables_paginate span{
+    display: flex;
+    gap: 5px;
+}
+.mdl-card .dataTables_paginate .paginate_button{
+    padding: 0 8px;
+    border: 1px solid orange;
+    border-radius: 3px;
+    color: orange;
+    cursor: pointer;
+}
+.mdl-card .dataTables_paginate .paginate_button.disabled{
+    display: none;
+}
+.mdl-card .dataTables_paginate .paginate_button.current{
+    background-color: orange;
+    color: black;
+}
+.mdl-card .dataTables_paginate .paginate_button:hover{
+    background-color: #9e9e9e33;
 }
 @media (max-width: 768px) {
     .mdl-dialog {

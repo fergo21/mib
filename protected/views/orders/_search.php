@@ -21,28 +21,8 @@
 			</div>
 
 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-				<?php echo $form->labelEx($model,'date', array('class'=>'mdl-textfield__label ')); ?>
-				<?php echo $form->textField($model,'date',array('class'=>'mdl-textfield__input')); ?>
-			</div>
-
-			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-				<?php echo $form->labelEx($model,'date_delivery', array('class'=>'mdl-textfield__label ')); ?>
-				<?php echo $form->textField($model,'date_delivery',array('class'=>'mdl-textfield__input')); ?>
-			</div>
-
-			<!-- <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-				<?php echo $form->labelEx($model,'total_amount', array('class'=>'mdl-textfield__label ')); ?>
-				<?php echo $form->textField($model,'total_amount',array('size'=>10,'maxlength'=>10, 'class'=>'mdl-textfield__input')); ?>
-			</div> -->
-
-<!-- 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-				<?php echo $form->labelEx($model,'dues', array('class'=>'mdl-textfield__label ')); ?>
-				<?php echo $form->textField($model,'dues',array('class'=>'mdl-textfield__input')); ?>
-			</div> -->
-
-			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-				<?php echo $form->labelEx($model,'status', array('class'=>'mdl-textfield__label ')); ?>
-				<?php echo $form->textField($model,'status',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
+				<?php echo $form->label($modelSchool,'name', array('class'=>'mdl-textfield__label ')); ?>
+				<?php echo $form->textField($modelSchool,'name',array('class'=>'mdl-textfield__input')); ?>
 			</div>
 
 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
@@ -51,11 +31,21 @@
 			</div>
 
 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-				<?php echo $form->label($modelSchool,'idschools', array('class'=>'mdl-textfield__label ')); ?>
-				<?php echo $form->textField($modelSchool,'idschools',array('class'=>'mdl-textfield__input')); ?>
+				<?php echo $form->labelEx($model,'status', array('class'=>'mdl-textfield__label ')); ?>
+				<?php echo $form->textField($model,'status',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
 			</div>
 
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+				<?php echo $form->labelEx($model,'date', array('class'=>'mdl-textfield__label ')); ?>
+				<?php echo $form->textField($model,'date',array('class'=>'mdl-textfield__input')); ?>
+			</div>
+
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+				<?php echo $form->labelEx($model,'date_delivery', array('class'=>'mdl-textfield__label ')); ?>
+				<?php echo $form->textField($model,'date_delivery',array('class'=>'mdl-textfield__input')); ?>
+			</div>
 			<div>
+				<?php echo CHtml::link('Limpiar', '#', array('class'=>'mdl-button color-text--orange btn btn-default actionClear')); ?>
 				<?php echo CHtml::submitButton('Buscar', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange color-text--black pull-right')); ?>
 			</div>
 

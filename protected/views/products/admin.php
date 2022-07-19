@@ -18,12 +18,12 @@ $('.search-button').click(function(){
 	$('.mib-table').toggleClass('mdl-cell--12-col-desktop mdl-cell--9-col-desktop  mdl-cell--12-col-tablet  mdl-cell--9-col-tablet');
 	return false;
 });
-$('.search-form form').submit(function(){
+/*$('.search-form form').submit(function(){
 	$.fn.yiiGridView.update('#products-grid', {
 		data: $(this).serialize()
 	});
 	return false;
-});
+});*/
 ");
 ?>
 
@@ -47,6 +47,7 @@ $('.search-form form').submit(function(){
             <div class="mdl-card__supporting-text no-padding">
 				<?php $this->widget('zii.widgets.grid.CGridView', array(
 					'id'=>'products-grid',
+					'summaryText' => '',
 					'dataProvider'=>$model->search(),
 					'itemsCssClass' => 'mdl-data-table mdl-js-data-table stripped-table',
 					// 'filter'=>$model,

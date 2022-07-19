@@ -24,6 +24,7 @@
 			</div>
 
 			<div>
+				<?php echo CHtml::link('Limpiar', '#', array('class'=>'mdl-button color-text--orange btn btn-default actionClear')); ?>
 				<?php echo CHtml::submitButton('Buscar', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange color-text--black pull-right')); ?>
 			</div>
 

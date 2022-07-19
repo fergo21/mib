@@ -38,6 +38,12 @@
     <link rel="canonical" href="http://www.example.com/">
     -->
 
+<!-- jQuery -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.min.js"></script>
+<!-- jQuery -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.ba-bbq.min.js"></script>
+<!-- jQuery -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.yiigridview.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,300,100,700,900' rel='stylesheet'
           type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -56,8 +62,10 @@
     <link  rel="stylesheet" href="<?php echo Yii::app()->baseUrl; ?>/css/mib-emoji.css?q=<?= time(); ?>">
     <link  rel="stylesheet" href="<?php echo Yii::app()->baseUrl; ?>/css/mdl-date-textfield.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
     <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="http://onesignal.github.io/emoji-picker/lib/css/emoji.css"> -->
+    <script src="<?php echo Yii::app()->baseUrl; ?>/js/mib.js?q=<?= time(); ?>"></script>
 </head>
 
 <body>
@@ -80,20 +88,14 @@
   const settingJson = JSON.parse('<?php echo json_encode(Utils::readJson('settings',false));?>');
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 <!-- <script type="text/javascript" src="http://onesignal.github.io/emoji-picker/lib/js/config.js"></script>
 <script type="text/javascript" src="http://onesignal.github.io/emoji-picker/lib/js/util.js"></script>
 <script type="text/javascript" src="http://onesignal.github.io/emoji-picker/lib/js/jquery.emojiarea.js"></script>
 <script type="text/javascript" src="http://onesignal.github.io/emoji-picker/lib/js/emoji-picker.js"></script>
  -->
 <script src="<?php echo Yii::app()->baseUrl; ?>/js/mib-emoji.js?q=<?= time(); ?>"></script>
-<script src="<?php echo Yii::app()->baseUrl; ?>/js/mib.js?q=<?= time(); ?>"></script>
-<!-- jQuery -->
-<!-- <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.min.js"></script> -->
-<!-- jQuery -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.ba-bbq.min.js"></script>
-<!-- jQuery -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.yiigridview.js"></script>
+<!-- <script src="<?php echo Yii::app()->baseUrl; ?>/js/mib.js?q=<?= time(); ?>"></script> -->
 <!-- inject:js -->
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/d3.min.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/getmdl-select.min.js"></script>
@@ -114,6 +116,8 @@
 <script src="<?php echo Yii::app()->baseUrl; ?>/js/mdl-date-textfield.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <!-- endinject -->
 </body>
 </html>

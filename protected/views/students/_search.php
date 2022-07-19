@@ -42,6 +42,13 @@ $listTC = $prompt + $listTC;
 					<?php echo $form->textField($model,'surname',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
 				</div>
 			</div>
+			
+			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+					<?php echo $form->label($model,'ci', array('class'=>'mdl-textfield__label')); ?>
+					<?php echo $form->textField($model,'ci',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
+				</div>
+			</div>
 
 			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
@@ -50,35 +57,38 @@ $listTC = $prompt + $listTC;
 				</div>
 			</div>
 
+			<?php echo $form->hiddenField($model,'phone',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
+
 			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
-                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size is-dirty">
-        			<?php echo $form->labelEx($model,'idschools', array('class'=>'mdl-selectfield__label ')); ?>
-					<?php echo $form->dropDownList($model, 'idschools', $listS, array('class'=>'mdl-selectfield__select select2')); ?>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+        			<?php echo $form->labelEx($model,'idschools', array('class'=>'mdl-textfield__label')); ?>
+					<?php echo $form->textField($model, 'idschools', array('class'=>'mdl-textfield__input')); ?>
 				</div>
 			</div>
 			
 			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
-                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
-        			<?php echo $form->labelEx($model,'iddivision', array('class'=>'mdl-selectfield__label ')); ?>
-					<?php echo $form->dropDownList($model, 'iddivision', $listDC, array('class'=>'mdl-selectfield__select select2')); ?>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+        			<?php echo $form->labelEx($model,'idyears', array('class'=>'mdl-textfield__label')); ?>
+					<?php echo $form->textField($model, 'idyears', array('class'=>'mdl-textfield__input')); ?>
+				</div>
+			</div>
+			
+			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+        			<?php echo $form->labelEx($model,'iddivision', array('class'=>'mdl-textfield__label')); ?>
+					<?php echo $form->textField($model, 'iddivision', array('class'=>'mdl-textfield__input')); ?>
 				</div>
 			</div>
 
 			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
-                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
-        			<?php echo $form->labelEx($model,'idyears', array('class'=>'mdl-selectfield__label ')); ?>
-					<?php echo $form->dropDownList($model, 'idyears', $listYC, array('class'=>'mdl-selectfield__select select2')); ?>
-				</div>
-			</div>
-
-			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
-                <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
-        			<?php echo $form->labelEx($model,'idshifts', array('class'=>'mdl-selectfield__label ')); ?>
-					<?php echo $form->dropDownList($model, 'idshifts', $listTC, array('class'=>'mdl-selectfield__select')); ?>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+        			<?php echo $form->labelEx($model,'idshifts', array('class'=>'mdl-textfield__label')); ?>
+					<?php echo $form->textField($model, 'idshifts', array('class'=>'mdl-textfield__input')); ?>
 				</div>
 			</div>
 
 			<div class="row buttons">
+				<?php echo CHtml::link('Limpiar', '#', array('class'=>'mdl-button color-text--orange btn btn-default actionClear')); ?>
 				<?php echo CHtml::submitButton('Buscar', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange color-text--black pull-right')); ?>
 			</div>
 
