@@ -35,6 +35,8 @@ return array(
 	// application components
 	'components'=>array(
 		'user'=>array(
+			'class' => 'WebUser',
+			'loginUrl'=>array('login'),
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),

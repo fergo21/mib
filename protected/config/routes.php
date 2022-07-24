@@ -25,6 +25,10 @@ return array(
     'products/create' => 'products/create',
     'products/update/<id>' => 'products/update/id/<id>',
     'products/delete/<id>' => 'products/delete/id/<id>',
+    'users/update/<id>' => 'users/update/id/<id>',
+    'users/delete/<id>' => 'users/delete/id/<id>',
     'more-settings' => 'setting/index',
+    'salir' => 'site/logout',
+    'login' => 'site/login',
     '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 );

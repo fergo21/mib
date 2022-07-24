@@ -8,6 +8,7 @@
 class UserIdentity extends CUserIdentity
 {
 	private $_id;
+	private $typerol;
 
 	/**
 	 * Authenticates a user.
@@ -15,15 +16,15 @@ class UserIdentity extends CUserIdentity
 	 */
 	public function authenticate()
 	{
-		$user=User::model()->find('LOWER(username)=?',array(strtolower($this->username)));
+		$user=Users::model()->find('user=:user', array(':user'=>$this->username));
 		if($user===null)
 			$this->errorCode=self::ERROR_USERNAME_INVALID;
 		else if(!$user->validatePassword($this->password))
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else
 		{
-			$this->_id=$user->id;
-			$this->username=$user->username;
+			$this->_id=$user->idusers;
+			$this->username=$user->name;
 			$this->errorCode=self::ERROR_NONE;
 		}
 		return $this->errorCode==self::ERROR_NONE;

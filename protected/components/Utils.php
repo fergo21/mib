@@ -111,10 +111,12 @@ class Utils{
 
 		$validate = Utils::validatExpirationDate($firstDatedue, date("Y-m-d"), $firstDue, $duepaid);
 
+		$date_contract = self::getDateContractOrder($data->idstudents);
+		
 		$date = date("d");
-		$dateStatus = (intval($date) > $setting['expiration_day']) && $validate ? 'Atrasado ' : 'Al día ';
+		$dateStatus = (intval($date) > $setting['expiration_day']) && intval($date) > date_format(new DateTime($date_contract), "d") && $validate ? 'Atrasado ' : 'Al día ';
 
-		$color = (intval($date) > $setting['expiration_day']) && $validate ? 'color--orange mdl-color-text--grey-900' : 'background-color--primary';
+		$color = (intval($date) > $setting['expiration_day'])  && intval($date) > date_format(new DateTime($date_contract), "d") && $validate ? 'color--orange mdl-color-text--grey-900' : 'background-color--primary';
 
 		switch(Utils::calculatePercentDue($duepaid, $data->dues)){
 			case "0";
@@ -159,6 +161,17 @@ class Utils{
 			return false;
 		}
 		return true;
+	}
+
+	public static function getDateContractOrder($idstudents){
+		$students = Students::model()->findByPk($idstudents);
+		$sql = "SELECT date_contract FROM promos WHERE promos.idschools = $students->idschools AND promos.idyears = $students->idyears AND promos.iddivision = $students->iddivision AND promos.idshifts = $students->idshifts AND promos.year_promo = $students->graduation_year";
+
+		$command = Yii::app()->db->createCommand($sql);
+		$results = $command->queryAll();
+
+		return $results[0]['date_contract'];
+
 	}
 
 	public static function calculatePercentDue($duepaid, $duetotal) {

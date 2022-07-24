@@ -28,16 +28,12 @@ class OrdersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'getorders', 'getcombos', 'out', 'downloadlist'),
-				'users'=>array('*'),
+				'actions'=>array('getorders', 'getcombos', 'out', 'downloadlist'),
+				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('*'),
+				'actions'=>Yii::app()->user->getRules(),
+				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -75,7 +71,7 @@ class OrdersController extends Controller
 			// 	var_dump(json_encode($_POST['Orders']['size']));die;
 			$model->attributes=$_POST['Orders'];
 			$model->size = $_POST['Orders']['size'];
-			$model->idusers = 1;
+			$model->idusers = Yii::app()->user->id;
 			$model->date = Utils::format_date($_POST['Orders']['date'], "en");
 			$model->date_delivery = Utils::format_date($_POST['Orders']['date_delivery'], "en");
 			$model->percent = $_POST['Orders']['percent'] ? $_POST['Orders']['percent'] : 0.0;
@@ -112,7 +108,7 @@ class OrdersController extends Controller
 			// print_r($_POST);die;
 			$model->attributes=$_POST['Orders'];
 			$model->size = $_POST['Orders']['size'];
-			$model->idusers = 1;
+			$model->idusers = Yii::app()->user->id;
 			$model->date = Utils::format_date($_POST['Orders']['date'], "en");
 			$model->date_delivery = Utils::format_date($_POST['Orders']['date_delivery'], "en");
 			$model->percent = $_POST['Orders']['percent'] ? $_POST['Orders']['percent'] : 0.0; 

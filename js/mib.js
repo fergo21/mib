@@ -80,6 +80,14 @@ const actionAjax = (url, method, table_id, data = null) => {
 
 
 $(document).ready(function(){
+    $("nav a").each((i,el)=>{
+        if(el.getAttribute("href") == window.location.pathname){
+            $(el).addClass("mdl-navigation__link--current");
+        }else{
+            $(el).removeClass("mdl-navigation__link--current");
+        }
+    });
+
     if($('.mdl-data-table tbody tr td').hasClass('empty')){
         $('.mdl-data-table tbody tr').remove();
     }

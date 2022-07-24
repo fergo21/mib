@@ -35,7 +35,7 @@
 									'title'=>'Eliminar',
 									'onclick'=>'deleteItem(this, "divisions-grid")',
 								),
-								'visible'=>'$data->iddivision',
+								'visible'=>'Yii::app()->user->checkAccess(\'delete\')'
 							)	
 						),
 					),

@@ -7,6 +7,12 @@ class SiteController extends Controller
 	/**
 	 * Declares class-based actions.
 	 */
+	public function filters()
+	{
+		return array(
+			'accessControl', // perform access control for CRUD operations
+		);
+	}
 	public function actions()
 	{
 		return array(
@@ -23,6 +29,19 @@ class SiteController extends Controller
 		);
 	}
 
+	// public function accessRules()
+	// {
+	// 	return array(
+	// 		array('allow',  // allow all users to perform 'index' and 'view' actions
+	// 			'actions'=>array('index'),
+	// 			'users'=>array('@'),
+	// 		),
+	// 		array('deny',  // deny all users
+	// 			'users'=>array('*'),
+	// 		),
+	// 	);
+	// }
+
 	/**
 	 * This is the action to handle external exceptions.
 	 */
@@ -38,7 +57,11 @@ class SiteController extends Controller
 	}
 
 	public function actionIndex(){
-		$this->render('index');
+		if(Yii::app()->user->name == "Guest"){
+			$this->redirect(Yii::app()->homeUrl.'login');
+		}else{
+			$this->render('index');
+		}
 	}
 
 	/**
@@ -86,6 +109,7 @@ class SiteController extends Controller
 			if($model->validate() && $model->login())
 				$this->redirect(Yii::app()->user->returnUrl);
 		}
+		$this->layout = 'partial';
 		// display the login form
 		$this->render('login',array('model'=>$model));
 	}
@@ -96,6 +120,6 @@ class SiteController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->homeUrl);
+		$this->redirect(Yii::app()->homeUrl.'login');
 	}
 }

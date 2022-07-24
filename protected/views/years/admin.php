@@ -34,7 +34,7 @@
 									'title'=>'Eliminar',
 									'onclick'=>'deleteItem(this, "years-grid")',
 								),
-								'visible'=>'$data->idyears',
+								'visible'=>'Yii::app()->user->checkAccess(\'delete\')'
 							)	
 						),
 					),

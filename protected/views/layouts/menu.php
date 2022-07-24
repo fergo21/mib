@@ -1,10 +1,10 @@
 <div class="mdl-layout__drawer">
-    <header>MIB</header>
+    <header>MIB</header> 
     <div class="scroll__wrapper" id="scroll__wrapper">
         <div class="scroller" id="scroller">
             <div class="scroll__container" id="scroll__container">
                 <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link mdl-navigation__link--current" href="<?= Yii::app()->baseUrl; ?>">
+                    <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/">
                         <i class="material-icons" role="presentation">dashboard</i>
                         Dashboard
                     </a>
@@ -28,33 +28,35 @@
                         <i class="material-icons" role="presentation">supervisor_account</i>
                         Proveedores
                     </a> -->
-                    <div class="sub-navigation">
-                        <a class="mdl-navigation__link">
-                            <i class="material-icons">settings</i>
-                            Configuración
-                            <i class="material-icons">keyboard_arrow_down</i>
-                        </a>
-                        <div class="mdl-navigation">
-                            <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/users/admin">
-                                Usuarios
+                    <?php if(Yii::app()->user->getRoles()->type == "Administrador"){ ?>
+                        <div class="sub-navigation">
+                            <a class="mdl-navigation__link">
+                                <i class="material-icons">settings</i>
+                                Configuración
+                                <i class="material-icons">keyboard_arrow_down</i>
                             </a>
+                            <div class="mdl-navigation">
+                                <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/users/admin">
+                                    Usuarios
+                                </a>
+                            </div>
+                            <div class="mdl-navigation">
+                                <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/products/admin">
+                                    Productos
+                                </a>
+                            </div>
+                            <div class="mdl-navigation">
+                                <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/schools-settings">
+                                    Escuelas
+                                </a>
+                            </div>
+                            <div class="mdl-navigation">
+                                <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/more-settings">
+                                    Más configuraciones
+                                </a>
+                            </div>
                         </div>
-                        <div class="mdl-navigation">
-                            <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/products/admin">
-                                Productos
-                            </a>
-                        </div>
-                        <div class="mdl-navigation">
-                            <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/schools-settings">
-                                Escuelas
-                            </a>
-                        </div>
-                        <div class="mdl-navigation">
-                            <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/more-settings">
-                                Más configuraciones
-                            </a>
-                        </div>
-                    </div>
+                    <?php } ?>
                     <!-- <div class="sub-navigation">
                         <a class="mdl-navigation__link">
                             <i class="material-icons">pages</i>

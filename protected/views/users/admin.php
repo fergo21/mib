@@ -42,10 +42,6 @@ $('.search-form form').submit(function(){
 					'dataProvider'=>$model->search(),
 					'columns'=>array(
 						array(
-							'name' => 'idusers',
-							'sortable' => false
-						),
-						array(
 							'name' => 'user',
 							'sortable' => false
 						),
@@ -60,10 +56,33 @@ $('.search-form form').submit(function(){
 						array(
 							'name' => 'roles_idroles',
 							'sortable' => false,
-							'cssClassExpression'=>'mdl-data-table__cell--non-numeric'
+							'value' => '$data->rolesIdroles->type'
+							//'cssClassExpression'=>'mdl-data-table__cell--non-numeric'
 						),
 						array(
-							'class'=>'CButtonColumn'
+							'header' => 'Acciones',
+							'class'=>'ButtonColumn', //esta clase se encuentra en components (es personalizada)
+							'template'=>'{update}{erase}',
+							'evaluateID'=>true, // esta opcion va si o si cuando se usa ButtonColumn
+							'buttons'=>array(
+								'update' => array(
+									'label'=>'<i class="material-icons">create</i>',
+									'imageUrl'=>false,
+									'url'=>'Yii::app()->createUrl("users/update/$data->idusers")',
+									'options'=>array('title'=>'Editar'),
+									'visible'=>'Yii::app()->user->checkAccess(\'update\')'
+								),
+								'erase' => array(
+									'label'=>'<i class="material-icons">delete</i>',
+									'imageUrl'=>false,
+									'url'=>'Yii::app()->createUrl("users/delete/$data->idusers")',
+									'options'=>array(
+										'title'=>'Eliminar',
+										'onclick'=>'deleteItem(this, "users-grid")',
+									),
+									'visible'=>'$data->idusers != Yii::app()->user->id && Yii::app()->user->checkAccess(\'delete\')'
+								)	
+							),
 						),
 					),
 				)); ?>

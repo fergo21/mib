@@ -2,6 +2,8 @@
 /* @var $this UsersController */
 /* @var $model Users */
 /* @var $form CActiveForm */
+$listR = CHtml::listData(Roles::model()->findAll(), 'idroles', 'type');
+// $listR = $prompt + $listR;
 ?>
 
 <div class="form">
@@ -14,10 +16,6 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-
-	
-	
-	<?php echo $form->errorSummary($model); ?>
 
 
 	<div class="mdl-cell mdl-cell--7-col-desktop mdl-cell--7-col-tablet mdl-cell--4-col-phone">
@@ -38,7 +36,7 @@
                             </div>
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
                                 <?php echo $form->labelEx($model,'password', array('class'=>'mdl-textfield__label')); ?>
-								<?php echo $form->passwordField($model,'password',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
+								<?php echo $form->passwordField($model,'password',array('size'=>65,'maxlength'=>65, 'class'=>'mdl-textfield__input')); ?>
 								<?php echo $form->error($model,'password'); ?>
                             </div>
                         </div>
@@ -54,10 +52,15 @@
 								<?php echo $form->textField($model,'surname',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
 								<?php echo $form->error($model,'surname'); ?>
                             </div>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+                            <!-- <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
                                 <?php echo $form->labelEx($model,'roles_idroles', array('class'=>'mdl-textfield__label')); ?>
 								<?php echo $form->textField($model,'roles_idroles', array('class'=>'mdl-textfield__input')); ?>
 								<?php echo $form->error($model,'roles_idroles'); ?>
+                            </div> -->
+                            <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+                                <?php echo $form->labelEx($model,'roles_idroles', array('class'=>'mdl-selectfield__label ')); ?>
+                                <?php echo $form->dropDownList($model, 'roles_idroles', $listR, array('class'=>'mdl-selectfield__select select2')); ?>
+                                <?php echo $form->error($model,'roles_idroles'); ?>
                             </div>
                         </div>
                     </div>

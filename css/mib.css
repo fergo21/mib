@@ -280,6 +280,33 @@ form .mdl-selectfield.full-size{
 .mdl-card .dataTables_paginate .paginate_button:hover{
     background-color: #9e9e9e33;
 }
+.mib-profile-letter{
+    background: orange;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto';
+    height: 48px;
+    width: 48px;
+    float: left;
+    margin-right: 16px;
+    border-radius: 50%;
+}
+.avatar-dropdown{
+    display: flex;
+    align-items: center;
+}
+.avatar-dropdown .mib-profile-letter{
+    height: 32px;
+    width: 32px;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0 !important;
+    float: right;
+    color: unset !important;
+    font-size: 20px;
+}
 @media (max-width: 768px) {
     .mdl-dialog {
         width: 100%;

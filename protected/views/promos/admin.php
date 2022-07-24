@@ -90,14 +90,14 @@ $('.search-form form').submit(function(){
 									'imageUrl'=>false,
 									'url'=>'Yii::app()->createUrl("promos/view/$data->idpromos")',
 									'options'=>array('title'=>'Ver promo'),
-									'visible'=>'$data->idpromos'
+									'visible'=>'Yii::app()->user->checkAccess(\'view\')'
 								),
 								'create' => array(
 									'label'=>'<i class="material-icons">group</i>',
 									'imageUrl'=>false,
 									'url'=>'Yii::app()->createUrl("students/create/$data->idpromos")',
 									'options'=>array('title'=>'Cargar Alumno'),
-									'visible'=>'$data->idpromos'
+									'visible'=>'Yii::app()->user->checkAccess(\'create\')'
 								),
 								'update' => array(
 									'label'=>'<i class="material-icons">create</i>',
@@ -139,7 +139,7 @@ $('.search-form form').submit(function(){
 
 									}',
 									'options'=>array('title'=>'Editar'),
-									// 'visible'=>'$data->idpromos'
+									'visible'=>'Yii::app()->user->checkAccess(\'update\')'
 								),
 								'erase' => array(
 									'label'=>'<i class="material-icons">delete</i>',
@@ -149,7 +149,7 @@ $('.search-form form').submit(function(){
 										'title'=>'Eliminar',
 										'onclick'=>'deleteItem(this, "promos-grid")',
 									),
-									'visible'=>'$data->idpromos',
+									'visible'=>'Yii::app()->user->checkAccess(\'delete\')'
 								),
 							),
 						),

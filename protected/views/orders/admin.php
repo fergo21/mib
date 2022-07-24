@@ -173,7 +173,7 @@ $('#downloadFile').click(function(){
 											'imageUrl'=>false,
 											'url'=>'Yii::app()->createUrl("orders/update/$data->idorders")',
 											'options'=>array('title'=>'Editar'),
-											'visible'=>'$data->idorders'
+											'visible'=>'Yii::app()->user->checkAccess(\'update\')'
 										),
 										'erase' => array(
 											'label'=>'<i class="material-icons">delete</i>',
@@ -183,7 +183,7 @@ $('#downloadFile').click(function(){
 												'title'=>'Eliminar',
 												'onclick'=>'deleteItem(this, "orders-grid")',
 											),
-											'visible'=>'$data->idorders',
+											'visible'=>'Yii::app()->user->checkAccess(\'delete\')'
 										)	
 									),
 								),

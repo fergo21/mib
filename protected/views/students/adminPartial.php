@@ -69,7 +69,7 @@
 									'imageUrl'=>false,
 									'url'=>'Yii::app()->createUrl("students/update/$data->idstudents")',
 									'options'=>array('title'=>'Editar'),
-									'visible'=>'$data->idstudents'
+									'visible'=>'Yii::app()->user->checkAccess(\'update\')'
 								),
 								'erase' => array(
 									'label'=>'<i class="material-icons">delete</i>',
@@ -79,7 +79,7 @@
 										'title'=>'Eliminar',
 										'onclick'=>'deleteItem(this, "students-grid")',
 									),
-									'visible'=>'$data->idstudents',
+									'visible'=>'Yii::app()->user->checkAccess(\'delete\')'
 								)	
 							),
 						),

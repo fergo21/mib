@@ -28,22 +28,36 @@ $this->menu=array(
             </div>
         </div>
     </div>
-
-    <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--2-col-phone">
-        <div class="mdl-card mdl-shadow--2dp red">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Facturación</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-            	<div>
-	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/create">Facturar</a>
-	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets">Anular Factura</a>
-	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/admin">Consultar Factura</a>
-            	</div>
-                <i class="material-icons big-icon">unarchive</i>
+    <?php if(Yii::app()->user->getRoles()->type == "Administrador"){ ?>
+        <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--2-col-phone">
+            <div class="mdl-card mdl-shadow--2dp red">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Facturación</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                	<div>
+    	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/create">Facturar</a>
+    	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets">Anular Factura</a>
+    	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/admin">Consultar Factura</a>
+                	</div>
+                    <i class="material-icons big-icon">unarchive</i>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--2-col-phone">
+            <div class="mdl-card mdl-shadow--2dp purple">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Reportes</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                	<div>
+    	            	<a href="<?=  Yii::app()->baseUrl; ?>/reports">Generar reporte</a>
+    	            </div>
+                    <i class="material-icons big-icon">poll</i>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
 
     <!-- <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--2-col-phone">
         <div class="mdl-card mdl-shadow--2dp green">
@@ -79,19 +93,6 @@ $this->menu=array(
         </div>
     </div> -->
 
-    <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--2-col-phone">
-        <div class="mdl-card mdl-shadow--2dp purple">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Reportes</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-            	<div>
-	            	<a href="<?=  Yii::app()->baseUrl; ?>/reports">Generar reporte</a>
-	            </div>
-                <i class="material-icons big-icon">poll</i>
-            </div>
-        </div>
-    </div>
 
     <!-- <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--2-col-phone">
         <div class="mdl-card mdl-shadow--2dp light-blue">
