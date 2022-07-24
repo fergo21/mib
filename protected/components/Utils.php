@@ -114,9 +114,9 @@ class Utils{
 		$date_contract = self::getDateContractOrder($data->idstudents);
 		
 		$date = date("d");
-		$dateStatus = (intval($date) > $setting['expiration_day']) && intval($date) > date_format(new DateTime($date_contract), "d") && $validate ? 'Atrasado ' : 'Al día ';
+		$dateStatus =( intval($date) > $setting['expiration_day'] || intval($date) > date_format(new DateTime($date_contract), "d")) && $validate ? 'Atrasado ' : 'Al día ';
 
-		$color = (intval($date) > $setting['expiration_day'])  && intval($date) > date_format(new DateTime($date_contract), "d") && $validate ? 'color--orange mdl-color-text--grey-900' : 'background-color--primary';
+		$color =( intval($date) > $setting['expiration_day'] || intval($date) > date_format(new DateTime($date_contract), "d")) && $validate ? 'color--orange mdl-color-text--grey-900' : 'background-color--primary';
 
 		switch(Utils::calculatePercentDue($duepaid, $data->dues)){
 			case "0";
