@@ -91,34 +91,35 @@ class Utils{
 	}
 
 	public static function statusPaid($data) {
-		$setting = Utils::readJson('settings');
+		$setting = self::readJson('settings');
 
 		$ticket = Tickets::model()->findAll("idorders=:idorders", array(":idorders"=>$data->idorders));
 		$duepaid = 0;
 		$firstDatedue = '';
-		$firstDue = 0;
+		// $firstDue = 0;
 
 		foreach($ticket as $i => $t){
-			if($i == 0){
-				$firstDatedue = $t->date;
-				$firstDue = explode(",", $t->dues);
-			}
+			// if($i == 0){
+			// 	$firstDatedue = $t->date;
+			// 	$firstDue = explode(",", $t->dues);
+			// }
 			$duepaid = explode(",", $t->dues);
 		}
 		$duepaid = $duepaid != 0 ? $duepaid[count($duepaid)-1] : 0;
 
 		$pills = "<div class='pills-estados'>";
 
-		$validate = Utils::validatExpirationDate($firstDatedue, date("Y-m-d"), $firstDue, $duepaid);
-
 		$date_contract = self::getDateContractOrder($data->idstudents);
+
+		$validate = self::validatExpirationDate($firstDatedue, date("Y-m-d"), $date_contract, $duepaid);
+
 		
 		$date = date("d");
 		$dateStatus =( intval($date) > $setting['expiration_day'] || intval($date) > date_format(new DateTime($date_contract), "d")) && $validate ? 'Atrasado ' : 'Al día ';
 
 		$color =( intval($date) > $setting['expiration_day'] || intval($date) > date_format(new DateTime($date_contract), "d")) && $validate ? 'color--orange mdl-color-text--grey-900' : 'background-color--primary';
 
-		switch(Utils::calculatePercentDue($duepaid, $data->dues)){
+		switch(self::calculatePercentDue($duepaid, $data->dues)){
 			case "0";
 					if(!$data->out_production){
 						$pills .= '<span class="label label--mini color--red">Impago</span>';
@@ -151,13 +152,15 @@ class Utils{
 		return $pills;
 	}
 
-	public static function validatExpirationDate($firstDate, $actualDate, $firstDuePaid, $lastDuesPaid){
+	public static function validatExpirationDate($firstDate, $actualDate, $date_contract, $lastDuesPaid){
 		$date1 = date_create($firstDate);
 		$date2 = date_create($actualDate);
+		$date3 = date_create($date_contract);
 
 		$diff = date_diff($date1, $date2);
+		$diff2 = date_diff($date3, $date2);
 
-		if($diff->format("%m") < $lastDuesPaid){
+		if($diff->format("%m") < $lastDuesPaid && $lastDuesPaid >= $diff2->format("%m")){
 			return false;
 		}
 		return true;
@@ -207,7 +210,7 @@ class Utils{
 
 		$duepaid = $duepaid != 0 ? $duepaid[count($duepaid)-1] : 0;
 
-		$disaled = Utils::calculatePercentDue($duepaid, $data->dues) == "100";
+		$disaled = self::calculatePercentDue($duepaid, $data->dues) == "100";
 
 		$checked = $data->out_production ? 'checked' : '';
 
