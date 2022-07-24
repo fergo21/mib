@@ -40,7 +40,7 @@ $this->breadcrumbs=array(
 	                        <!-- <a href="sign-up.html" class="login-link">Don't have account?</a> -->
 	                        <div class="mdl-layout-spacer"></div>
 	                        <a href="index.html">
-	                        	<?php echo CHtml::submitButton('Login', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange')); ?>
+	                        	<?php echo CHtml::submitButton('Entrar', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange')); ?>
 	                        </a>
 	                    </div>
 	                </div>

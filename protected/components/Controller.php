@@ -20,4 +20,10 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+
+	public function init(){
+		if(!Yii::app()->user->id && Yii::app()->urlManager->parseUrl(Yii::app()->request) != 'site/login'){
+			$this->redirect(Yii::app()->homeUrl.'login');
+		}
+	}
 }

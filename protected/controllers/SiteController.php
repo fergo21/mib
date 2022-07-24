@@ -29,18 +29,22 @@ class SiteController extends Controller
 		);
 	}
 
-	// public function accessRules()
-	// {
-	// 	return array(
-	// 		array('allow',  // allow all users to perform 'index' and 'view' actions
-	// 			'actions'=>array('index'),
-	// 			'users'=>array('@'),
-	// 		),
-	// 		array('deny',  // deny all users
-	// 			'users'=>array('*'),
-	// 		),
-	// 	);
-	// }
+	public function accessRules()
+	{
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index','logout'),
+				'users'=>array('@'),
+			),
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('login'),
+				'users'=>array('?'),
+			),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
+		);
+	}
 
 	/**
 	 * This is the action to handle external exceptions.
@@ -49,10 +53,13 @@ class SiteController extends Controller
 	{
 	    if($error=Yii::app()->errorHandler->error)
 	    {
-	    	if(Yii::app()->request->isAjaxRequest)
+
+	    	if(Yii::app()->request->isAjaxRequest){
 	    		echo $error['message'];
-	    	else
+	    	}else{
+	    		$this->layout = 'partial';
 	        	$this->render('error', $error);
+	    	}
 	    }
 	}
 
