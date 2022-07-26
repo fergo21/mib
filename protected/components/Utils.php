@@ -130,6 +130,13 @@ class Utils{
 						$pills .= '<span class="label label--mini '.$color.'">'.$dateStatus.$duepaid.'/'.$data->dues.'</span>';
 					}
 				break;
+			case "75":
+			case "50":
+					if(!$data->out_production){
+						$pills .= '<span class="label label--mini '.$color.'">'.$dateStatus.$duepaid.'/'.$data->dues.'</span>';
+						$pills .= '<span class="label label--mini color--green">'.$data->status.'</span>';
+					}
+				break;
 			case "100";
 					$pills .= '<span class="label label--mini mdl-color--indigo-500">Pagado</span>';
 					if($data->status != 'Pedido' && $data->status != "Terminado"){
@@ -139,7 +146,6 @@ class Utils{
 			default:
 					if(!$data->out_production){
 						$pills .= '<span class="label label--mini '.$color.'">'.$dateStatus.$duepaid.'/'.$data->dues.'</span>';
-						$pills .= '<span class="label label--mini color--green">'.$data->status.'</span>';
 					}
 				break;
 		}
@@ -180,15 +186,15 @@ class Utils{
 	public static function calculatePercentDue($duepaid, $duetotal) {
 		$percent = "";
 		
-		if($duepaid == floatval(100 * intval($duetotal) / 100)){
+		if(intval($duepaid) == floatval(100 * intval($duetotal) / 100)){
 			$percent = "100";
-		}else if($duepaid >= floatval(75 * intval($duetotal) / 100)){
+		}else if(intval($duepaid) >= floatval(75 * intval($duetotal) / 100)){
 			$percent = "75";
-		}else if($duepaid >= floatval(50 * intval($duetotal) / 100)){
+		}else if(intval($duepaid) >= floatval(50 * intval($duetotal) / 100)){
 			$percent = "50";
-		}else if($duepaid >= floatval(25 * intval($duetotal) / 100)){
+		}else if(intval($duepaid) >= floatval(25 * intval($duetotal) / 100)){
 			$percent = "25";
-		}else{
+		}else if(intval($duepaid) == 0){
 			$percent = "0";
 		}
 
