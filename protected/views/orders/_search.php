@@ -2,6 +2,21 @@
 /* @var $this OrdersController */
 /* @var $model Orders */
 /* @var $form CActiveForm */
+$prompt = array('' => 'Seleccionar');
+$listS = CHtml::listData(Schools::model()->findAll(), 'name', 'name');
+$listS = $prompt + $listS;
+
+$listYP = CHtml::listData(Promos::model()->findAll(), 'year_promo', 'year_promo');
+$listYP = $prompt + $listYP;
+
+$listY = CHtml::listData(Years::model()->findAll(), 'year', 'year');
+$listY = $prompt + $listY;
+
+$listD = CHtml::listData(Divisions::model()->findAll(), 'division', 'division');
+$listD = $prompt + $listD;
+
+$listST = CHtml::listData(Shifts::model()->findAll(), 'shift', 'shift');
+$listST = $prompt + $listST;
 ?>
 
 <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
@@ -20,9 +35,25 @@
 				<?php echo $form->textField($model,'idorders',array('class'=>'mdl-textfield__input')); ?>
 			</div>
 
-			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-				<?php echo $form->label($modelSchool,'name', array('class'=>'mdl-textfield__label ')); ?>
-				<?php echo $form->textField($modelSchool,'name',array('class'=>'mdl-textfield__input')); ?>
+			<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+				<?php echo $form->label($modelSchool,'name', array('class'=>'mdl-selectfield__label ')); ?>
+				<?php echo $form->dropDownList($modelSchool,'name', $listS, array('class'=>'mdl-selectfield__select select2')); ?>
+			</div>
+			<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+				<?php echo $form->label($modelPromo,'year_promo', array('class'=>'mdl-selectfield__label ')); ?>
+				<?php echo $form->dropDownList($modelPromo,'year_promo', $listYP, array('class'=>'mdl-selectfield__select select2')); ?>
+			</div>
+			<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+				<?php echo $form->label($modelYear,'year', array('class'=>'mdl-selectfield__label ')); ?>
+				<?php echo $form->dropDownList($modelYear,'year', $listY, array('class'=>'mdl-selectfield__select select2')); ?>
+			</div>
+			<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+				<?php echo $form->label($modelDivision,'division', array('class'=>'mdl-selectfield__label ')); ?>
+				<?php echo $form->dropDownList($modelDivision,'division', $listD, array('class'=>'mdl-selectfield__select select2')); ?>
+			</div>
+			<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+				<?php echo $form->label($modelShift,'shift', array('class'=>'mdl-selectfield__label')); ?>
+				<?php echo $form->dropDownList($modelShift,'shift',$listST, array('maxlength'=>45,'class'=>'mdl-selectfield__select select2')); ?>
 			</div>
 
 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">

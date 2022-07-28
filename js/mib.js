@@ -112,10 +112,9 @@ $(document).ready(function(){
     });
    const searchData = () => {
        // Filtro para tabla
-        $("form input[type='text']").each(function(index,el) {
+        $("form input[type='text'], form select").each(function(index,el) {
             //$(this).on('keyup', function () {
                 column = table.column(index);
-                // console.log(column);
                 if (column.search() !== this.value) {
                     column
                         .search(this.value)
@@ -136,13 +135,15 @@ $(document).ready(function(){
 
    $("#downloadFile").click(function(e){
     e.preventDefault();
-       if($(".mdl-card form #Schools_name").val()){
-            // let data = $(".mdl-grid form").serialize();
-            console.log($(".mdl-card form #Schools_name").val());
-            $(".mib-actions form input#downloadFileData").val($(".mdl-card form #Schools_name").val());
+       if($(".mdl-card form #Schools_name").val() && $(".mdl-card form #Promos_year_promo").val() && $(".mdl-card form #Years_year").val() 
+        && $(".mdl-card form #Divisions_division").val() && $(".mdl-card form #Shifts_shift").val()){
+
+            let data = `${$(".mdl-card form #Schools_name").val()} - ${$(".mdl-card form #Years_year").val()} - ${$(".mdl-card form #Divisions_division").val()} - ${$(".mdl-card form #Shifts_shift").val()} - ${$(".mdl-card form #Promos_year_promo").val()}`;
+            
+            $(".mib-actions form input#downloadFileData").val(data);
             $(".mib-actions form").trigger('submit');
        }else{
-            actionAlert("Debe ingresar datos de la escuela en Búsqueda avanzada.", "warning");
+            actionAlert("Debe ingresar datos de la Escuela, Promo, Curso, División y Turno en Búsqueda avanzada.", "warning");
        }
    });
 

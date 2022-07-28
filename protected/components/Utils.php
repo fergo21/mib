@@ -227,8 +227,9 @@ class Utils{
                 </div>' : "";
 		return $html;
 	}
-	public static function renderStudent($data){
-		$html = "<a href='#' class='color-text--orange' id='".$data->idstudents0->idstudents."'>".$data->idstudents0->name." ".$data->idstudents0->surname."</a>
+	public static function renderStudent($data, $withCI=false){
+		$ciHtml = $withCI ? "<small style='display:none;'>".$data->idstudents0->ci."</small>" : "";
+		$html = "<a href='#' class='color-text--orange' id='".$data->idstudents0->idstudents."'>".$data->idstudents0->name." ".$data->idstudents0->surname." ".$ciHtml."</a>
 				<div class='mdl-tooltip mib-tooltip' for='".$data->idstudents0->idstudents."'>
 					<strong>Teléfono: </strong>".$data->idstudents0->phone."<br>
 					<strong>Email: </strong>".$data->idstudents0->email."<br>

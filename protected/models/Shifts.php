@@ -55,7 +55,7 @@ class Shifts extends CActiveRecord
 	{
 		return array(
 			'idshifts' => 'Idshifts',
-			'shift' => 'Shift',
+			'shift' => 'Turno',
 		);
 	}
 

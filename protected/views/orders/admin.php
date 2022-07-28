@@ -16,6 +16,7 @@ Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
 	$('.mib-table').toggleClass('mdl-cell--12-col-desktop mdl-cell--9-col-desktop  mdl-cell--12-col-tablet  mdl-cell--9-col-tablet');
+	$('.mdl-selectfield.full-size').addClass('is-dirty');
 	return false;
 });
 /*$('.search-form form').submit(function(e){
@@ -77,7 +78,11 @@ $('#downloadFile').click(function(){
 	<div class="search-form mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--12-col-phone form__article" style="display:none">
 	<?php $this->renderPartial('_search',array(
 		'model'=>$model,
-		'modelSchool'=>$modelSchool
+		'modelSchool'=>$modelSchool,
+		'modelYear'=>$modelYear,
+		'modelDivision'=>$modelDivision,
+		'modelShift'=>$modelShift,
+		'modelPromo'=>$modelPromo,
 	)); ?>
 	</div><!-- search-form -->
 	<div class="mdl-cell mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article mib-table">
@@ -113,13 +118,43 @@ $('#downloadFile').click(function(){
 									'header' => 'Escuela',
 									'sortable' => true,
 									'type' => 'raw',
-									'value' => 'Utils::renderSchool($data)'
+									'value' => 'Schools::model()->findByPk($data->idstudents0->idschools)->name',
+									// 'headerHtmlOptions'=>array('style'=>'display:none'),
+									// 'htmlOptions'=>array('style'=>'display:none')
+								),
+								array(
+									'header' => 'Promo',
+									'sortable' => false,
+									'type' => 'raw',
+									'value' => '$data->idstudents0->graduation_year',
+									'headerHtmlOptions'=>array('style'=>'width:3%;')
+								),
+								array(
+									'header' => 'Curso',
+									'sortable' => false,
+									'type' => 'raw',
+									'value' => 'Years::model()->findByPk($data->idstudents0->idyears)->year',
+									'headerHtmlOptions'=>array('style'=>'width:3%;')
+								),
+								array(
+									'header' => 'División',
+									'sortable' => false,
+									'type' => 'raw',
+									'value' => 'Divisions::model()->findByPk($data->idstudents0->iddivision)->division',
+									'headerHtmlOptions'=>array('style'=>'width:3%;')
+								),
+								array(
+									'header' => 'Turno',
+									'sortable' => false,
+									'type' => 'raw',
+									'value' => 'Shifts::model()->findByPk($data->idstudents0->idshifts)->shift',
+									'headerHtmlOptions'=>array('style'=>'width:3%;')
 								),
 								array(
 									'name' => 'idstudents',
 									'sortable' => false,
 									'type' => 'raw',
-									'value' => 'Utils::renderStudent($data)'
+									'value' => 'Utils::renderStudent($data, true)'
 								),
 								array(
 									'header' => 'Estado de pago',
@@ -144,11 +179,11 @@ $('#downloadFile').click(function(){
 									'name' => 'total_amount',
 									'sortable' => false
 								),
-								array(
-									'name' => 'dues',
-									'sortable' => false,
-									'headerHtmlOptions'=>array('style'=>'width:5%;')
-								),
+								// array(
+								// 	'name' => 'dues',
+								// 	'sortable' => false,
+								// 	'headerHtmlOptions'=>array('style'=>'width:5%;')
+								// ),
 								array(
 									'header' => '<span>Fuera de producción</span>',
 									'type' => 'raw',
@@ -167,6 +202,7 @@ $('#downloadFile').click(function(){
 									'class'=>'ButtonColumn', //esta clase se encuentra en components (es personalizada)
 									'template'=>'{update}{erase}',
 									'evaluateID'=>true, // esta opcion va si o si cuando se usa ButtonColumn
+									'headerHtmlOptions'=>array('style'=>'width:10%;'),
 									'buttons'=>array(
 										'update' => array(
 											'label'=>'<i class="material-icons">create</i>',

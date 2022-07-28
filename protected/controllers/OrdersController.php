@@ -29,14 +29,14 @@ class OrdersController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('getorders', 'getcombos', 'out', 'downloadlist'),
-				'users'=>array('@'),
+				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>Yii::app()->user->getRules(),
 				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
-				'users'=>array('*'),
+				'users'=>array('?'),
 			),
 		);
 	}
@@ -164,7 +164,17 @@ class OrdersController extends Controller
 		$model->unsetAttributes();  // clear any default values
 
 		$modelSchool = new Schools('search');
+		$modelYear = new Years('search');
+		$modelDivision = new Divisions('search');
+		$modelShift = new Shifts('search');
+		$modelPromo = new Promos('search');
+
 		$modelSchool->unsetAttributes();  // clear any default values
+		$modelYear->unsetAttributes();
+		$modelDivision->unsetAttributes();
+		$modelShift->unsetAttributes();
+		$modelPromo->unsetAttributes();
+
 		if(isset($_GET['Orders'])){
 			$response = false;
 			if(isset($_GET['Schools']['idschools'])){
@@ -180,7 +190,11 @@ class OrdersController extends Controller
 
 		$this->render('admin',array(
 			'model'=>$model,
-			'modelSchool'=>$modelSchool
+			'modelSchool'=>$modelSchool,
+			'modelYear'=>$modelYear,
+			'modelDivision'=>$modelDivision,
+			'modelShift'=>$modelShift,
+			'modelPromo'=>$modelPromo,
 		));
 	}
 
@@ -324,7 +338,7 @@ class OrdersController extends Controller
 
 	public function actionDownloadList()
 	{
-		if(isset($_POST)){
+		if(isset($_POST['data_download'])){
 			$data = preg_split("/- /",$_POST['data_download']);
 		
 			$responseSchools = Schools::model()->find("name=:name", array(":name"=>$data[0]));
