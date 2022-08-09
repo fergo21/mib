@@ -267,7 +267,7 @@ class OrdersController extends Controller
 	public function actionGetCombos()
 	{
 		
-		if(isset($_POST['q']) && strlen($_POST['q']) > 2 ){
+		if(isset($_POST['q']) && strlen($_POST['q']) > 2){
 			$payload = json_decode($_POST['q']);
 
 			$prod = "";
@@ -291,8 +291,8 @@ class OrdersController extends Controller
 						$data["products"][$key] = array(
 							"i"=>$prod['idproducts'], 
 							"name"=>$prod['name'], 
-							"totalPriceProduct"=>$prod['price'] * $product->quantity,
-							"unitPrice"=>number_format($prod['price'], 2, '.', '')
+							"totalPriceProduct"=> ($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']) * $product->quantity,
+							"unitPrice"=>number_format(($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']), 2, '.', '')
 						);
 
 						$total = $total + $data["products"][$key]['totalPriceProduct'];

@@ -181,9 +181,13 @@ array_unshift($listTallesAbajo, 'Seleccionar');
 			<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
 				<div class="mdl-card mdl-shadow--2dp">
 					<div class="mdl-card__title mib-table--title">
-			            <h2 class="mdl-card__title-text">Productos seleccionados</h2>
-			            <div>
-		                	<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect color-text--orange show-dialog">Agregar producto</a>
+			            <h2 class="mdl-card__title-text">Prods. Seleccionados</h2>
+			            <div style="display: block; width: 153px; text-align: right;">
+		                	<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect color-text--orange show-dialog"><i class="material-icons">add</i> producto</a>
+			            	<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect checkbox--colored-green" for="Check_priceOld">
+	                            <input type="checkbox" id="Check_priceOld" class="mdl-checkbox__input">
+	                            <span class="mdl-checkbox__label">Precio congelado</span>
+	                        </label>
 		                </div>
 			        </div>
 			        <div class="mdl-card__supporting-text no-padding">

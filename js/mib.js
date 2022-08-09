@@ -208,6 +208,8 @@ $(document).ready(function(){
             $(`#data-shift`).html(`${item.shift}`);
             $(`#data-year_promo`).html(`${item.year_promo}`);
             $(`#data-image_promo`).attr("src", `${item.image_promo}`);
+            $(`#Check_priceOld`).prop("checked", Boolean(parseInt(item.price_old)));
+            Boolean(parseInt(item.price_old)) ? $(`#Check_priceOld`).parent().addClass("is-checked") : $(`#Check_priceOld`).parent().removeClass("is-checked");
         });
     }
 
@@ -233,7 +235,7 @@ $(document).ready(function(){
             url: `${homeUrl}/orders/getCombos`,
             dataType: 'json',
             type: 'POST',
-            data: {q: JSON.stringify(result), p: $("#Orders_percent").val()}
+            data: {q: JSON.stringify(result), p: $("#Orders_percent").val(), old: $('#Check_priceOld')[0].checked }
         })
         .done(function(data){
             $('#Orders_total_amount').parent().addClass('is-dirty');

@@ -8,6 +8,8 @@
  * @property string $name
  * @property string $description
  * @property string $price
+ * @property string $price_old
+ * 
  *
  * The followings are the available model relations:
  * @property OrderProducts[] $orderProducts
@@ -30,12 +32,12 @@ class Products extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, price', 'required', 'message'=>'El campo "{attribute}" no puede estar en blanco'),
+			array('name, price, price_old', 'required', 'message'=>'El campo "{attribute}" no puede estar en blanco'),
 			array('name, description', 'length', 'max'=>45),
-			array('price', 'length', 'max'=>10),
+			array('price, price_old', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idproducts, name, description, price', 'safe', 'on'=>'search'),
+			array('idproducts, name, description, price, price_old', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,6 +63,7 @@ class Products extends CActiveRecord
 			'name' => 'Producto',
 			'description' => 'Descripción',
 			'price' => 'Precio',
+			'price_old' => 'Precio Anterior',
 		);
 	}
 
@@ -86,6 +89,7 @@ class Products extends CActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('price',$this->price,true);
+		$criteria->compare('price_old',$this->price_old,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -61,6 +61,10 @@ $('.search-button').click(function(){
 							'sortable' => false
 						),
 						array(
+							'name' => 'price_old',
+							'sortable' => false
+						),
+						array(
 							'name' => 'description',
 							'sortable' => false
 						),

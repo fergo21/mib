@@ -12,18 +12,147 @@
 ----------------------------------------------------------------------- */
 
 /* print.css */
-body {line-height:1.5;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;color:#000;background:none;font-size:10pt;}
-.container {background:none;}
-hr {background:#ccc;color:#ccc;width:100%;height:2px;margin:2em 0;padding:0;border:none;}
-hr.space {background:#fff;color:#fff;visibility:hidden;}
-h1, h2, h3, h4, h5, h6 {font-family:"Helvetica Neue", Arial, "Lucida Grande", sans-serif;}
-code {font:.9em "Courier New", Monaco, Courier, monospace;}
-a img {border:none;}
-p img.top {margin-top:0;}
-blockquote {margin:1.5em;padding:1em;font-style:italic;font-size:.9em;}
-.small {font-size:.9em;}
-.large {font-size:1.1em;}
-.quiet {color:#999;}
-.hide {display:none;}
-a:link, a:visited {background:transparent;font-weight:700;text-decoration:underline;}
-a:link:after, a:visited:after {content:" (" attr(href) ")";font-size:90%;}
+body {line-height:1.5;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;color:#000;background:none;font-size:10px;}
+.content-print {
+    border: 1px solid black;
+    border-radius: 12px;
+}
+.section1-print {
+    padding: 20px 20px 0px;
+    border-bottom: 1px solid black;
+    display: flex;
+    font-size: 8px;
+}
+
+.data-mib {
+    width: 50%;
+    text-align: center;
+}
+
+.ticket-mib {
+    width: 50%;
+}
+.content-data {
+    display: flex;
+}
+
+.x {
+    padding: 5px 9px;
+    border: 1px solid;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.top-ticket span {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.data-afip{
+    width: 50%;
+    line-height: 1;
+    text-align: center;
+    margin: 5px 0px 0px 16px;
+}
+
+.data-afip p{
+  text-align: center;  
+  display: block;
+  border-left: 1px solid black;
+  margin: 0px;
+}
+.content-data .date{
+  width: 50%;
+  display: block;
+  text-align: center;
+}
+.content-data .date-date{
+  font-size: 12px;
+}
+
+.logo {
+    font-weight: bold;
+    vertical-align: middle;
+    position: relative;
+    padding: 5px 0px;
+}
+.logo span{
+  padding-left: 10px;
+}
+.logo img {
+    width: 30px;
+    vertical-align: middle;
+}
+h2 {
+    margin: 0px 0px 10px;
+}
+
+span.detail {
+    display: block;
+}
+
+span.address {
+    display: block;
+}
+
+.section2-print {
+    padding: 10px 20px;
+    border-bottom: 1px solid black;
+    line-height: 3;
+}
+
+.section3-print {
+    padding: 20px 20px 10px;
+    line-height: 3;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+}
+.top-ticket {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.total-signature {
+    display: flex;
+    align-items: flex-end;
+}
+
+.total-signature .total{
+    border-radius: 6px;
+    border: 1px solid black;
+    padding: 7px 30px;
+    width: auto;
+}
+
+.paid-print {
+    width: 250px;
+}
+
+.total-print {
+    width: 50%;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.signature-print {
+    width: 50%;
+}
+.section2-print span, .section3-print span, li{
+  border-bottom: 1px dotted;
+  bottom: 3px;
+  position: relative;
+  width: 100%;
+  display: inline-block;
+  line-height: 1;
+  font-style: italic;
+}
+.detail-text{
+  display: flex;
+  line-height: 1;
+  margin: 25px 0px;
+}
+.detail-text strong{
+  white-space: nowrap;
+  margin-right: 10px;
+}

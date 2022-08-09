@@ -21,18 +21,25 @@
                 <form class="form form--basic">
                 <p class="note">Los campos con <span class="required">*</span> son requeridos.</p>
                     <div class="mdl-grid">
-                    	<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--6-col-tablet mdl-cell--12-col-phone form__article">
+                    	<div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--12-col-phone form__article">
                     		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
 								<?php echo $form->labelEx($model,'name', array('class'=>'mdl-textfield__label')); ?>
 								<?php echo $form->textField($model,'name',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
 								<?php echo $form->error($model,'name'); ?>
 							</div>
 						</div>
-						<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--6-col-tablet mdl-cell--12-col-phone form__article">
+						<div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--12-col-phone form__article">
 							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
 								<?php echo $form->labelEx($model,'price', array('class'=>'mdl-textfield__label')); ?>
 								<?php echo $form->textField($model,'price',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
 								<?php echo $form->error($model,'price'); ?>
+							</div>
+						</div>
+						<div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--12-col-phone form__article">
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+								<?php echo $form->labelEx($model,'price_old', array('class'=>'mdl-textfield__label')); ?>
+								<?php echo $form->textField($model,'price_old',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
+								<?php echo $form->error($model,'price_old'); ?>
 							</div>
 						</div>
 						<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">

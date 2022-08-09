@@ -28,6 +28,10 @@ class TicketsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('print'),
+				'users'=>array('*'),
+			),
+			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>Yii::app()->user->getRules(),
 				'users'=>array('@'),
 			),
@@ -88,7 +92,7 @@ class TicketsController extends Controller
 				}
 
 				Yii::app()->user->setFlash('success', 'ok');
-
+				Yii::app()->user->setFlash('redirect', '/tickets/print/'.$model->idtickets);
 
 				// if($order->dues === $ticket){
 				// 	$this->redirect(array('/tickets')); //ver si redirecciono a algun lado una vez cancelado todo
@@ -164,6 +168,22 @@ class TicketsController extends Controller
 
 		$this->render('admin',array(
 			'model'=>$model,
+		));
+	}
+
+	public function actionPrint($id){
+
+		$this->layout = 'print';
+		
+		$model = $this->loadModel($id);
+		$modelOrder = Orders::model()->findByPk($model->idorders);
+		$modelStudent = Students::model()->findByPk($modelOrder->idstudents);
+		$modelTutor = Tutores::model()->findByPk($modelStudent->idtutores);
+		$this->render('print',array(
+			'model'=>$model,
+			'modelOrder'=>$modelOrder,
+			'modelStudent'=>$modelStudent,
+			'modelTutor'=>$modelTutor
 		));
 	}
 

@@ -95,7 +95,7 @@ array_unshift($listOrders, 'Seleccionar');
 					<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--6-col-tablet mdl-cell--12-col-phone form__article">
 						<h6 class="text-color--gray">Detalle de la compra</h6>
 						<div style="overflow: auto;">
-							<table class="mdl-data-table mdl-js-data-table" style="width:100%">
+							<table class="mdl-data-table mdl-js-data-table table-products-selected" style="width:100%">
 		                        <thead>
 		                            <tr>
 		                                <th class="mdl-data-table__cell--non-numeric">Producto</th>

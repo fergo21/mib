@@ -1,6 +1,7 @@
 <?php 
 return array(
     'tickets' => 'tickets',
+    'tickets/print/<id>' => 'tickets/print/id/<id>',
     'students' => 'students/admin',
     'students/create/<id:\d+>' => 'students/create',
     'students/update/<id>' => 'students/update/id/<id>',
