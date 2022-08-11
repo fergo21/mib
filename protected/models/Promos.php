@@ -37,13 +37,13 @@ class Promos extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('year_promo, tel_manager, idschools, idyears, iddivision, idshifts', 'required'),
-			array('idschools, idyears, iddivision, idshifts', 'numerical', 'integerOnly'=>true),
+			array('year_promo, tel_manager, idschools, idyears, iddivision, idshifts, price_old', 'required'),
+			array('idschools, idyears, iddivision, idshifts, price_old', 'numerical', 'integerOnly'=>true),
 			array('year_promo, tel_manager', 'length', 'max'=>45),
 			array('date_delivery, date_contract', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idpromos, image_promo, year_promo, tel_manager, date_delivery, date_contract, idschools, idyears, iddivision, idshifts', 'safe', 'on'=>'search'),
+			array('idpromos, image_promo, year_promo, tel_manager, date_delivery, date_contract, idschools, idyears, iddivision, idshifts, price_old', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,6 +78,7 @@ class Promos extends CActiveRecord
 			'iddivision' => 'División',
 			'idshifts' => 'Turno',
 			'idyears' => 'Curso',
+			'price_old' => 'Mantener precio'
 		);
 	}
 
@@ -105,6 +106,7 @@ class Promos extends CActiveRecord
 		$criteria->compare('tel_manager',$this->tel_manager,true);
 		$criteria->compare('date_delivery',$this->date_delivery,true);
 		$criteria->compare('date_contract',$this->date_contract,true);
+		$criteria->compare('price_old',$this->price_old);
 		$criteria->compare('idschools',$this->idschools);
 		$criteria->compare('idyears',$this->idyears);
 		$criteria->compare('iddivision',$this->iddivision);

@@ -186,7 +186,7 @@ array_unshift($listTallesAbajo, 'Seleccionar');
 		                	<a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect color-text--orange show-dialog"><i class="material-icons">add</i> producto</a>
 			            	<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect checkbox--colored-green" for="Check_priceOld">
 	                            <input type="checkbox" id="Check_priceOld" class="mdl-checkbox__input">
-	                            <span class="mdl-checkbox__label">Precio congelado</span>
+	                            <span class="mdl-checkbox__label">Precio anterior</span>
 	                        </label>
 		                </div>
 			        </div>

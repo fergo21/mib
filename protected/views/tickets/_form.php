@@ -125,6 +125,7 @@ array_unshift($listOrders, 'Seleccionar');
 							<?php echo $form->textField($model,'amount', array('class'=>'mdl-textfield__input')); ?>
 							<?php echo $form->error($model,'amount'); ?>
 							<span id="saldo_ticket"></span>
+							<span id="mora_ticket"></span>
 						</div>
 						<hr>
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">

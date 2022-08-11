@@ -24,6 +24,10 @@ $this->breadcrumbs=array(
                         <input class="mdl-textfield__input" type="text" id="setting_percent_cc" name="setting_percent_cc" value="<?= Utils::formatPercent($setting['percent_cc'], false); ?>"/>
                         <label class="mdl-textfield__label" for="setting_percent_cc">% de Tarjeta de Crédito</label>
                     </div>
+                    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="setting_percent_expiration" name="setting_percent_expiration" value="<?= Utils::formatPercent($setting['percent_expiration'], false); ?>"/>
+                        <label class="mdl-textfield__label" for="setting_percent_expiration">% por mora</label>
+                    </div>
                 </div>
             </div>
             <div class="row buttons">

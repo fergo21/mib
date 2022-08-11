@@ -60,7 +60,11 @@ class PromosController extends Controller
 
 		if(isset($_POST['Promos']))
 		{
+			// echo "<pre>";
+			// print_r($_POST);die;
 			$model->attributes=$_POST['Promos'];
+			$model->date_contract = Utils::format_date($_POST['Promos']['date_contract'], 'en');
+			$model->date_delivery = Utils::format_date($_POST['Promos']['date_delivery'], 'en');
 			$tmpfile = CUploadedFile::getInstance($model,'image_promo');
 			if($tmpfile){
 				$tmpfile_contents = file_get_contents( $tmpfile->tempName );
@@ -89,7 +93,6 @@ class PromosController extends Controller
 
 		if(isset($_POST['Promos']))
 		{
-			
 			$model->attributes=$_POST['Promos'];
 			$model->date_contract = Utils::format_date($_POST['Promos']['date_contract'], 'en');
 			$model->date_delivery = Utils::format_date($_POST['Promos']['date_delivery'], 'en');

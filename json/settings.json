@@ -1,4 +1,5 @@
 {
     "expiration_day": 20,
-    "percent_cc": 0.15
+    "percent_cc": 0.15,
+    "percent_expiration": 0.15
 }

@@ -561,6 +561,13 @@ $(document).ready(function(){
         if($("#Tickets_form_payment").val() == "CC"){
             valor_cuota_pagar = calculateTotal(valor_cuota_pagar, true);
         }
+        if(new Date().getDate() > settingJson.expiration_day && valor_cuota_pagar){
+            valor_cuota_pagar_temp = valor_cuota_pagar + (valor_cuota_pagar * settingJson.percent_expiration);
+            $("#mora_ticket").html(`+ ${formatPrice(valor_cuota_pagar_temp - valor_cuota_pagar)} (Mora incluido)`)
+            valor_cuota_pagar = valor_cuota_pagar_temp;
+        }else{
+            $("#mora_ticket").html('');
+        }
 
         //seteo todos los anteriores 
 

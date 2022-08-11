@@ -204,6 +204,13 @@ form .mdl-selectfield.full-size{
     right: 0px;
     top: 0px;
 }
+#mora_ticket {
+    position: absolute;
+    font-size: 11px;
+    right: 0px;
+    top: 11px;
+    color: #f44336;
+}
 #saldo_ticket.green{
     color: #00d45acc;
 }

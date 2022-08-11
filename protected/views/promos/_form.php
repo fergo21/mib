@@ -68,6 +68,13 @@ $listTC = $prompt + $listTC;
                     		</div>
 						</div>
 						<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--6-col-tablet mdl-cell--12-col-phone form__article">
+							<div class="mdl-list__item">
+								<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect checkbox--colored-green">
+								<?php echo $form->checkBox($model, 'price_old',array('value' => '1', 'uncheckValue'=>'0', 'class'=>'mdl-checkbox__input')); ?>
+									<span class="mdl-checkbox__label">Mantener precio</span>
+								</label>
+								<?php echo $form->error($model,'price_old'); ?>
+                    		</div>
 							<div class="mdl-cell--12-col input-group">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
 									<?php echo $form->labelEx($model,'date_contract', array('class'=>'mdl-textfield__label')); ?>
