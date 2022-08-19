@@ -10,6 +10,21 @@
 .mdl-selectfield.mdl-selectfield--floating-label .mdl-menu__container{
 	top: 90px !important;
 }
+/*--------------*/
+ul.mib-list-ticket {
+  padding:        0;
+}
+ul.mib-list-ticket li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted;
+    height: 20px;
+    margin-top: 12px;
+}
+ul.mib-list-ticket li span {
+    height: 22px;
+    background: #444444;
+}
 
 .mdl-card .row.buttons{
 	display: flex;
@@ -313,6 +328,9 @@ form .mdl-selectfield.full-size{
     float: right;
     color: unset !important;
     font-size: 20px;
+}
+#ticket_dues_paid .mdl-checkbox__label.newMdl{
+    line-height: unset;
 }
 @media (max-width: 768px) {
     .mdl-dialog {

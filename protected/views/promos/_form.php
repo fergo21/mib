@@ -51,6 +51,12 @@ $listTC = $prompt + $listTC;
 								<?php echo $form->error($model,'tel_manager'); ?>
                     		</div>
 
+                    		<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+                    			<?php echo $form->labelEx($model,'name_manager', array('class'=>'mdl-textfield__label')); ?>
+								<?php echo $form->textField($model,'name_manager',array('class'=>'mdl-textfield__input')); ?>
+								<?php echo $form->error($model,'name_manager'); ?>
+                    		</div>
+
                     		<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
                     			<?php echo $form->labelEx($model,'idyears', array('class'=>'mdl-selectfield__label ')); ?>
 								<?php echo $form->dropDownList($model, 'idyears', $listYC, array('class'=>'mdl-selectfield__select select2')); ?>

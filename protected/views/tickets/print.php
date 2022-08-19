@@ -17,7 +17,7 @@
 				<br>
 				B° Centro - 4600 - San Salvador de Jujuy
 				<hr>
-				IVA RESPONSABLE MONOTRIUTO
+				IVA RESPONSABLE MONOTRIBUTO
 			</span>
 		</div>
 		<div class="ticket-mib">
@@ -47,6 +47,9 @@
 		<div class="detail-text">
 			<strong>Domicilio: </strong> <span><?= $modelStudent->address ?></span>
 		</div>
+		<div class="detail-text">
+			<strong>Institución: </strong> <span><?= Schools::model()->findByPk($modelStudent->idschools)->name.' - '.Years::model()->findByPk($modelStudent->idyears)->year.''.Divisions::model()->findByPk($modelStudent->iddivision)->division.' - T: '.Shifts::model()->findByPk($modelStudent->idshifts)->shift ?></span>
+		</div>
 	</div>
 	<div class="section3-print">
 		<div class="detail-text">
@@ -58,7 +61,7 @@
 
 		<ul>
 			<?php foreach(json_decode($modelOrder->size) as $product){ 
-				echo "<li>". $product->product . "</li>";
+				echo "<li>".$product->quantity.' - '. $product->product .' - Talle: '.$product->talles.' - Apodo: '.$product->apodo. "</li>";
 			}?> 
 		</ul>
 		<div class="paid-print">

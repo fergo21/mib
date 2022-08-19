@@ -5,6 +5,11 @@
 $prompt = array('0' => 'Seleccionar');
 $listP = CHtml::listData(Provinces::model()->findAll(), 'idprovince', 'name');
 $listP = $prompt + $listP;
+
+$setting = Utils::readJson('settings');
+
+$listED = array($setting['expiration_day'] => $setting['expiration_day'], $setting['expiration_day_2'] => $setting['expiration_day_2']);
+
 ?>
 
 <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--12-col-phone">
@@ -41,6 +46,11 @@ $listP = $prompt + $listP;
                     			<?php echo $form->labelEx($model,'idprovince', array('class'=>'mdl-selectfield__label ')); ?>
 								<?php echo $form->dropDownList($model, 'idprovince', $listP, array('class'=>'mdl-selectfield__select select2')); ?>
 								<?php echo $form->error($model,'idprovince'); ?>
+                    		</div>
+                    		<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+                    			<?php echo $form->labelEx($model,'expiration_day', array('class'=>'mdl-selectfield__label ')); ?>
+								<?php echo $form->dropDownList($model, 'expiration_day', $listED, array('class'=>'mdl-selectfield__select select2')); ?>
+								<?php echo $form->error($model,'expiration_day'); ?>
                     		</div>
                     	</div>
                     </div>

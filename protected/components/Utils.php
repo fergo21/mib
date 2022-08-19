@@ -6,22 +6,23 @@ class Utils{
    		return $json;
 	}
 	public static function validateQuantity($total, $q){
+		$setting = self::readJson('settings');
+
 		$t = floatval($total);
+
+		$var = 'percent_qp_'.$q;
+
 		switch($q){
 			case '1':
 				return floatval($t);
 				break;
 			case '2':
-				return floatval($t) - (floatval($t) * 0.03);
-				break;
 			case '3':
-				return floatval($t) - (floatval($t) * 0.06);
-				break;
 			case '4':
-				return floatval($t) - (floatval($t) * 0.09);
+				return floatval($t) - (floatval($t) * $setting[$var]);
 				break;
 			default: 
-				return floatval($t) - (floatval($t) * 0.12);
+				return floatval($t) - (floatval($t) * $setting['percent_qp_more']);
 				break;
 		}
 	}
@@ -73,16 +74,17 @@ class Utils{
 	}
 
 	public static function calculatePercentTicket($total, $q) {
+		$setting = self::readJson('settings');
+
 		$t = floatval($total);
+
+		$var = 'percent_f_'.$q;
+
 		switch($q){
 			case '4':
-				return floatval($t) + (floatval($t) * 0.05);
-				break;
 			case '5':
-				return floatval($t) + (floatval($t) * 0.10);
-				break;
 			case '6':
-				return floatval($t) + (floatval($t) * 0.15);
+				return floatval($t) + (floatval($t) * $setting[$var]);
 				break;
 			default: 
 				return floatval($t);

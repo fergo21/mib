@@ -30,8 +30,18 @@ class SettingController extends Controller
 			$data = array();
 			// print_r($_POST);die;
 			$data['expiration_day'] = intval($_POST['setting_expiration_day']);
+			$data['expiration_day_2'] = intval($_POST['setting_expiration_day_2']);
 			$data['percent_cc'] = floatval(Utils::formatPercent($_POST['setting_percent_cc']));
 			$data['percent_expiration'] = floatval(Utils::formatPercent($_POST['setting_percent_expiration']));
+
+			$data['percent_f_4'] = floatval(Utils::formatPercent($_POST['setting_percent_f_4']));
+			$data['percent_f_5'] = floatval(Utils::formatPercent($_POST['setting_percent_f_5']));
+			$data['percent_f_6'] = floatval(Utils::formatPercent($_POST['setting_percent_f_6']));
+
+			$data['percent_qp_2'] = floatval(Utils::formatPercent($_POST['setting_percent_qp_2']));
+			$data['percent_qp_3'] = floatval(Utils::formatPercent($_POST['setting_percent_qp_3']));
+			$data['percent_qp_4'] = floatval(Utils::formatPercent($_POST['setting_percent_qp_4']));
+			$data['percent_qp_more'] = floatval(Utils::formatPercent($_POST['setting_percent_qp_more']));
 
 			if(file_put_contents('json/settings.json', json_encode($data, JSON_PRETTY_PRINT))){
 				Yii::app()->user->setFlash('success', 'ok');

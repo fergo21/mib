@@ -9,6 +9,7 @@
  * @property string $description
  * @property string $date_delivery
  * @property string $total_amount
+ * @property string $extra_amount
  * @property integer $dues
  * @property string $status
  * @property string $size
@@ -47,7 +48,7 @@ class Orders extends CActiveRecord
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idorders, date, description, date_delivery, total_amount, advance_payment, dues, status, size, percent, out_production, idstudents, idusers', 'safe', 'on'=>'search'),
+			array('idorders, date, description, date_delivery, total_amount, advance_payment, dues, status, size, percent, out_production, idstudents, idusers, extra_amount', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,6 +77,7 @@ class Orders extends CActiveRecord
 			'description' => 'Descripción',
 			'date_delivery' => 'Fecha de entrega',
 			'total_amount' => 'Total',
+			'extra_amount' => 'Monto extra',
 			'advance_payment' => 'Adelanto de pago',
 			'dues' => 'Cuotas',
 			'status' => 'Estado',
@@ -110,6 +112,7 @@ class Orders extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('date_delivery',$this->date_delivery,true);
 		$criteria->compare('total_amount',$this->total_amount,true);
+		$criteria->compare('extra_amount',$this->extra_amount,true);
 		$criteria->compare('advance_payment',$this->advance_payment,true);
 		$criteria->compare('dues',$this->dues);
 		$criteria->compare('status',$this->status,true);

@@ -66,6 +66,10 @@ $('.search-form form').submit(function(){
 							'value' => '$data->idshifts0->shift'
 						),
 						array(
+							'name'=>'name_manager',
+							'sortable'=>false
+						),
+						array(
 							'name'=>'tel_manager',
 							'sortable'=>false
 						),

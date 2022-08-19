@@ -203,29 +203,9 @@ class OrdersController extends Controller
 		if($_POST['q']){
 			$data = array();
 			$i = 0;
-			
-			// $newTotalAmount = 0;
-			// $newOrderSize = array();
-			
-			//$setting = Utils::readJson('settings');
 
-			$query = "SELECT orders.*, students.name, students.surname FROM orders, students, tutores WHERE orders.idstudents = students.idstudents AND students.idtutores = tutores.idtutores AND (tutores.ci = '".$_POST['q']."' OR students.ci = '".$_POST['q']."')";
+			$query = "SELECT orders.*, students.name, students.surname, schools.expiration_day FROM orders, students, tutores, schools WHERE orders.idstudents = students.idstudents AND students.idtutores = tutores.idtutores AND students.idschools = schools.idschools AND (tutores.ci = '".$_POST['q']."' OR students.ci = '".$_POST['q']."')";
 			$response = Yii::app()->db->createCommand($query)->queryAll();
-
-			// if(date('d') > $setting['expiration_day']){
-			// 	foreach($response as $i => $order){
-			// 		foreach(json_decode($order['size']) as $size){
-			// 			$responseProduct = Products::model()->find('idproducts=:idproducts', array(':idproducts'=> $size->idproducts));
-			// 			$newOrderSize[$i]['idproducts'] = $size->idproducts;
-			// 			$newOrderSize[$i]['product'] = $size->product;
-			// 			$newOrderSize[$i]['quantity'] = $size->quantity;
-			// 			$newOrderSize[$i]['talles'] = $size->talles;
-			// 			$newOrderSize[$i]['apodo'] = $size->apodo;
-			// 			$newOrderSize[$i]['unitPrice'] = $responseProduct->price;
-			// 			$newTotalAmount = floatval($newTotalAmount) + floatval($responseProduct->price);
-			// 		}
-			// 	}
-			// }
 
 			foreach($response as $order){
 
@@ -256,6 +236,10 @@ class OrdersController extends Controller
 					$data[$i]['code'] = intval(time());
 					$data[$i]['saldo'] = $saldo;
 					$data[$i]['total_amount'] = number_format(Utils::calculatePercentTicket($order['total_amount'], $order['dues']), 2, '.', '');
+					$data[$i]['expiration_day'] = $order['expiration_day'];
+					$data[$i]['date_create'] = $order['date'];
+					$data[$i]['percent'] = $order['percent'];
+					$data[$i]['advance_payment'] = $order['advance_payment'];
 					// $data[$i]['total_amount'] = $newTotalAmount ? number_format(Utils::calculatePercentTicket($newTotalAmount, $order['dues']), 2, '.', '') : number_format(Utils::calculatePercentTicket($order['total_amount'], $order['dues']), 2, '.', '');
 					$i++;
 				}
@@ -349,6 +333,13 @@ class OrdersController extends Controller
 			$criteria = new CDbCriteria();
 			$criteria->condition = "year_promo='$data[4]' AND idyears=$responseYears->idyears AND idschools=$responseSchools->idschools AND iddivision=$responseDivisions->iddivision AND idshifts=$responseShifts->idshifts";
 			$responsePromos = Promos::model()->find($criteria);
+
+			$dataStatus = '';
+
+			if(!empty($data[5])){
+				$dataStatus = str_replace('ó', 'o', $data[5]);
+				$dataStatus = "AND orders.status LIKE '".$dataStatus."'";
+			}
 			// print_r($responsePromos);die;
 
 			if($responseSchools && $responseYears && $responseDivisions && $responseShifts && $responsePromos){
@@ -365,7 +356,7 @@ class OrdersController extends Controller
 					AND schools.idschools = $responseSchools->idschools
 					AND divisions.iddivision = $responseDivisions->iddivision
 					AND promos.idpromos = $responsePromos->idpromos
-					AND orders.status LIKE 'Produccion'";
+					$dataStatus";
 
 				$response=Yii::app()->db->createCommand($query)->queryAll();
 

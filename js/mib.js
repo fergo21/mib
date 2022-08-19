@@ -138,7 +138,7 @@ $(document).ready(function(){
        if($(".mdl-card form #Schools_name").val() && $(".mdl-card form #Promos_year_promo").val() && $(".mdl-card form #Years_year").val() 
         && $(".mdl-card form #Divisions_division").val() && $(".mdl-card form #Shifts_shift").val()){
 
-            let data = `${$(".mdl-card form #Schools_name").val()} - ${$(".mdl-card form #Years_year").val()} - ${$(".mdl-card form #Divisions_division").val()} - ${$(".mdl-card form #Shifts_shift").val()} - ${$(".mdl-card form #Promos_year_promo").val()}`;
+            let data = `${$(".mdl-card form #Schools_name").val()} - ${$(".mdl-card form #Years_year").val()} - ${$(".mdl-card form #Divisions_division").val()} - ${$(".mdl-card form #Shifts_shift").val()} - ${$(".mdl-card form #Promos_year_promo").val()} - ${$(".mdl-card form #Orders_status").val()}`;
             
             $(".mib-actions form input#downloadFileData").val(data);
             $(".mib-actions form").trigger('submit');
@@ -260,7 +260,19 @@ $(document).ready(function(){
         $("#ticket_dues_paid .mdl-list").html("");
         let signo = order.saldo > 0 ? "↑" : "↓";
 
+        let monthOrder = parseInt(order.date_create.split('-')[1]);
+        let dayOrder = order.date_create.split('-')[0];
+
+        //valido si el dia del pedido es mayor al proximo dia de vencimiento
+        //y le sumo un mes, porque sería el proximo mes de vencimiento
+        if(parseInt(dayOrder) > parseInt(order.expiration_day)){
+            monthOrder = monthOrder + 1; 
+        }
+
         $("#total_order").val(order.total_amount);
+        $("#total_order_span").html(`$ ${order.total_amount}`);
+        $("#total_percent_span").html(`${order.percent} %`);
+        $("#total_advance_span").html(`$ ${order.advance_payment}`);
         $("#Tickets_code").val(order.code);
         $("#Tickets_code").parent().addClass("is-dirty");
         $("#saldo_ticket").attr("data-saldo",order.saldo);
@@ -276,8 +288,9 @@ $(document).ready(function(){
             if(i <= order.ticket.dues_paid){
                 createCheckbox('ticket_dues_paid', i, true, `${i}° cuota pagada`, true);
             }else{
-                createCheckbox('ticket_dues_paid', i, false, `${i}° cuota`, false);
+                createCheckbox('ticket_dues_paid', i, false, `${i}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false);
             }
+            monthOrder = monthOrder >= 12 ? 1 : (monthOrder + 1);
         }
     }
 

@@ -70,6 +70,10 @@ $('.search-button').click(function(){
 							'value' => '$data->idprovince0->name'
 						),
 						array(
+							'name' => 'expiration_day',
+							'sortable' => false
+						),
+						array(
 							'header' => 'Acciones',
 							'class'=>'ButtonColumn', //esta clase se encuentra en components (es personalizada)
 							'template'=>'{update}{erase}',

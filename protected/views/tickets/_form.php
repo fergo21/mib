@@ -120,6 +120,23 @@ array_unshift($listOrders, 'Seleccionar');
 					</div>
 					<div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--12-col-phone form__article">
 						<input type="hidden" value="" id="total_order">
+						<h3>Detalle del pedido</h3>
+						<ul class="mib-list-ticket">
+							<li>
+								<span>Adelanto</span>
+								<span id="total_advance_span">$ 0</span>
+							</li>
+							<li>
+								<span>Descuento</span>
+								<span id="total_percent_span">0 %</span>
+							</li>
+							<li>
+								<span>Monto total</span>
+								<span id="total_order_span">$ 0</span>
+							</li>
+						</ul>
+						<hr>
+						<h3>Pago actual</h3>
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
 							<?php echo $form->labelEx($model,'amount', array('class'=>'mdl-textfield__label ')); ?>
 							<?php echo $form->textField($model,'amount', array('class'=>'mdl-textfield__input')); ?>

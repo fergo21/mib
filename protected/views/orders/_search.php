@@ -17,6 +17,9 @@ $listD = $prompt + $listD;
 
 $listST = CHtml::listData(Shifts::model()->findAll(), 'shift', 'shift');
 $listST = $prompt + $listST;
+
+$listStatus = array('Producción'=>'Producción');
+$listStatus = $prompt + $listStatus;
 ?>
 
 <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
@@ -61,9 +64,9 @@ $listST = $prompt + $listST;
 				<?php echo $form->textField($model,'idstudents',array('class'=>'mdl-textfield__input')); ?>
 			</div>
 
-			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-				<?php echo $form->labelEx($model,'status', array('class'=>'mdl-textfield__label ')); ?>
-				<?php echo $form->textField($model,'status',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
+			<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+				<?php echo $form->labelEx($model,'status', array('class'=>'mdl-selectfield__label')); ?>
+				<?php echo $form->dropDownList($model,'status', $listStatus, array('size'=>45,'maxlength'=>45, 'class'=>'mdl-selectfield__select select2')); ?>
 			</div>
 
 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">

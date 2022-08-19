@@ -136,6 +136,12 @@ array_unshift($listTallesAbajo, 'Seleccionar');
 									<?php echo $form->error($model,'description'); ?>
 								</div>
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+									<?php echo $form->labelEx($model,'extra_amount', array('class'=>'mdl-textfield__label ')); ?>
+									<?php echo $form->textField($model,'extra_amount',array('size'=>10,'maxlength'=>10, 'class'=>'mdl-textfield__input')); ?>
+									<?php echo $form->error($model,'extra_amount'); ?>
+								</div>
+								
+								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
 									<?php echo $form->labelEx($model,'total_amount', array('class'=>'mdl-textfield__label ')); ?>
 									<?php echo $form->textField($model,'total_amount',array('size'=>10,'maxlength'=>10, 'class'=>'mdl-textfield__input')); ?>
 									<?php echo $form->error($model,'total_amount'); ?>

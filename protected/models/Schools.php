@@ -7,6 +7,7 @@
  * @property integer $idschools
  * @property string $name
  * @property string $city
+ * @property string $expiration_day
  * @property string $address
  * @property integer $idprovince
  *
@@ -32,15 +33,15 @@ class Schools extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, city, idprovince', 'required'),
-			array('idprovince', 'numerical', 'integerOnly'=>true),
+			array('name, city, idprovince, expiration_day', 'required'),
+			array('idprovince, expiration_day', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>45),
 			array('city', 'length', 'max'=>100),
 			array('address', 'length', 'max'=>60),
 			array('name, city, idprovince', 'isUnique', 'on'=>'insert'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idschools, name, city, address, idprovince', 'safe', 'on'=>'search'),
+			array('idschools, name, city, address, idprovince, expiration_day', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +69,7 @@ class Schools extends CActiveRecord
 			'name' => 'Escuela',
 			'city' => 'Ciudad',
 			'address' => 'Dirección',
+			'expiration_day' => 'Día de vencimiento',
 			'idprovince' => 'Provincia',
 		);
 	}
@@ -94,6 +96,7 @@ class Schools extends CActiveRecord
 		$criteria->compare('city',$this->city,true);
 		$criteria->compare('address',$this->address,true);
 		$criteria->compare('idprovince',$this->idprovince);
+		$criteria->compare('expiration_day',$this->expiration_day);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -8,6 +8,7 @@
  * @property string $image_promo
  * @property string $year_promo
  * @property string $tel_manager
+ * @property string $name_manager
  * @property integer $idschools
  * @property integer $idyears
  * @property integer $iddivision
@@ -37,13 +38,13 @@ class Promos extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('year_promo, tel_manager, idschools, idyears, iddivision, idshifts, price_old', 'required'),
+			array('year_promo, tel_manager, idschools, idyears, iddivision, idshifts, price_old, name_manager', 'required'),
 			array('idschools, idyears, iddivision, idshifts, price_old', 'numerical', 'integerOnly'=>true),
-			array('year_promo, tel_manager', 'length', 'max'=>45),
+			array('year_promo, tel_manager, name_manager', 'length', 'max'=>45),
 			array('date_delivery, date_contract', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idpromos, image_promo, year_promo, tel_manager, date_delivery, date_contract, idschools, idyears, iddivision, idshifts, price_old', 'safe', 'on'=>'search'),
+			array('idpromos, image_promo, year_promo, tel_manager, name_manager, date_delivery, date_contract, idschools, idyears, iddivision, idshifts, price_old', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,6 +73,7 @@ class Promos extends CActiveRecord
 			'image_promo' => 'Diseño',
 			'year_promo' => 'Promo',
 			'tel_manager' => 'Tel. encargado',
+			'name_manager' => 'Nombre encardado',
 			'date_delivery' => 'Fecha de entrega',
 			'date_contract' => 'Cierre de contrato',
 			'idschools' => 'Escuela',
@@ -104,6 +106,7 @@ class Promos extends CActiveRecord
 		$criteria->compare('image_promo',$this->image_promo,true);
 		$criteria->compare('year_promo',$this->year_promo,true);
 		$criteria->compare('tel_manager',$this->tel_manager,true);
+		$criteria->compare('name_manager',$this->name_manager,true);
 		$criteria->compare('date_delivery',$this->date_delivery,true);
 		$criteria->compare('date_contract',$this->date_contract,true);
 		$criteria->compare('price_old',$this->price_old);
