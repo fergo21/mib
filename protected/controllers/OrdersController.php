@@ -203,6 +203,8 @@ class OrdersController extends Controller
 	public function actionGetOrders() 
 	{
 		if($_POST['q']){
+			$setting = Utils::readJson('settings');
+
 			$data = array();
 			$i = 0;
 
@@ -242,6 +244,8 @@ class OrdersController extends Controller
 					$data[$i]['date_create'] = $order['date'];
 					$data[$i]['percent'] = $order['percent'];
 					$data[$i]['advance_payment'] = $order['advance_payment'];
+					$data[$i]['extra_amount'] = $order['extra_amount'];
+					$data[$i]['financed'] = Utils::formatPercent($setting['percent_f_'.$order['dues']], false);
 					// $data[$i]['total_amount'] = $newTotalAmount ? number_format(Utils::calculatePercentTicket($newTotalAmount, $order['dues']), 2, '.', '') : number_format(Utils::calculatePercentTicket($order['total_amount'], $order['dues']), 2, '.', '');
 					$i++;
 				}

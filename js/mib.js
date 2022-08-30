@@ -274,7 +274,9 @@ $(document).ready(function(){
 
         $("#total_order").val(order.total_amount);
         $("#total_order_span").html(`$ ${order.total_amount}`);
-        $("#total_percent_span").html(`${order.percent} %`);
+        $("#total_percent_span").html(`- ${order.percent} %`);
+        $("#total_percent_financed_span").html(`+ ${order.financed} %`);
+        $("#extra_amount_order_span").html(`$ ${order.extra_amount}`);
         $("#total_advance_span").html(`$ ${order.advance_payment}`);
         $("#Tickets_code").val(order.code);
         $("#Tickets_code").parent().addClass("is-dirty");

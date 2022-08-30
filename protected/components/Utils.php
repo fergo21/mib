@@ -248,9 +248,16 @@ class Utils{
 	}
 	public static function formatPercent($data, $encode=true){
 		if($encode){
-			return floatval('0.'.$data);
+			if(strlen($data) > 1){
+				$newData = $data;
+			}else{
+				$newData = '0'.$data;
+			}
+			// $newData = (strlen($data) > 1) ? $data : '0'.$data;
+			return floatval('0.'.$newData);
 		}else{
-			return str_replace('0.', '', sprintf("%.2f", $data)); 
+			$newData = str_replace('0.', '', sprintf("%.2f", $data));
+			return preg_replace('/^0/', '', $newData); 
 		}
 	}
 }

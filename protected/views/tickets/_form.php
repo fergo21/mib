@@ -127,8 +127,16 @@ array_unshift($listOrders, 'Seleccionar');
 								<span id="total_advance_span">$ 0</span>
 							</li>
 							<li>
+								<span>Monto extra</span>
+								<span id="extra_amount_order_span">$ 0</span>
+							</li>
+							<li>
 								<span>Descuento</span>
 								<span id="total_percent_span">0 %</span>
+							</li>
+							<li>
+								<span>% por financiamiento</span>
+								<span id="total_percent_financed_span">0 %</span>
 							</li>
 							<li>
 								<span>Monto total</span>
