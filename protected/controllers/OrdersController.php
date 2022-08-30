@@ -28,7 +28,7 @@ class OrdersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('getorders', 'getcombos', 'out', 'downloadlist'),
+				'actions'=>array('getorders', 'getcombos', 'out', 'downloadlist', 'getstatus'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -75,7 +75,8 @@ class OrdersController extends Controller
 			$model->date = Utils::format_date($_POST['Orders']['date'], "en");
 			$model->date_delivery = Utils::format_date($_POST['Orders']['date_delivery'], "en");
 			$model->percent = $_POST['Orders']['percent'] ? $_POST['Orders']['percent'] : 0.0;
-			$model->advance_payment = $_POST['Orders']['advance_payment'] ? $_POST['Orders']['advance_payment'] : 0.0; 
+			$model->advance_payment = $_POST['Orders']['advance_payment'] ? $_POST['Orders']['advance_payment'] : 0.0;
+			$model->extra_amount = $_POST['Orders']['extra_amount'] ? $_POST['Orders']['extra_amount'] : 0.0;
 			if($model->save()){
 				if(isset($_COOKIE['MIB-REFERER'])){
 					$this->redirect($_COOKIE['MIB-REFERER']);
@@ -113,6 +114,7 @@ class OrdersController extends Controller
 			$model->date_delivery = Utils::format_date($_POST['Orders']['date_delivery'], "en");
 			$model->percent = $_POST['Orders']['percent'] ? $_POST['Orders']['percent'] : 0.0; 
 			$model->advance_payment = $_POST['Orders']['advance_payment'] ? $_POST['Orders']['advance_payment'] : 0.0; 
+			$model->extra_amount = $_POST['Orders']['extra_amount'] ? $_POST['Orders']['extra_amount'] : 0.0;
 			if($model->save())
 				$this->redirect(array('/orders'));
 		}
@@ -285,10 +287,13 @@ class OrdersController extends Controller
 
 			}
 
+			$extra_amount = isset($_POST['e']) && !empty($_POST['e']) ? floatval(number_format($_POST['e'], 2, '.', '')) : 0.0;
+			// var_dump($total);die;
+
 			$total = Utils::validateQuantity($total, $quantity);
 			$total = Utils::calculatePercent($_POST['p'], $total);
 
-			$data["total"] = $total;
+			$data["total"] = number_format($total + $extra_amount, 2, '.', '');
 
 			if(count($data)>0){
 				echo json_encode($data);
@@ -428,6 +433,12 @@ file_put_contents($file, $image_base64);
 		// echo $string;die;
 		return utf8_decode($string);
 	}
+
+	/*public function actionGetStatus(){
+		if(isset($_POST['view'])){
+			
+		}
+	}*/
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

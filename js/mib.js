@@ -80,6 +80,7 @@ const actionAjax = (url, method, table_id, data = null) => {
 
 
 $(document).ready(function(){
+    let expiration_day_by_order = 0;
     $("nav a").each((i,el)=>{
         if(el.getAttribute("href") == window.location.pathname){
             $(el).addClass("mdl-navigation__link--current");
@@ -235,11 +236,12 @@ $(document).ready(function(){
             url: `${homeUrl}/orders/getCombos`,
             dataType: 'json',
             type: 'POST',
-            data: {q: JSON.stringify(result), p: $("#Orders_percent").val(), old: $('#Check_priceOld')[0].checked }
+            data: {q: JSON.stringify(result), p: $("#Orders_percent").val(), old: $('#Check_priceOld')[0].checked, e:$("#Orders_extra_amount").val() }
         })
         .done(function(data){
             $('#Orders_total_amount').parent().addClass('is-dirty');
             $('#Orders_total_amount').val(data.total);
+            $('#Orders_total_amount').attr('data-value', data.total);
             param = [];
             callback(data);
         })
@@ -260,6 +262,7 @@ $(document).ready(function(){
         $("#ticket_dues_paid .mdl-list").html("");
         let signo = order.saldo > 0 ? "↑" : "↓";
 
+        let fullYear = new Date().getFullYear();
         let monthOrder = parseInt(order.date_create.split('-')[1]);
         let dayOrder = order.date_create.split('-')[0];
 
@@ -284,17 +287,21 @@ $(document).ready(function(){
             $("#saldo_ticket").addClass('red');
         }
         let checkbox = "";
+        
+        expiration_day_by_order = new Date().setDate(order.expiration_day);
+
         for(let i = 1; i <= order.dues; i++){
             if(i <= order.ticket.dues_paid){
-                createCheckbox('ticket_dues_paid', i, true, `${i}° cuota pagada`, true);
+                createCheckbox('ticket_dues_paid', i, true, `${i}° cuota pagada`, true, null);
             }else{
-                createCheckbox('ticket_dues_paid', i, false, `${i}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false);
+                createCheckbox('ticket_dues_paid', i, false, `${i}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
             }
             monthOrder = monthOrder >= 12 ? 1 : (monthOrder + 1);
+            fullYear = monthOrder >= 12 ? fullYear + 1 : fullYear;
         }
     }
 
-    const createCheckbox = (containerId, item, checked, label, disabled) => {
+    const createCheckbox = (containerId, item, checked, label, disabled, dataDate) => {
         const toDoList = document.querySelector(`#${containerId} ul.mdl-list`);
         //create list item
         let newLi = document.createElement('li');  
@@ -317,6 +324,7 @@ $(document).ready(function(){
         checkbox.checked = checked;
         checkbox.disabled = disabled;
         checkbox.dataset.due = item; 
+        checkbox.dataset.date = new Date(dataDate).getTime();
 
 
         //create text and attach to primary span container
@@ -568,20 +576,39 @@ $(document).ready(function(){
         let total_cuota = total / cantidad_cuota;
         
         let valor_cuota_pagar = cantidad_cuota_seleccionada ? (total_cuota * cantidad_cuota_seleccionada) - saldo : 0;
-        
+        let valor_cuota_pagar_temp = 0;
+
+        let valor_mora = 0;
+
         $("#Tickets_amount").attr("data-amount", formatPrice(valor_cuota_pagar));
 
         if($("#Tickets_form_payment").val() == "CC"){
             valor_cuota_pagar = calculateTotal(valor_cuota_pagar, true);
         }
-        if(new Date().getDate() > settingJson.expiration_day && valor_cuota_pagar){
-            valor_cuota_pagar_temp = valor_cuota_pagar + (valor_cuota_pagar * settingJson.percent_expiration);
-            $("#mora_ticket").html(`+ ${formatPrice(valor_cuota_pagar_temp - valor_cuota_pagar)} (Mora incluido)`)
-            valor_cuota_pagar = valor_cuota_pagar_temp;
+        if(new Date().getDate() > new Date(expiration_day_by_order).getDate() && valor_cuota_pagar){
+            if(cantidad_cuota_seleccionada > 0){
+                for(let i = 0; i < cantidad_cuota_seleccionada; i++){
+                    if(new Date().getTime() > parseInt($("#ticket_dues_paid input:checked:not(:disabled)")[i].getAttribute("data-date"))){
+                        // console.log(`${new Date().getTime()} es mayor a ${parseInt($("#ticket_dues_paid input:checked:not(:disabled)")[i].getAttribute("data-date"))}`);
+                        // console.log(`v_c_p_t: ${valor_cuota_pagar_temp} | t_C: ${total_cuota}`);
+                        valor_cuota_pagar_temp = valor_cuota_pagar_temp + total_cuota + (total_cuota * settingJson.percent_expiration);
+                        valor_mora = valor_cuota_pagar_temp - total_cuota;
+                        // $("#mora_ticket").html(`+ ${formatPrice(valor_cuota_pagar_temp - valor_cuota_pagar)} (Mora incluído)`);
+                    }else{
+                        valor_cuota_pagar_temp = valor_cuota_pagar_temp + total_cuota;
+                    }
+                }
+            }
+            
         }else{
             $("#mora_ticket").html('');
         }
 
+        valor_cuota_pagar = valor_cuota_pagar_temp;
+
+        if(valor_mora){
+            $("#mora_ticket").html(`+ ${formatPrice(valor_mora)} (Mora incluído)`);
+        }
         //seteo todos los anteriores 
 
         $("#ticket_dues_paid input:checked").each(function(i,e){
@@ -650,7 +677,15 @@ $(document).ready(function(){
         })
     });
 
-    $("#Products_price, #Orders_total_amount, #Orders_advance_payment, #Tickets_amount, #Tickets_paid").on('input',function(){
+    $("#Orders_extra_amount").keyup(function(){
+        if($(this).val() != ''){
+            $("#Orders_total_amount").val(parseFloat($("#Orders_total_amount").attr("data-value")) + parseFloat($(this).val()));
+        }else{
+            $("#Orders_total_amount").val($("#Orders_total_amount").attr("data-value"));
+        }
+    });
+
+    $("#Products_price, #Orders_total_amount, #Orders_advance_payment, #Orders_extra_amount, #Tickets_amount, #Tickets_paid").on('input',function(){
         $(this).val(function(index,value){
             return value.replace(/\D/g, "")
             .replace(/([0-9])([0-9]{2})$/, '$1.$2')
@@ -737,5 +772,16 @@ $(document).ready(function(){
         if(price){
             return parseFloat(price).toFixed(2);
         }
+    }
+    const getNotification = () => {
+        $.ajax({
+            url:`${homeUrl}/orders/getStatus`,
+            method: 'POST',
+            data:{v:1},
+        }).done(function(data){
+            console.log(data);
+        }).fail(function(err){
+            console.log(err);
+        });
     }
 });

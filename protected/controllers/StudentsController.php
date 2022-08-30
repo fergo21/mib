@@ -230,12 +230,14 @@ class StudentsController extends Controller
 						AND students.ci = ".$_POST['q'];
 			$data = Yii::app()->db->createCommand($query)->queryAll();
 			$responseOrder = Orders::model()->count("idstudents=:idstudents", array(":idstudents" => $data[0]['idstudents']));
+			// echo "<pre>";
+			// print_r($responseOrder);die;
 			if($responseOrder == '0'){
 				if(count($data)>0){
 					$data[0]['date_delivery'] = Utils::format_date($data[0]['date_delivery'], 'es');
 				}
-			}else{
-				$data = array();
+			// }else{
+			// 	$data = array();
 			}
 			echo json_encode($data);
 		}
