@@ -101,13 +101,13 @@
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/getmdl-select.min.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/material.min.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/nv.d3.min.js"></script>
+<script src="<?php echo Yii::app()->baseUrl; ?>/js/mib-chart.js?q=<?= time(); ?>"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/layout/layout.min.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/scroll/scroll.min.js"></script>
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/charts/discreteBarChart.min.js"></script>
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/charts/linePlusBarChart.min.js"></script>
+<!-- <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/charts/linePlusBarChart.min.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/charts/stackedBarChart.min.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/employer-form/employer-form.min.js"></script>
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/line-chart/line-charts-nvd3.min.js"></script>
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/line-chart/line-charts-nvd3.min.js"></script> -->
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/map/maps.min.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/pie-chart/pie-charts-nvd3.min.js"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/dist/js/widgets/table/table.min.js"></script>

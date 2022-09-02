@@ -35,14 +35,14 @@ class Tickets extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('code, date, form_payment, amount, dues, paid, idorders', 'required'),
-			array('code, idorders', 'numerical', 'integerOnly'=>true),
+			array('code, date, form_payment, amount, dues, paid, idorders, idusers', 'required'),
+			array('code, idorders, idusers', 'numerical', 'integerOnly'=>true),
 			array('form_payment', 'length', 'max'=>45),
 			array('amount, paid, saldo', 'length', 'max'=>10),
 			array('description', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idtickets, code, date, form_payment, amount, dues, description, paid, saldo, idorders', 'safe', 'on'=>'search'),
+			array('idtickets, code, date, form_payment, amount, dues, description, paid, saldo, idorders, idusers', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,6 +55,7 @@ class Tickets extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idorders0' => array(self::BELONGS_TO, 'Orders', 'idorders'),
+			'idusers0' => array(self::BELONGS_TO, 'Users', 'idusers'),
 		);
 	}
 
@@ -105,6 +106,7 @@ class Tickets extends CActiveRecord
 		$criteria->compare('paid',$this->paid,true);
 		$criteria->compare('saldo', $this->saldo,true);
 		$criteria->compare('idorders',$this->idorders);
+		$criteria->compare('idusers',$this->idusers);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

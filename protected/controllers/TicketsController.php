@@ -31,6 +31,10 @@ class TicketsController extends Controller
 				'actions'=>array('print'),
 				'users'=>array('*'),
 			),
+			array('allow',
+				'actions' => array('getcollection'),
+				'users' => array('@'),
+			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>Yii::app()->user->getRules(),
 				'users'=>array('@'),
@@ -69,7 +73,8 @@ class TicketsController extends Controller
 			// print_r($_POST['Tickets']);die;
 			$model->attributes=$_POST['Tickets'];
 			$model->date = Utils::format_date($_POST['Tickets']['date'], 'en');
-			$model->saldo = $_POST['Tickets']['saldo'] ? $_POST['Tickets']['saldo'] : 0.00; 
+			$model->saldo = $_POST['Tickets']['saldo'] ? $_POST['Tickets']['saldo'] : 0.00;
+			$model->idusers = Yii::app()->user->id;
 
 			if($model->save()){
 				$order = Orders::model()->find("idorders=:idorders", array(":idorders"=>$model->idorders));
@@ -122,6 +127,7 @@ class TicketsController extends Controller
 		if(isset($_POST['Tickets']))
 		{
 			$model->attributes=$_POST['Tickets'];
+			$model->idusers = Yii::app()->user->id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->idtickets));
 		}
@@ -185,6 +191,27 @@ class TicketsController extends Controller
 			'modelStudent'=>$modelStudent,
 			'modelTutor'=>$modelTutor
 		));
+	}
+
+	public function actionGetCollection() {
+		$data = array();
+		
+		if(isset($_POST)){
+			$desde = $_POST['d'];
+			$hasta = $_POST['h'];
+
+			$query = "SELECT SUM(tickets.amount) as amount, branch_offices.office FROM tickets, users, branch_offices WHERE tickets.idusers = users.idusers AND users.idbranch_offices = branch_offices.idbranch_offices AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY branch_offices.idbranch_offices";
+
+			$response = Yii::app()->db->createCommand($query)->queryAll();
+
+
+			foreach($response as $i => $value){
+				$data[$i]['label'] = $value['office'];
+				$data[$i]['value'] = floatval($value['amount']);
+			}
+		}
+		echo json_encode($data);
+
 	}
 
 	/**

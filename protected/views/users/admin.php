@@ -60,6 +60,12 @@ $('.search-form form').submit(function(){
 							//'cssClassExpression'=>'mdl-data-table__cell--non-numeric'
 						),
 						array(
+							'name' => 'idbranch_offices',
+							'sortable' => false,
+							'value' => '$data->idbranchOffices->office'
+							//'cssClassExpression'=>'mdl-data-table__cell--non-numeric'
+						),
+						array(
 							'header' => 'Acciones',
 							'class'=>'ButtonColumn', //esta clase se encuentra en components (es personalizada)
 							'template'=>'{update}{erase}',

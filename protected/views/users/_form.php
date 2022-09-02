@@ -3,6 +3,7 @@
 /* @var $model Users */
 /* @var $form CActiveForm */
 $listR = CHtml::listData(Roles::model()->findAll(), 'idroles', 'type');
+$listBO = CHtml::listData(BranchOffices::model()->findAll(), 'idbranch_offices', 'office');
 // $listR = $prompt + $listR;
 ?>
 
@@ -52,15 +53,15 @@ $listR = CHtml::listData(Roles::model()->findAll(), 'idroles', 'type');
 								<?php echo $form->textField($model,'surname',array('size'=>45,'maxlength'=>45, 'class'=>'mdl-textfield__input')); ?>
 								<?php echo $form->error($model,'surname'); ?>
                             </div>
-                            <!-- <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-                                <?php echo $form->labelEx($model,'roles_idroles', array('class'=>'mdl-textfield__label')); ?>
-								<?php echo $form->textField($model,'roles_idroles', array('class'=>'mdl-textfield__input')); ?>
-								<?php echo $form->error($model,'roles_idroles'); ?>
-                            </div> -->
                             <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
                                 <?php echo $form->labelEx($model,'roles_idroles', array('class'=>'mdl-selectfield__label ')); ?>
                                 <?php echo $form->dropDownList($model, 'roles_idroles', $listR, array('class'=>'mdl-selectfield__select select2')); ?>
                                 <?php echo $form->error($model,'roles_idroles'); ?>
+                            </div>
+                            <div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
+                                <?php echo $form->labelEx($model,'idbranch_offices', array('class'=>'mdl-selectfield__label ')); ?>
+                                <?php echo $form->dropDownList($model, 'idbranch_offices', $listBO, array('class'=>'mdl-selectfield__select select2')); ?>
+                                <?php echo $form->error($model,'idbranch_offices'); ?>
                             </div>
                         </div>
                     </div>

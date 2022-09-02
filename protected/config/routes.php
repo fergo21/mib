@@ -2,6 +2,7 @@
 return array(
     'tickets' => 'tickets',
     'tickets/print/<id>' => 'tickets/print/id/<id>',
+    'tickets/getcollection' => 'tickets/getcollection',
     'students' => 'students/admin',
     'students/create/<id:\d+>' => 'students/create',
     'students/update/<id>' => 'students/update/id/<id>',
@@ -28,6 +29,9 @@ return array(
     'products/delete/<id>' => 'products/delete/id/<id>',
     'users/update/<id>' => 'users/update/id/<id>',
     'users/delete/<id>' => 'users/delete/id/<id>',
+    'branchoffices' => 'branchoffices/admin',
+    'branchoffices/create' => 'branchoffices/create',
+    'branchoffices/update/<id>' => 'branchoffices/update/id/<id>',
     'more-settings' => 'setting/index',
     'salir' => 'site/logout',
     'login' => 'site/login',

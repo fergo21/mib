@@ -51,6 +51,11 @@
                                 </a>
                             </div>
                             <div class="mdl-navigation">
+                                <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/branchoffices/admin">
+                                    Sucursales
+                                </a>
+                            </div>
+                            <div class="mdl-navigation">
                                 <a class="mdl-navigation__link" href="<?= Yii::app()->baseUrl; ?>/more-settings">
                                     Más configuraciones
                                 </a>

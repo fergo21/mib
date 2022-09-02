@@ -1,28 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "branch_offices".
  *
- * The followings are the available columns in table 'users':
- * @property integer $idusers
- * @property string $user
- * @property string $password
- * @property string $name
- * @property string $surname
- * @property integer $roles_idroles
+ * The followings are the available columns in table 'branch_offices':
+ * @property integer $idbranch_offices
+ * @property string $office
+ * @property integer $idprovinces
  *
  * The followings are the available model relations:
- * @property Orders[] $orders
- * @property Roles $rolesIdroles
+ * @property Provinces $idprovinces0
+ * @property Users[] $users
  */
-class Users extends CActiveRecord
+class BranchOffices extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return 'branch_offices';
 	}
 
 	/**
@@ -33,13 +30,12 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user, password, name, surname, roles_idroles, idbranch_offices', 'required'),
-			array('roles_idroles, idbranch_offices', 'numerical', 'integerOnly'=>true),
-			array('user, name, surname', 'length', 'max'=>45),
-			array('password', 'length', 'max'=>65),
+			array('office, idprovinces', 'required'),
+			array('idprovinces', 'numerical', 'integerOnly'=>true),
+			array('office', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idusers, user, password, name, surname, roles_idroles, idbranch_offices', 'safe', 'on'=>'search'),
+			array('idbranch_offices, office, idprovinces', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,9 +47,8 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'orders' => array(self::HAS_MANY, 'Orders', 'idusers'),
-			'rolesIdroles' => array(self::BELONGS_TO, 'Roles', 'roles_idroles'),
-			'idbranchOffices' => array(self::BELONGS_TO, 'BranchOffices', 'idbranch_offices'),
+			'idprovinces0' => array(self::BELONGS_TO, 'Provinces', 'idprovinces'),
+			'users' => array(self::HAS_MANY, 'Users', 'idbranch_offices'),
 		);
 	}
 
@@ -63,13 +58,9 @@ class Users extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'idusers' => 'Idusers',
-			'user' => 'Usuario',
-			'password' => 'Constraseña',
-			'name' => 'Nombre',
-			'surname' => 'Apellido',
-			'roles_idroles' => 'Rol',
-			'idbranch_offices' => 'Sucursal'
+			'idbranch_offices' => 'Idbranch Offices',
+			'office' => 'Sucursal',
+			'idprovinces' => 'Provincia',
 		);
 	}
 
@@ -91,13 +82,9 @@ class Users extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('idusers',$this->idusers);
-		$criteria->compare('user',$this->user,true);
-		$criteria->compare('password',$this->password,true);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('surname',$this->surname,true);
-		$criteria->compare('roles_idroles',$this->roles_idroles);
 		$criteria->compare('idbranch_offices',$this->idbranch_offices);
+		$criteria->compare('office',$this->office,true);
+		$criteria->compare('idprovinces',$this->idprovinces);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -109,30 +96,10 @@ class Users extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return BranchOffices the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
-	
-	/**
-	 * Checks if the given password is correct.
-	 * @param string the password to be validated
-	 * @return boolean whether the password is valid
-	 */
-	public function validatePassword($password)
-	{
-		return CPasswordHelper::verifyPassword($password,$this->password);
-	}
-
-	/**
-	 * Generates the password hash.
-	 * @param string password
-	 * @return string hash
-	 */
-	public function hashPassword($password)
-	{
-		return CPasswordHelper::hashPassword($password);
 	}
 }

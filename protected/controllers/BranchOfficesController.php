@@ -1,6 +1,6 @@
 <?php
 
-class UsersController extends Controller
+class BranchOfficesController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -15,7 +15,7 @@ class UsersController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			// 'postOnly + delete', // we only allow deletion via POST request
+			//'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -29,10 +29,10 @@ class UsersController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>Yii::app()->user->getRules(),
-				'users'=>array('*'),
+				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
-				'users'=>array('*'),
+				'users'=>array('?'),
 			),
 		);
 	}
@@ -54,17 +54,18 @@ class UsersController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Users;
+		$model=new BranchOffices;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Users']))
+		if(isset($_POST['BranchOffices']))
 		{
-			$model->attributes=$_POST['Users'];
-			$model->password = CPasswordHelper::hashPassword($_POST['Users']['password']);
-			if($model->save())
-				$this->redirect(array('/users/admin'));
+			$model->attributes=$_POST['BranchOffices'];
+			if($model->save()){
+				Yii::app()->user->setFlash('success', 'ok');
+				$this->redirect(array('/branchoffices'));
+			}
 		}
 
 		$this->render('create',array(
@@ -84,15 +85,13 @@ class UsersController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-
-		if(isset($_POST['Users']))
+		if(isset($_POST['BranchOffices']))
 		{
-			$model->password = strpos($_POST['Users']['password'], "$2y$13$")!==false ? $_POST['Users']['password'] : CPasswordHelper::hashPassword($_POST['Users']['password']);
-			$model->idbranch_offices = isset($_POST['Users']['idbranch_offices']) ? $_POST['Users']['idbranch_offices'] : 1; 
-			// echo "<pre>";
-			// print_r($model->save());die;
-			if($model->save())
-				$this->redirect(array('/users/admin'));
+			$model->attributes=$_POST['BranchOffices'];
+			if($model->save()){
+				Yii::app()->user->setFlash('success', 'ok');
+				$this->redirect(array('/branchoffices'));
+			}
 		}
 
 		$this->render('update',array(
@@ -127,7 +126,7 @@ class UsersController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Users');
+		$dataProvider=new CActiveDataProvider('BranchOffices');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -138,10 +137,10 @@ class UsersController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Users('search');
+		$model=new BranchOffices('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Users']))
-			$model->attributes=$_GET['Users'];
+		if(isset($_GET['BranchOffices']))
+			$model->attributes=$_GET['BranchOffices'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -152,12 +151,12 @@ class UsersController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Users the loaded model
+	 * @return BranchOffices the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Users::model()->findByPk($id);
+		$model=BranchOffices::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -165,11 +164,11 @@ class UsersController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Users $model the model to be validated
+	 * @param BranchOffices $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='users-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='branch-offices-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
