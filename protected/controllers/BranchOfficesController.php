@@ -1,6 +1,6 @@
 <?php
 
-class BranchOfficesController extends Controller
+class BranchofficesController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
