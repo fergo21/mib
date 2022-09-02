@@ -196,7 +196,7 @@ class TicketsController extends Controller
 	public function actionGetCollection() {
 		$data = array();
 		
-		if(isset($_POST)){
+		if(isset($_POST) && isset($_POST['d']) && isset($_POST['h'])){
 			$desde = $_POST['d'];
 			$hasta = $_POST['h'];
 
