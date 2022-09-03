@@ -204,10 +204,18 @@ class TicketsController extends Controller
 
 			$response = Yii::app()->db->createCommand($query)->queryAll();
 
+			$queryU = "SELECT SUM(tickets.amount) as amount, users.name, users.surname, roles.type FROM tickets, users, roles WHERE tickets.idusers = users.idusers AND users.roles_idroles = roles.idroles AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY users.idusers";
+
+			$responseU = Yii::app()->db->createCommand($queryU)->queryAll();
 
 			foreach($response as $i => $value){
-				$data[$i]['label'] = $value['office'];
-				$data[$i]['value'] = floatval($value['amount']);
+				$data['office'][$i]['label'] = $value['office'];
+				$data['office'][$i]['value'] = floatval($value['amount']);
+			}
+
+			foreach ($responseU as $i => $value) {
+				$data['seller'][$i]['label'] = $value['name'].' '.$value['surname'].' ('.$value['type'].')';
+				$data['seller'][$i]['value'] = floatval($value['amount']);
 			}
 		}
 		echo json_encode($data);

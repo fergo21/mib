@@ -13,12 +13,11 @@
             </div>
         </div>
 
-        <div class="material-icons mdl-badge mdl-badge--overlap mdl-button--icon notification" id="notification"
-             data-badge="23">
+        <!-- <div class="material-icons mdl-badge mdl-badge--overlap mdl-button--icon notification" id="notification" data-badge="23">
             notifications_none
-        </div>
+        </div> -->
         <!-- Notifications dropdown-->
-        <ul class="mdl-menu mdl-list mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right mdl-shadow--2dp notifications-dropdown"
+        <!-- <ul class="mdl-menu mdl-list mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right mdl-shadow--2dp notifications-dropdown"
             for="notification">
             <li class="mdl-list__item">
                 You have 23 new notifications!
@@ -70,13 +69,13 @@
             <li class="mdl-list__item list__item--border-top">
                 <button href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">ALL NOTIFICATIONS</button>
             </li>
-        </ul>
+        </ul> -->
 
-        <div class="material-icons mdl-badge mdl-badge--overlap mdl-button--icon message" id="inbox" data-badge="4">
+        <!-- <div class="material-icons mdl-badge mdl-badge--overlap mdl-button--icon message" id="inbox" data-badge="4">
             mail_outline
-        </div>
+        </div> -->
         <!-- Messages dropdown-->
-        <ul class="mdl-menu mdl-list mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right mdl-shadow--2dp messages-dropdown"
+        <!-- <ul class="mdl-menu mdl-list mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right mdl-shadow--2dp messages-dropdown"
             for="inbox">
             <li class="mdl-list__item">
                 You have 4 new messages!
@@ -132,7 +131,7 @@
             <li class="mdl-list__item list__item--border-top">
                 <button href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">SHOW ALL MESSAGES</button>
             </li>
-        </ul>
+        </ul> -->
 
         <div class="avatar-dropdown" id="icon">
             <span><?= Yii::app()->user->name; ?></span>

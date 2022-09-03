@@ -53,7 +53,7 @@ class Users extends CActiveRecord
 		return array(
 			'orders' => array(self::HAS_MANY, 'Orders', 'idusers'),
 			'rolesIdroles' => array(self::BELONGS_TO, 'Roles', 'roles_idroles'),
-			'idbranchOffices' => array(self::BELONGS_TO, 'BranchOffices', 'idbranch_offices'),
+			'idbranchoffices' => array(self::BELONGS_TO, 'BranchOffices', 'idbranch_offices'),
 		);
 	}
 

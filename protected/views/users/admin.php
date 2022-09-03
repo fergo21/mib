@@ -62,7 +62,7 @@ $('.search-form form').submit(function(){
 						array(
 							'name' => 'idbranch_offices',
 							'sortable' => false,
-							'value' => '$data->idbranchOffices->office'
+							'value' => '$data->idbranchoffices->office'
 							//'cssClassExpression'=>'mdl-data-table__cell--non-numeric'
 						),
 						array(

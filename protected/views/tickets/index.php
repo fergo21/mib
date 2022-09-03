@@ -28,7 +28,6 @@ $this->menu=array(
             </div>
         </div>
     </div>
-    <?php if(Yii::app()->user->getRoles()->type == "Administrador"){ ?>
         <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--2-col-phone">
             <div class="mdl-card mdl-shadow--2dp red">
                 <div class="mdl-card__title">
@@ -44,6 +43,7 @@ $this->menu=array(
                 </div>
             </div>
         </div>
+    <?php if(Yii::app()->user->getRoles()->type == "Administrador"){ ?>
         <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--2-col-phone">
             <div class="mdl-card mdl-shadow--2dp purple">
                 <div class="mdl-card__title">
