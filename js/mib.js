@@ -264,7 +264,7 @@ $(document).ready(function(){
 
         let fullYear = new Date().getFullYear();
         let monthOrder = parseInt(order.date_create.split('-')[1]);
-        let dayOrder = order.date_create.split('-')[0];
+        let dayOrder = order.date_create.split('-')[2];
 
         //valido si el dia del pedido es mayor al proximo dia de vencimiento
         //y le sumo un mes, porque sería el proximo mes de vencimiento

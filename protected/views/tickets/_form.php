@@ -29,15 +29,15 @@ array_unshift($listOrders, 'Seleccionar');
             	<p class="note">Los campos con <span class="required">*</span> son requeridos.</p>
                 <div class="mdl-grid">
                 	<div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--3-col-tablet mdl-cell--6-col-phone form__article">
-						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
-							<?php echo $form->labelEx($model,'code', array('class'=>'mdl-textfield__label ')); ?>
-							<?php echo $form->textField($model,'code', array('class'=>'mdl-textfield__input')); ?>
-							<?php echo $form->error($model,'code'); ?>
-						</div>
 						<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
 							<?php echo $form->labelEx($model,'idorders', array('class'=>'mdl-selectfield__label')); ?>
 							<?php echo $form->dropDownList($model,'idorders', $listOrders, array('class'=>'mdl-selectfield__select select-orders select2')); ?>
 							<?php echo $form->error($model,'idorders'); ?>
+						</div>
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
+							<?php echo $form->labelEx($model,'code', array('class'=>'mdl-textfield__label ')); ?>
+							<?php echo $form->textField($model,'code', array('class'=>'mdl-textfield__input')); ?>
+							<?php echo $form->error($model,'code'); ?>
 						</div>
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size" style="display:none;">
 							<?php // echo $form->labelEx($model,'dues', array('class'=>'mdl-textfield__label ')); ?>
