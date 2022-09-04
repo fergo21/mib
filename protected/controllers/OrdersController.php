@@ -215,6 +215,7 @@ class OrdersController extends Controller
 
 				$saldo = 00.0;
 				$paid = false;
+				$total_by_products = 0.00;
 
 				$ticketResponse = Tickets::model()->findAll('idorders=:idorders', array(':idorders'=>$order['idorders']));
 				$countTicket = count($ticketResponse);
@@ -232,6 +233,12 @@ class OrdersController extends Controller
 					//$data[$i]['option'] = array();
 				}
 				if(!$paid){
+					// echo "<pre>";
+					// print_r(json_decode($order['size']));die;
+					foreach(json_decode($order['size']) as $products){
+						$total_by_products = $total_by_products + floatval($products->unitPrice);
+					}
+
 					$data[$i]['value'] = $order['idorders'];
 					$data[$i]['label'] = 'P'.$order['idorders'].' - '.$order['name'].' '.$order['surname'];
 					$data[$i]['dues'] = $order['dues'];
@@ -244,8 +251,9 @@ class OrdersController extends Controller
 					$data[$i]['date_create'] = $order['date'];
 					$data[$i]['percent'] = $order['percent'];
 					$data[$i]['advance_payment'] = $order['advance_payment'];
-					$data[$i]['extra_amount'] = $order['extra_amount'];
-					$data[$i]['financed'] = Utils::formatPercent($setting['percent_f_'.$order['dues']], false);
+					$data[$i]['extra_amount'] = $order['extra_amount'] ? $order['extra_amount'] : 0.00;
+					$data[$i]['financed'] = intval($order['dues']) > 3 ? Utils::formatPercent($setting['percent_f_'.$order['dues']], false) : 0.0;
+					$data[$i]['total_amount_products'] = number_format(Utils::validateQuantity($total_by_products, count(json_decode($order['size']))), 2, '.', '');
 					// $data[$i]['total_amount'] = $newTotalAmount ? number_format(Utils::calculatePercentTicket($newTotalAmount, $order['dues']), 2, '.', '') : number_format(Utils::calculatePercentTicket($order['total_amount'], $order['dues']), 2, '.', '');
 					$i++;
 				}

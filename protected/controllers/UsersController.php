@@ -87,6 +87,8 @@ class UsersController extends Controller
 
 		if(isset($_POST['Users']))
 		{
+			$model->attributes=$_POST['Users'];
+			
 			$model->password = strpos($_POST['Users']['password'], "$2y$13$")!==false ? $_POST['Users']['password'] : CPasswordHelper::hashPassword($_POST['Users']['password']);
 			$model->idbranch_offices = isset($_POST['Users']['idbranch_offices']) ? $_POST['Users']['idbranch_offices'] : 1; 
 			// echo "<pre>";

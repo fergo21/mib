@@ -274,6 +274,7 @@ $(document).ready(function(){
 
         $("#total_order").val(order.total_amount);
         $("#total_order_span").html(`$ ${order.total_amount}`);
+        $("#total_amount_products_span").html(`$ ${order.total_amount_products}`);
         $("#total_percent_span").html(`- ${order.percent} %`);
         $("#total_percent_financed_span").html(`+ ${order.financed} %`);
         $("#extra_amount_order_span").html(`$ ${order.extra_amount}`);
@@ -600,13 +601,14 @@ $(document).ready(function(){
                         valor_cuota_pagar_temp = valor_cuota_pagar_temp + total_cuota;
                     }
                 }
+                valor_cuota_pagar = valor_cuota_pagar_temp;
             }
             
         }else{
             $("#mora_ticket").html('');
         }
 
-        valor_cuota_pagar = valor_cuota_pagar_temp;
+        
 
         if(valor_mora){
             $("#mora_ticket").html(`+ ${formatPrice(valor_mora)} (Mora incluído)`);

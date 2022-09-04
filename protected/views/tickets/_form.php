@@ -123,6 +123,10 @@ array_unshift($listOrders, 'Seleccionar');
 						<h3>Detalle del pedido</h3>
 						<ul class="mib-list-ticket">
 							<li>
+								<span>Monto total del combo</span>
+								<span id="total_amount_products_span">$ 0</span>
+							</li>
+							<li>
 								<span>Adelanto</span>
 								<span id="total_advance_span">$ 0</span>
 							</li>
