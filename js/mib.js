@@ -588,7 +588,7 @@ $(document).ready(function(){
         if($("#Tickets_form_payment").val() == "CC"){
             valor_cuota_pagar = calculateTotal(valor_cuota_pagar, true);
         }
-        if(new Date().getDate() > new Date(expiration_day_by_order).getDate() && valor_cuota_pagar){
+        //if(new Date().getDate() > new Date(expiration_day_by_order).getDate() && valor_cuota_pagar){
             if(cantidad_cuota_seleccionada > 0){
                 for(let i = 0; i < cantidad_cuota_seleccionada; i++){
                     if(new Date().getTime() > parseInt($("#ticket_dues_paid input:checked:not(:disabled)")[i].getAttribute("data-date"))){
@@ -604,9 +604,9 @@ $(document).ready(function(){
                 valor_cuota_pagar = valor_cuota_pagar_temp;
             }
             
-        }else{
-            $("#mora_ticket").html('');
-        }
+        // }else{
+        //     $("#mora_ticket").html('');
+        // }
 
         
 
