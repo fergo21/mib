@@ -27,14 +27,14 @@ class Utils{
 		}
 	}
 	public static function calculatePercent($percent, $total){
-		$finalTotal = number_format($total, 2, ".", "");
+		$finalTotal = self::format_price($total);
 		if(isset($percent) && !empty($percent) && $percent != "-" && $percent != "0"){
-			$floatPercent = floatval(number_format($percent, 2, ".", ""));
+			$floatPercent = floatval(self::format_price($percent));
 			// if($floatPercent<0){
 				$finalTotal = $finalTotal + ($finalTotal * ($floatPercent / 100));
 			// }
 		}
-		return number_format($finalTotal, 2, ".", "");
+		return self::format_price($finalTotal);
 	}
 	public static function format_date($date, $lng) {
 		switch($lng){
@@ -259,5 +259,14 @@ class Utils{
 			$newData = str_replace('0.', '', sprintf("%.2f", $data));
 			return preg_replace('/^0/', '', $newData); 
 		}
+	}
+	public static function format_price($price, $float=false){
+		$newPrice = '';
+		if($float){
+			$newPrice = number_format($price, 2, '.', '');
+		}else{
+			$newPrice = number_format($price, 0, '.', '');
+		}
+		return $newPrice;
 	}
 }

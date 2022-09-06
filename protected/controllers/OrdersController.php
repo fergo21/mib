@@ -75,8 +75,9 @@ class OrdersController extends Controller
 			$model->date = Utils::format_date($_POST['Orders']['date'], "en");
 			$model->date_delivery = Utils::format_date($_POST['Orders']['date_delivery'], "en");
 			$model->percent = $_POST['Orders']['percent'] ? $_POST['Orders']['percent'] : 0.0;
-			$model->advance_payment = $_POST['Orders']['advance_payment'] ? $_POST['Orders']['advance_payment'] : 0.0;
-			$model->extra_amount = $_POST['Orders']['extra_amount'] ? $_POST['Orders']['extra_amount'] : 0.0;
+			$model->advance_payment = $_POST['Orders']['advance_payment'] ? Utils::format_price($_POST['Orders']['advance_payment'], true) : 0.0;
+			$model->extra_amount = $_POST['Orders']['extra_amount'] ? Utils::format_price($_POST['Orders']['extra_amount'], true) : 0.0;
+			$model->total_amount = $$_POST['Orders']['total_amount'] ? Utils::format_price($_POST['Orders']['total_amount'], true) : 0.00;
 			if($model->save()){
 				if(isset($_COOKIE['MIB-REFERER'])){
 					$this->redirect($_COOKIE['MIB-REFERER']);
@@ -246,15 +247,15 @@ class OrdersController extends Controller
 					$data[$i]['description'] = $order['size'];
 					$data[$i]['code'] = intval(time());
 					$data[$i]['saldo'] = $saldo;
-					$data[$i]['total_amount'] = number_format(Utils::calculatePercentTicket($order['total_amount'], $order['dues']), 2, '.', '');
+					$data[$i]['total_amount'] = Utils::format_price(Utils::calculatePercentTicket($order['total_amount'], $order['dues']));
 					$data[$i]['expiration_day'] = $order['expiration_day'];
 					$data[$i]['date_create'] = $order['date'];
 					$data[$i]['percent'] = $order['percent'];
 					$data[$i]['advance_payment'] = $order['advance_payment'];
 					$data[$i]['extra_amount'] = $order['extra_amount'] ? $order['extra_amount'] : 0.00;
 					$data[$i]['financed'] = intval($order['dues']) > 3 ? Utils::formatPercent($setting['percent_f_'.$order['dues']], false) : 0.0;
-					$data[$i]['total_amount_products'] = number_format(Utils::validateQuantity($total_by_products, count(json_decode($order['size']))), 2, '.', '');
-					// $data[$i]['total_amount'] = $newTotalAmount ? number_format(Utils::calculatePercentTicket($newTotalAmount, $order['dues']), 2, '.', '') : number_format(Utils::calculatePercentTicket($order['total_amount'], $order['dues']), 2, '.', '');
+					$data[$i]['total_amount_products'] = Utils::format_price(Utils::validateQuantity($total_by_products, count(json_decode($order['size']))));
+					
 					$i++;
 				}
 			}
@@ -290,7 +291,7 @@ class OrdersController extends Controller
 							"i"=>$prod['idproducts'], 
 							"name"=>$prod['name'], 
 							"totalPriceProduct"=> ($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']) * $product->quantity,
-							"unitPrice"=>number_format(($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']), 2, '.', '')
+							"unitPrice"=>Utils::format_price(($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']))
 						);
 
 						$total = $total + $data["products"][$key]['totalPriceProduct'];
@@ -299,13 +300,13 @@ class OrdersController extends Controller
 
 			}
 
-			$extra_amount = isset($_POST['e']) && !empty($_POST['e']) ? floatval(number_format($_POST['e'], 2, '.', '')) : 0.0;
+			$extra_amount = isset($_POST['e']) && !empty($_POST['e']) ? floatval(Utils::format_price($_POST['e'])) : 0.0;
 			// var_dump($total);die;
 
 			$total = Utils::validateQuantity($total, $quantity);
 			$total = Utils::calculatePercent($_POST['p'], $total);
 
-			$data["total"] = number_format($total + $extra_amount, 2, '.', '');
+			$data["total"] = Utils::format_price($total + $extra_amount);
 
 			if(count($data)>0){
 				echo json_encode($data);

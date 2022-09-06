@@ -58,7 +58,7 @@ array_unshift($listOrders, 'Seleccionar');
 										'language' => 'es',
 										'options' => array(
 											'showAnim' => 'fold',
-											'minDate' => '0',
+											// 'minDate' => '0',
 											'showButtonPanel' => false,
 											'changeMonth' => true,
 											'changeYear' => true,

@@ -563,6 +563,10 @@ $(document).ready(function(){
 
     $("#ticket_dues_paid").on("change", "input", function(){
         let dues_paid_checked = $("#ticket_dues_paid input:checked").last()[0]?.getAttribute("data-due");
+        let date_paid = $("#Tickets_date").val().split("/");
+        date_paid = new Date(`${date_paid[1]}/${date_paid[0]}/${date_paid[2]}`).getTime();
+        // let date_paid = new Date().getTime();
+
         let lastDue = dues_paid_checked ? parseInt(dues_paid_checked) - 1 : 0;
 
         for (let i = lastDue; i > 0; i--) {
@@ -591,7 +595,7 @@ $(document).ready(function(){
         //if(new Date().getDate() > new Date(expiration_day_by_order).getDate() && valor_cuota_pagar){
             if(cantidad_cuota_seleccionada > 0){
                 for(let i = 0; i < cantidad_cuota_seleccionada; i++){
-                    if(new Date().getTime() > parseInt($("#ticket_dues_paid input:checked:not(:disabled)")[i].getAttribute("data-date"))){
+                    if(date_paid > parseInt($("#ticket_dues_paid input:checked:not(:disabled)")[i].getAttribute("data-date"))) {
                         // console.log(`${new Date().getTime()} es mayor a ${parseInt($("#ticket_dues_paid input:checked:not(:disabled)")[i].getAttribute("data-date"))}`);
                         // console.log(`v_c_p_t: ${valor_cuota_pagar_temp} | t_C: ${total_cuota}`);
                         valor_cuota_pagar_temp = valor_cuota_pagar_temp + total_cuota + (total_cuota * settingJson.percent_expiration);
@@ -612,6 +616,8 @@ $(document).ready(function(){
 
         if(valor_mora){
             $("#mora_ticket").html(`+ ${formatPrice(valor_mora)} (Mora incluído)`);
+        }else{
+            $("#mora_ticket").html('');
         }
         //seteo todos los anteriores 
 
@@ -774,7 +780,7 @@ $(document).ready(function(){
     }
     const formatPrice = (price) => {
         if(price){
-            return parseFloat(price).toFixed(2);
+            return Math.round(parseFloat(price));
         }
     }
     const getNotification = () => {
