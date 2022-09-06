@@ -3,3 +3,4 @@ protected/config/main.php
 protected/runtime
 assets
 .htaccess
+json/settings.json
