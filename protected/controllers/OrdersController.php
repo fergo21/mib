@@ -63,6 +63,7 @@ class OrdersController extends Controller
 		// $this->performAjaxValidation($model);
 		if(isset($_GET['id'])){
 			$student = Students::model()->findByPk($_GET['id']);
+			$promo = Promos::model()->find("idschools=".$student->idschools." AND idyears=".$student->idyears." AND iddivision=".$student->iddivision." AND idshifts=".$student->idshifts." AND year_promo='".$student->graduation_year."'");
 			$model->idstudents = $student->idstudents;
 		}
 		if(isset($_POST['Orders']))
@@ -77,10 +78,14 @@ class OrdersController extends Controller
 			$model->percent = $_POST['Orders']['percent'] ? $_POST['Orders']['percent'] : 0.0;
 			$model->advance_payment = $_POST['Orders']['advance_payment'] ? Utils::format_price($_POST['Orders']['advance_payment'], true) : 0.0;
 			$model->extra_amount = $_POST['Orders']['extra_amount'] ? Utils::format_price($_POST['Orders']['extra_amount'], true) : 0.0;
-			$model->total_amount = $$_POST['Orders']['total_amount'] ? Utils::format_price($_POST['Orders']['total_amount'], true) : 0.00;
+			$model->total_amount = $_POST['Orders']['total_amount'] ? Utils::format_price($_POST['Orders']['total_amount'], true) : 0.00;
+			echo "<pre>";
 			if($model->save()){
-				if(isset($_COOKIE['MIB-REFERER'])){
-					$this->redirect($_COOKIE['MIB-REFERER']);
+				if(isset($_GET['id'])){
+			// print_r($promo);die;
+					Yii::app()->user->setFlash('success', 'ok');
+					Yii::app()->user->setFlash('redirect', '/students/create/'.$promo->idpromos);
+					$this->redirect(array('/orders'));
 				}else{
 					$this->redirect(array('/orders'));
 				}

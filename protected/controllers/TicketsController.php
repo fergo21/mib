@@ -75,7 +75,7 @@ class TicketsController extends Controller
 			$model->date = Utils::format_date($_POST['Tickets']['date'], 'en');
 			$model->saldo = $_POST['Tickets']['saldo'] ? Utils::format_price($_POST['Tickets']['saldo'], true) : 0.00;
 			$model->idusers = Yii::app()->user->id;
-			$model->amount = $$_POST['Tickets']['amount'] ? Utils::format_price($_POST['Tickets']['amount'], true) : 0.00;
+			$model->amount = $_POST['Tickets']['amount'] ? Utils::format_price($_POST['Tickets']['amount'], true) : 0.00;
 
 			if($model->save()){
 				$order = Orders::model()->find("idorders=:idorders", array(":idorders"=>$model->idorders));
@@ -129,8 +129,8 @@ class TicketsController extends Controller
 		{
 			$model->attributes=$_POST['Tickets'];
 			$model->idusers = Yii::app()->user->id;
-			$model->amount = $$_POST['Tickets']['amount'] ? Utils::format_price($_POST['Tickets']['amount'], true) : 0.00;
-			
+			$model->amount = $_POST['Tickets']['amount'] ? Utils::format_price($_POST['Tickets']['amount'], true) : 0.00;
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->idtickets));
 		}

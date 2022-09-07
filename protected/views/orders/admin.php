@@ -235,6 +235,9 @@ $('#downloadFile').click(function(){
 	document.addEventListener('DOMContentLoaded', function() {
 		<?php if(Yii::app()->user->getFlash("warning") == 'ok'){ ?>
 			actionAlert("No se encontraron registros para descargar.", "warning");
+		<?php } ?>
+		<?php if(Yii::app()->user->getFlash("success") == 'ok'){ ?>
+			actionAlertPrompt("success", "Agregado con éxito", "¿Quieres cargar otro estudiante para el misma promo?", "<?= Yii::app()->user->getFlash("redirect") ?>");
 		<?php } ?>	
 	});
 </script>

@@ -190,7 +190,7 @@ class StudentsController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		setrawcookie("MIB-REFERER", $_SERVER["REQUEST_URI"], 0, "/");
+		//setrawcookie("MIB-REFERER", $_SERVER["REQUEST_URI"], 0, "/");
 
 		$model=new Students('search');
 		$model->unsetAttributes();  // clear any default values
