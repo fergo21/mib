@@ -86,7 +86,7 @@ $('.search-form form').submit(function(){
 						array(
 							'header' => 'Acciones',
 							'class'=>'ButtonColumn', //esta clase se encuentra en components (es personalizada)
-							'template'=>'{view}{create}{update}{erase}',
+							'template'=>'{view}{create}{massive}{update}{erase}',
 							'evaluateID'=>true, // esta opcion va si o si cuando se usa ButtonColumn
 							'buttons'=>array(
 								'view' => array(
@@ -102,6 +102,20 @@ $('.search-form form').submit(function(){
 									'url'=>'Yii::app()->createUrl("students/create/$data->idpromos")',
 									'options'=>array('title'=>'Cargar Alumno'),
 									'visible'=>'Yii::app()->user->checkAccess(\'create\')'
+								),
+								'massive' => array(
+									'label'=>'<i class="material-icons">file_upload</i>',
+									'imageUrl'=>false,
+									'url'=>'Yii::app()->createUrl("students/importar/$data->idpromos")',
+									'options'=>array('title'=>'Cargar Masiva'),
+									'visible'=>'Yii::app()->user->checkAccess(\'create\')',
+									'click'=>'function(e){
+										e.preventDefault();
+										
+										$(".massive-dialog").show();
+										$(".massive-modal").show();
+
+									}'
 								),
 								'update' => array(
 									'label'=>'<i class="material-icons">create</i>',
@@ -132,13 +146,15 @@ $('.search-form form').submit(function(){
 
 									            	$("#Promos_tel_manager").parent().addClass("is-dirty");
 									            	$("#Promos_year_promo, #Promos_iddivision, #Promos_idyears, #Promos_idshifts").trigger("change");
+													$(".mdl-dialog").show();
+													$(".mib-background-modal").show();
+													$(".massive-dialog").hide();
+													$(".massive-modal").hide();
 									            }
 									        })
 									        .fail(function(err){
 									            console.log(err);
 									        });
-											$(".mdl-dialog").show();
-											$(".mib-background-modal").show();
 										
 
 									}',

@@ -28,7 +28,7 @@ class StudentsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'getstudents', 'getstudent'),
+				'actions'=>array('index','view', 'getstudents', 'massiveimport'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -243,9 +243,111 @@ class StudentsController extends Controller
 		}
 	}
 
-	public function actionGetStudent()
+	public function actionMassiveImport($id)
 	{
-		echo "aqui";die;
+		if (isset($_POST)) {
+			
+			$numStudent = 0;
+			$numTutor = 0;
+			$status = '';
+			$promos = Promos::model()->findByPk($id);
+			// print_r($promos);
+
+			// READ UPLOADED CSV
+			$fh = fopen($_FILES["file_csv"]["tmp_name"], "r");
+			if ($fh === false) { exit("Failed to open uploaded CSV file"); }
+			$i = 0;
+			// IMPORT ROW BY ROW
+			while (!feof($fh)) {
+			    $value = (fgetcsv($fh, 0, ';'));
+			    if ($i > 0) {
+			         if ($value[4] != '' && $value[10] != '') {
+			        	// valido si existe el padre
+			        	// echo $value[10]. " - ";
+			        	$model = new Students;
+			        	$tutor = Tutores::model()->find('ci=:ci', array('ci'=>intval($value[4])));
+			        	$student = Students::model()->find('ci=:ci', array('ci'=>intval($value[10])));
+			        	// var_dump($student);die;
+			        	// var_dump($tutor);die;
+			        	if($tutor){
+			        		// si existe el tutor se lo asigno al alumno
+			        		if(!$student){
+				        		$model->name = $value[5];
+				        		$model->surname = $value[6];
+				        		$model->email = $value[7];
+				        		$model->phone = $value[8];
+				        		$model->address = $value[9];
+				        		$model->ci = $value[10];
+				        		$model->graduation_year = $promos->year_promo;
+				        		$model->idschools = $promos->idschools;
+				        		$model->idyears = $promos->idyears;
+				        		$model->iddivision = $promos->iddivision;
+				        		$model->idshifts = $promos->idshifts;
+				        		$model->idtutores = $tutor->idtutores;
+				        		if($model->save()){
+					        		$numStudent++;
+					        		$status = 'success';
+				        		}else{
+				        			$status = 'warning';
+				        		}
+				        		
+			        		}
+			        	}else{
+			        		// Si no exiset el tutor lo agrego
+			        		$modelTutor = new Tutores;
+			        		$modelTutor->name = $value[0];
+			        		$modelTutor->surname = $value[1];
+			        		$modelTutor->phone = $value[2];
+			        		$modelTutor->mail = $value[3];
+			        		$modelTutor->ci = $value[4];
+
+			        		if($modelTutor->save()){
+			        			if(!$student){
+				        			//Inserto el alummno
+				        			$model->name = $value[5];
+					        		$model->surname = $value[6];
+					        		$model->email = $value[7];
+					        		$model->phone = $value[8];
+					        		$model->address = $value[9];
+					        		$model->ci = $value[10];
+					        		$model->graduation_year = $promos->year_promo;
+					        		$model->idschools = $promos->idschools;
+					        		$model->idyears = $promos->idyears;
+					        		$model->iddivision = $promos->iddivision;
+					        		$model->idshifts = $promos->idshifts;
+					        		$model->idtutores = $modelTutor->idtutores;
+					        		if($model->save()){
+						        		$numStudent++;
+						        		$status = 'success';
+					        		}else{
+					        			$status = 'warning';
+					        		}
+			        			}
+			        			$numTutor++;
+			        			$status = 'success';
+			        		}else{
+			        			$status = 'warning';
+			        		}
+			        	}
+			         }
+			    } elseif ($i == 0) {
+			        $fields = $value;
+			    }
+
+			    $i++;
+			}
+			fclose($fh);
+			
+			$data['status'] = $status;
+			if(empty($status)){
+				$data['status'] = 'warning';
+				$data['title'] = 'Ya existen estos datos.';
+			}else{
+				$data['title'] = 'Cantidad de tutores agregados: '.$numTutor.PHP_EOL.'Cantidad de estudiantes agregados: '.$numStudent;
+			}
+
+			echo json_encode($data);
+		}
 	}
 
 	/**

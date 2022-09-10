@@ -35,5 +35,6 @@ return array(
     'more-settings' => 'setting/index',
     'salir' => 'site/logout',
     'login' => 'site/login',
+    'students/importar/<id>' => 'students/massiveimport/id/<id>',
     '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 );

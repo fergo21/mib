@@ -75,5 +75,6 @@ $listED = array($setting['expiration_day'] => $setting['expiration_day'], $setti
 			<?php $this->renderPartial('../promos/_form', array('model'=>$mpromo)); ?>
 		</div>
 	</div>
+	<?php $this->renderPartial('../students/_formMassive');  ?>
 <?php } ?>
 <!-- form -->

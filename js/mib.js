@@ -760,6 +760,33 @@ $(document).ready(function(){
         }
     });
 
+    $(".import").on('click', function(e){
+        e.preventDefault();
+        let formData = new FormData(document.getElementById("massive-form")); 
+        formData.append("file", file_csv.files[0]);
+        let url = $(".massive").attr("href");
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: formData,
+            dataType: "html",
+            processData: false,  // tell jQuery not to process the data
+            contentType: false   // tell jQuery not to set contentType
+        })
+        .done(function(data){
+
+            let response = JSON.parse(data);
+            let title = response.title;
+
+            actionAlert(title, response.status);
+
+        })
+        .fail(function(err){
+            console.log(err);
+        });
+    });
+
     const closeModal = () => {
         $('.mdl-dialog').hide();
         $('.mib-background-modal').hide();
