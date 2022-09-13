@@ -793,8 +793,8 @@ $(document).ready(function(){
     }
 
     const openModal = () => {
-        $('.mdl-dialog').show();
-        $('.mib-background-modal').show();
+        $('.mdl-dialog:not(.massive-dialog)').show();
+        $('.mib-background-modal:not(.massive-modal)').show();
     }
 
     const calculateTotal = (total, applied) => {
