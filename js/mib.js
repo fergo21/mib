@@ -764,7 +764,7 @@ $(document).ready(function(){
         e.preventDefault();
         let formData = new FormData(document.getElementById("massive-form")); 
         formData.append("file", file_csv.files[0]);
-        let url = $(".massive").attr("href");
+        let url = $("#urlMassive").val();
 
         $.ajax({
             url: url,

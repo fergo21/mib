@@ -111,7 +111,7 @@ $('.search-form form').submit(function(){
 									'visible'=>'Yii::app()->user->checkAccess(\'create\')',
 									'click'=>'function(e){
 										e.preventDefault();
-										
+										$("#urlMassive").val(this.href);
 										$(".massive-dialog").show();
 										$(".massive-modal").show();
 

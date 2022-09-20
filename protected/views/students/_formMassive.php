@@ -10,6 +10,7 @@
 					    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
 					    	<label for="file_csv" class="mdl-textfield__label"></label>
 					    	<input type="file" name="file_csv" id="file_csv" class="mdl-textfield__input" accept=".csv">
+					    	<input type="hidden" name="url" id="urlMassive">
 						</div>
 						<div class="row buttons">
 							<a class="btn btn-default buttonAction close">Cerrar</a>
