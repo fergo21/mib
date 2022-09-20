@@ -366,7 +366,7 @@ class OrdersController extends Controller
 			// print_r($responsePromos);die;
 
 			if($responseSchools && $responseYears && $responseDivisions && $responseShifts && $responsePromos){
-				$query = "SELECT CONCAT(students.name,' ', students.surname) as fullName, students.ci, students.graduation_year, schools.name as schools, years.year, divisions.division, shifts.shift, orders.size, orders.dues,
+				$query = "SELECT CONCAT(students.name,' ', students.surname) as fullName, students.ci, students.graduation_year, schools.name as schools, years.year, divisions.division, shifts.shift, orders.size, orders.dues, orders.description, orders.out_production,
 					    (SELECT tickets.dues FROM tickets WHERE orders.idorders = tickets.idorders ORDER BY tickets.idtickets DESC LIMIT 1) as duespaid
 					FROM orders, students, schools, years, divisions, shifts, promos
 					WHERE orders.idstudents = students.idstudents 
@@ -379,6 +379,7 @@ class OrdersController extends Controller
 					AND schools.idschools = $responseSchools->idschools
 					AND divisions.iddivision = $responseDivisions->iddivision
 					AND promos.idpromos = $responsePromos->idpromos
+					AND years.idyears = $responsePromos->idyears
 					$dataStatus";
 
 				$response=Yii::app()->db->createCommand($query)->queryAll();
@@ -411,23 +412,102 @@ file_put_contents($file, $image_base64);
 	}
 
 	public function outputCsv($response){
-		$header = array('Nombre y Apellido', 'DNI', 'Promo', 'Escuela', 'Curso', 'Division', 'Turno', 'Productos/Talles/Apodo', 'Plan de pago', 'Cuotas Pagadas');
+		
+		header("Pragma: public");
+		header("Expires: 0");
+		$filename = utf8_decode($response[0]["schools"])."-".$response[0]["year"]."".$response[0]["division"]."-T:".utf8_decode($response[0]["shift"])."-".$response[0]["graduation_year"].".xls";
+		header("Content-type: application/x-msdownload");
+		header("Content-Disposition: attachment; filename=$filename");
+		header("Pragma: no-cache");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
+		$rows = "";
+		$size = "";
+		foreach($response as $column){
+			$status = "";
+			if($column['out_production'] === "1"){
+				$status = "<td style='background:#ff7878;'>Fuera de produccion</td>";
+			}else{
+				$status = utf8_decode(Utils::displayStatusExcel($column['duespaid'], $column['dues']));
+			}
+			$size = "<table>";
+			$rowspan = count(json_decode($column['size']));
+			foreach(json_decode($column['size']) as $sizes){
+				$size .= "<tr>
+							<td>".utf8_decode($sizes->apodo)."</td>
+							<td>".utf8_decode($sizes->product)."</td>
+							<td>".$sizes->quantity."</td>
+							<td>".$sizes->talles."</td>
+						</tr>";
+
+			}
+			$size .= "</table>";
+			$rows .= "<tr>
+				<td>". utf8_decode($column['fullName'])."</td>
+				<td>".$column['ci']."</td>
+				<td>".$size."</td>"
+				. $status .
+				"<td>".utf8_decode($column['description'])."</td>
+			</tr>";
+		}
+		
+
+		$html = "
+		<style>
+		table td, table th{
+			border: 1px solid;
+		}
+		table th{
+			font-size: 18px;
+			background-color: #ff9d6e;
+		}
+		table #encabezado td {
+			background-color: #ff9d6e;	
+		}
+		</style>
+		<table>
+		<tbody>
+			<tr>
+				<th colspan='5'>
+					".utf8_decode($response[0]["schools"])." - ".$response[0]["year"]."".$response[0]["division"]." - T: ".utf8_decode($response[0]["shift"])." - ".$response[0]["graduation_year"]."
+				</th>
+			</tr>
+			<tr id='encabezado'>
+				<td><b>Nombre y Apellido</b></td>
+				<td><b>DNI</b></td>
+				<td><b>Apodo | Producto | Cantidad | Talle</b></td>
+				<td><b>Estado</b></td>
+				<td><b>Observaciones</b></td>
+			</tr>
+			". $rows ."
+		</tbody>
+		</table>";
+		echo $html;
+	}
+
+	/*public function outputCsv($response){
+
+		$headMain = array('Escuela: '.utf8_decode($response[0]["schools"]), 'Promo: '.$response[0]["graduation_year"], 'Curso: '.$response[0]["year"], 'Division: '.$response[0]["division"], 'Turno: '.utf8_decode($response[0]["shift"]));
+		
+		$header = array('Nombre y Apellido', 'DNI', 'Productos/Talles/Apodo', 'Plan de pago', 'Cuotas Pagadas');
+	
 		
 		header('Content-Type: application/csv');
     	header('Content-Disposition: attachment; filename="ListadoProduccion.csv";');
 
 		$f = @fopen('php://output','w');
 		// Escribo la cabecera en el documento
+		fputcsv($f, $headMain, ';');
 		fputcsv($f, $header, ';');
 
 		foreach($response as $i => $column){
 			$row[$i]['Nombre y Apellido'] = utf8_decode($column['fullName']);
 			$row[$i]['DNI'] = $column['ci'];
-			$row[$i]['Promo'] = $column['graduation_year'];
-			$row[$i]['Escuela'] = utf8_decode($column['schools']);
-			$row[$i]['Curso'] = $column['year'];
-			$row[$i]['Division'] = $column['division'];
-			$row[$i]['Turno'] = utf8_decode($column['shift']);
+			// $row[$i]['Promo'] = $column['graduation_year'];
+			// $row[$i]['Escuela'] = utf8_decode($column['schools']);
+			// $row[$i]['Curso'] = $column['year'];
+			// $row[$i]['Division'] = $column['division'];
+			// $row[$i]['Turno'] = utf8_decode($column['shift']);
 			$row[$i]['Productos/Talles/Apodo'] = self::formatListProduct(json_decode($column['size']));
 			$row[$i]['Plan de pago'] = $column['dues'];
 			$row[$i]['Cuotas pagadas'] = $column['duespaid'];
@@ -450,7 +530,7 @@ file_put_contents($file, $image_base64);
 		}
 		// echo $string;die;
 		return utf8_decode($string);
-	}
+	}*/
 
 	/*public function actionGetStatus(){
 		if(isset($_POST['view'])){

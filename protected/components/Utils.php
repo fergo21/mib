@@ -269,4 +269,28 @@ class Utils{
 		}
 		return $newPrice;
 	}
+	public static function displayStatusExcel($duepaid, $dues){
+		if(strrpos($duepaid, ",") === false){
+			$lastDuePaid = $duepaid;
+		}else{
+			$lastDuePaid = preg_split("/,/", $duepaid);
+			$lastDuePaid = $lastDuePaid[count($lastDuePaid)-1];
+		}
+
+		switch(self::calculatePercentDue($lastDuePaid, $dues)){
+			case "0";
+					return "<td style='background:#ff7878;'>Impago</td>";
+				break;
+			case "25":
+					return "<td style='background:yellow;'>".$lastDuePaid."/".$dues." Pago parcial</td>";
+				break;
+			case "75":
+			case "50":
+					return "<td style='background:#89cf5d;'>Producción</td>";
+				break;
+			case "100";
+					return "<td style='background:#89cf5d;'>Producción</td>";
+				break;
+		}
+	}
 }
