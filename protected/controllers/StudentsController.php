@@ -204,7 +204,7 @@ class StudentsController extends Controller
 
 	public function actionGetStudents() 
 	{
-		if($_POST['q']){
+		if($_POST['q'] || $_POST['id']){
 			// $response = Students::model()->findAll('ci=:ci', array(':ci'=>$_POST['q']));
 			
 			$data = array();
@@ -227,7 +227,7 @@ class StudentsController extends Controller
 						AND students.idyears = promos.idyears 
 						AND students.iddivision = promos.iddivision 
 						AND students.idshifts = promos.idshifts 
-						AND students.ci = ".$_POST['q'];
+						AND (students.ci = '".$_POST['q']."' OR students.idstudents = '".$_POST['id']."')";
 			$data = Yii::app()->db->createCommand($query)->queryAll();
 			if(!empty($data)){
 				$responseOrder = Orders::model()->count("idstudents=:idstudents", array(":idstudents" => $data[0]['idstudents']));

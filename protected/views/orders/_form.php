@@ -42,7 +42,7 @@ array_unshift($listTallesAbajo, 'Seleccionar');
 		                	<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--6-col-tablet mdl-cell--12-col-phone form__article">
 								<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
 									<?php echo $form->labelEx($model,'idstudents', array('class'=>'mdl-selectfield__label ')); ?>
-									<?php echo $form->dropDownList($model,'idstudents', $listStudents,array('class'=>'mdl-selectfield__select select-student select2', 'data-ci'=>!$model->isNewRecord || $model->idstudents ? Students::model()->find('idstudents=:idstudents', array(':idstudents'=>$model->idstudents))->ci : '')); ?>
+									<?php echo $form->dropDownList($model,'idstudents', $listStudents,array('class'=>'mdl-selectfield__select select-student select2', 'data-ci'=>!$model->isNewRecord || $model->idstudents ? Students::model()->find('idstudents=:idstudents', array(':idstudents'=>$model->idstudents))->idstudents : '')); ?>
 									<?php echo $form->error($model,'idstudents'); ?>
 								</div>
 

@@ -427,6 +427,7 @@ $(document).ready(function(){
         parseDataTable(listProduct);
     });
 
+    let dataStudent = {};
     //Get Estudiante
 	$('.select-student.select2').select2({
         language: {
@@ -447,7 +448,8 @@ $(document).ready(function(){
             delay: 250,
             data: function (params) {
                 return {
-                    q: params.term
+                    q: params.term,
+                    id: ''
                 };
             },
             processResults: function (data) {
@@ -460,20 +462,24 @@ $(document).ready(function(){
             },
             success: function (data){
                 $("#Orders_date_delivery").val(data[0].date_delivery);
-                formatRepo(data)
+                dataStudent = data;
             }
         }
+    }).on("change", function(e){
+        formatRepo(dataStudent.filter(student => student.idstudents == e.target.value));
     });
     // Fetch the preselected item, and add to the control
     var studentSelect = $('.select-student.select2');
-    let s_ci = $('.select-student.select2').attr('data-ci');
-    if(s_ci){
+    let s_id = $('.select-student.select2').attr('data-ci');
+    if(s_id){
         $.ajax({
             type: 'POST',
             url: `${homeUrl}/students/getStudents`,
-            data: { q: s_ci }
+            data: { q: '', id: s_id }
         }).then(function (data) {
             let data_s = JSON.parse(data);
+            
+            formatRepo(data_s);
             // create the option and append to Select2
             var option = new Option(`${data_s[0].name} ${data_s[0].surname}`, data_s[0].idstudents, true, true);
             studentSelect.append(option).trigger('change');
@@ -481,7 +487,6 @@ $(document).ready(function(){
             if(window.location.pathname.includes("create")){
                 $("#Orders_date_delivery").val(data_s[0].date_delivery);
             }
-            formatRepo(data_s);
             // manually trigger the `select2:select` event
             studentSelect.trigger({
                 type: 'select2:select',
@@ -581,17 +586,13 @@ $(document).ready(function(){
 
         let total = parseFloat($("#total_order").val());
         let total_cuota = total / cantidad_cuota;
-        
-        let valor_cuota_pagar = cantidad_cuota_seleccionada ? (total_cuota * cantidad_cuota_seleccionada) - saldo : 0;
+        let valor_cuota_pagar = 0;
+        //let valor_cuota_pagar = cantidad_cuota_seleccionada ? (total_cuota * cantidad_cuota_seleccionada) - saldo : 0;
         let valor_cuota_pagar_temp = 0;
 
         let valor_mora = 0;
 
-        $("#Tickets_amount").attr("data-amount", formatPrice(valor_cuota_pagar));
 
-        if($("#Tickets_form_payment").val() == "CC"){
-            valor_cuota_pagar = calculateTotal(valor_cuota_pagar, true);
-        }
         //if(new Date().getDate() > new Date(expiration_day_by_order).getDate() && valor_cuota_pagar){
             if(cantidad_cuota_seleccionada > 0){
                 for(let i = 0; i < cantidad_cuota_seleccionada; i++){
@@ -605,13 +606,17 @@ $(document).ready(function(){
                         valor_cuota_pagar_temp = valor_cuota_pagar_temp + total_cuota;
                     }
                 }
-                valor_cuota_pagar = valor_cuota_pagar_temp;
+                valor_cuota_pagar = valor_cuota_pagar_temp - saldo;
             }
             
         // }else{
         //     $("#mora_ticket").html('');
         // }
+        $("#Tickets_amount").attr("data-amount", formatPrice(valor_cuota_pagar));
 
+        if($("#Tickets_form_payment").val() == "CC"){
+            valor_cuota_pagar = calculateTotal(valor_cuota_pagar, true);
+        }
         
 
         if(valor_mora){
@@ -695,13 +700,13 @@ $(document).ready(function(){
         }
     });
 
-    $("#Products_price, #Orders_total_amount, #Orders_advance_payment, #Orders_extra_amount, #Tickets_amount, #Tickets_paid").on('input',function(){
-        $(this).val(function(index,value){
-            return value.replace(/\D/g, "")
-            .replace(/([0-9])([0-9]{2})$/, '$1.$2')
-            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "");
-        });
-    })
+    // $("#Products_price, #Orders_total_amount, #Orders_advance_payment, #Orders_extra_amount, #Tickets_amount, #Tickets_paid").on('input',function(){
+    //     $(this).val(function(index,value){
+    //         return value.replace(/\D/g, "")
+    //         .replace(/([0-9])([0-9]{2})$/, '$1.$2')
+    //         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "");
+    //     });
+    // })
 
     $('.button-year').click(function(){
         $('#content-year').show();
