@@ -62,8 +62,7 @@ class TutoresController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-		echo "<pre>";
-		print_r($_POST);die;
+		
 		if(isset($_POST['Tutores']))
 		{
 			$model->attributes=$_POST['Tutores'];

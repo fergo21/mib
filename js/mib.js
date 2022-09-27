@@ -530,7 +530,7 @@ $(document).ready(function(){
     }).on("change", function(e){
         // console.log(dataOrder, e.target.value);
         formatTicket(dataOrder.find(order => order.value == e.target.value));
-        renderTable(JSON.parse(dataOrder[0].description), false);
+        renderTable(JSON.parse(dataOrder.find(order => order.value == e.target.value).description), false);
         // console.log(dataOrder);
     });
 

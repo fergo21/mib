@@ -267,8 +267,14 @@ class Utils{
 		}else{
 			$newPrice = number_format($price, 0, '.', '');
 		}
-		return $newPrice;
+		return self::roundUpToAny($newPrice);
 	}
+
+	public static function roundUpToAny($n, $x=10) {
+		//redondea a multiplos de 10
+		return (ceil($n)%$x === 0) ? ceil($n) : round(($n+$x/2)/$x)*$x; 
+	}
+
 	public static function displayStatusExcel($duepaid, $dues){
 		if(strrpos($duepaid, ",") === false){
 			$lastDuePaid = $duepaid;

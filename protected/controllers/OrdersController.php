@@ -79,7 +79,7 @@ class OrdersController extends Controller
 			$model->advance_payment = $_POST['Orders']['advance_payment'] ? Utils::format_price($_POST['Orders']['advance_payment'], true) : 0.0;
 			$model->extra_amount = $_POST['Orders']['extra_amount'] ? Utils::format_price($_POST['Orders']['extra_amount'], true) : 0.0;
 			$model->total_amount = $_POST['Orders']['total_amount'] ? Utils::format_price($_POST['Orders']['total_amount'], true) : 0.00;
-			echo "<pre>";
+			
 			if($model->save()){
 				if(isset($_GET['id'])){
 			// print_r($promo);die;
@@ -242,7 +242,7 @@ class OrdersController extends Controller
 					// echo "<pre>";
 					// print_r(json_decode($order['size']));die;
 					foreach(json_decode($order['size']) as $products){
-						$total_by_products = $total_by_products + floatval($products->unitPrice);
+						$total_by_products = $total_by_products + intval($products->unitPrice);
 					}
 
 					$data[$i]['value'] = $order['idorders'];
@@ -296,7 +296,7 @@ class OrdersController extends Controller
 							"i"=>$prod['idproducts'], 
 							"name"=>$prod['name'], 
 							"totalPriceProduct"=> ($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']) * $product->quantity,
-							"unitPrice"=>Utils::format_price(($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']))
+							"unitPrice"=>intval(($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']))
 						);
 
 						$total = $total + $data["products"][$key]['totalPriceProduct'];
