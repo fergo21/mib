@@ -182,7 +182,7 @@ array_unshift($listOrders, 'Seleccionar');
 				</div>
 				<div class="row buttons">
 					<?php echo CHtml::link('Cancelar', Yii::app()->baseUrl.'/tickets', array('class'=>'btn btn-default buttonAction')); ?>
-					<?php echo CHtml::submitButton('Guardar', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange')); ?>
+					<?php echo CHtml::submitButton('Guardar', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange', 'id'=>'submitTicket')); ?>
 				</div>
 			</form>
     	</div>

@@ -478,7 +478,7 @@ $(document).ready(function(){
             data: { q: '', id: s_id }
         }).then(function (data) {
             let data_s = JSON.parse(data);
-            
+
             formatRepo(data_s);
             // create the option and append to Select2
             var option = new Option(`${data_s[0].name} ${data_s[0].surname}`, data_s[0].idstudents, true, true);
@@ -551,20 +551,25 @@ $(document).ready(function(){
     
     $("#Tickets_paid").keyup(function(){
         changePaid();
-        // let paid = $(this).val();
-        // let amount = $("#Tickets_amount").val();
-        // paid = paid.replace(",", ".");
-
-        // let vuelto = paid ? formatPrice(parseFloat(paid) - parseFloat(amount)) : 0.00;
-
-        // vuelto = vuelto ? vuelto : 0.00;
-
-        // $(this).val(paid);
-        // $("#vuelto_ticket").html(`Vuelto/saldo: $ ${vuelto}`);
-        // if($("#save_saldo")[0].checked){
-        //     $("#Tickets_saldo").val(vuelto);
-        // }
     });
+
+    $("#submitTicket").click(function(e){
+        //cuotas q quedan por seleccionar
+        let restDues = $("#ticket_dues_paid input:not(:disabled)").length;
+        //cuotas seleccionadas
+        let duesSelect = $("#ticket_dues_paid input:checked:not(:disabled)").length;
+
+        let totalToPay = parseInt($("#Tickets_amount").val());
+
+        let amountPaid = parseInt($("#Tickets_paid").val());
+        //valida si es la ultima cuota
+        if(restDues - duesSelect === 0 && totalToPay > amountPaid) { 
+        // console.log("aqui");
+            e.preventDefault();
+            
+            actionAlert("Debe completar el total adeudado.", "warning");
+        }
+    })
 
     $("#ticket_dues_paid").on("change", "input", function(){
         let dues_paid_checked = $("#ticket_dues_paid input:checked").last()[0]?.getAttribute("data-due");
