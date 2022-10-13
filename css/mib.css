@@ -189,6 +189,9 @@ form .mdl-selectfield.full-size{
 .mib-product .mdl-list__item{
     height: 65px;
 }
+.mdl-list .mdl-list__item{
+    overflow: visible !important;
+}
 .mib-rest-detail{
     display: none;
     align-items: center;
