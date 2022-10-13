@@ -12,6 +12,7 @@ return array(
     'schools/delete/<id>' => 'schools/delete/id/<id>',
     'orders' => 'orders/admin',
     'orders/create/<id:\d+>' => 'orders/create',
+    'orders/presupuesto' => 'orders/presupuesto',
     'orders/update/<id>' => 'orders/update/id/<id>',
     'orders/out/<id>' => 'orders/out/id/<id>',
     'orders/downloadlist' => 'orders/downloadlist',

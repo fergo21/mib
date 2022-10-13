@@ -156,3 +156,51 @@ span.address {
   white-space: nowrap;
   margin-right: 10px;
 }
+
+/* presupuesto */
+.print-container {
+    margin: 0 30px;
+    position: relative;
+}
+.print-container::before {
+    background-image: url("../mib/images/mib_logo.jpg");
+    background-size: 34px;
+    background-repeat: round;
+    position: absolute;
+    filter: grayscale(80%);
+}
+.print-header-info {
+    text-align: center;
+    position: relative;
+}
+.print-header-info img {
+    width: 100px;
+}
+.print-header-info .print-header-title {
+    text-transform: uppercase;
+    font-size: 25px;
+}
+.print-header-info .print-header-title span {
+    color: #ff84a6;
+}
+.print-header-info .print-header-description, .print-body-info {
+    font-size: 16px;
+    position: relative;
+}
+.print-body-info li{
+    font-style: normal;
+    border-bottom: unset;
+    line-height: 2;
+}
+.print-body-info li p{
+    margin: 0;
+    color: #444444;
+    font-weight: bold;darkgray;
+}
+.print-body-info strong {
+    text-transform: uppercase;
+}
+.print-footer-signature {
+    text-align: center;
+    font-size: 16px;
+}

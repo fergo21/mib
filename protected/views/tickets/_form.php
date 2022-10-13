@@ -110,7 +110,11 @@ array_unshift($listOrders, 'Seleccionar');
 		                    </table>
 						</div>
 					</div>
-					
+
+					<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--6-col-tablet mdl-cell--12-col-phone form__article">
+						<h6 class="text-color--gray">Detalle de la institución</h6>
+						<div id="data-school-student"></div>
+					</div>
 					<div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--12-col-phone form__article">
 						<div id="ticket_dues_paid" class="ui-components">
 	                        <h6 class="text-color--gray">Seleccione la cuota</h6>

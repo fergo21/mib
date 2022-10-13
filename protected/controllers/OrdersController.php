@@ -28,7 +28,7 @@ class OrdersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('getorders', 'getcombos', 'out', 'downloadlist', 'getstatus'),
+				'actions'=>array('getorders', 'getcombos', 'out', 'downloadlist', 'getstatus', 'presupuesto'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -61,11 +61,27 @@ class OrdersController extends Controller
 		$model=new Orders;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
+		
+		if(isset($_POST['yt0']) && $_POST['yt0'] === "Imprimir"){
+			$data = $_POST['Orders'];
+			$student = Students::model()->findByPk($data['idstudents']);
+			$data['total_due'] = Utils::format_price(intval($_POST['Orders']['total_amount']) / intval($_POST['Orders']['dues']));
+			$data['student'] = $student->name.' '.$student->surname;
+
+			$data['promo'] = self::dataStudent($data['idstudents']);
+			
+			$this->layout = 'print';
+			
+			$this->render('print_order', array(
+				'data' => $data
+			));die;
+		}
 		if(isset($_GET['id'])){
 			$student = Students::model()->findByPk($_GET['id']);
 			$promo = Promos::model()->find("idschools=".$student->idschools." AND idyears=".$student->idyears." AND iddivision=".$student->iddivision." AND idshifts=".$student->idshifts." AND year_promo='".$student->graduation_year."'");
 			$model->idstudents = $student->idstudents;
 		}
+
 		if(isset($_POST['Orders']))
 		{
 			// echo "<pre>";
@@ -94,6 +110,7 @@ class OrdersController extends Controller
 
 		$this->render('create',array(
 			'model'=>$model,
+			'isPresupuesto'=>false
 		));
 	}
 
@@ -127,6 +144,7 @@ class OrdersController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
+			'isPresupuesto'=>false
 		));
 	}
 
@@ -214,7 +232,19 @@ class OrdersController extends Controller
 			$data = array();
 			$i = 0;
 
-			$query = "SELECT orders.*, students.name, students.surname, schools.expiration_day FROM orders, students, tutores, schools WHERE orders.idstudents = students.idstudents AND students.idtutores = tutores.idtutores AND students.idschools = schools.idschools AND (tutores.ci = '".$_POST['q']."' OR students.ci = '".$_POST['q']."')";
+			$query = "SELECT orders.*, students.name as studentName, students.surname, students.graduation_year, schools.expiration_day, schools.name as schoolName, schools.city, provinces.name as provinceName, years.year, divisions.division, shifts.shift 
+				FROM orders, students, tutores, schools, years, divisions, shifts, provinces 
+				WHERE orders.idstudents = students.idstudents 
+				AND students.idtutores = tutores.idtutores 
+				AND students.idschools = schools.idschools 
+				AND students.idyears = years.idyears 
+				AND students.iddivision = divisions.iddivision 
+				AND students.idshifts = shifts.idshifts 
+				AND schools.idprovince = provinces.idprovince AND (tutores.ci = '".$_POST['q']."' 
+					OR students.ci = '".$_POST['q']."'
+					OR CONCAT_WS(' ', students.name, students.surname) LIKE '%".$_POST['q']."%' 
+					OR CONCAT_WS(' ', students.surname, students.name) LIKE '%".$_POST['q']."%')";
+					
 			$response = Yii::app()->db->createCommand($query)->queryAll();
 
 			foreach($response as $order){
@@ -239,14 +269,13 @@ class OrdersController extends Controller
 					//$data[$i]['option'] = array();
 				}
 				if(!$paid){
-					// echo "<pre>";
-					// print_r(json_decode($order['size']));die;
+					
 					foreach(json_decode($order['size']) as $products){
 						$total_by_products = $total_by_products + intval($products->unitPrice);
 					}
 
 					$data[$i]['value'] = $order['idorders'];
-					$data[$i]['label'] = 'P'.$order['idorders'].' - '.$order['name'].' '.$order['surname'];
+					$data[$i]['label'] = 'P'.$order['idorders'].' - '.$order['studentName'].' '.$order['surname'];
 					$data[$i]['dues'] = $order['dues'];
 					// $data[$i]['description'] = count($newOrderSize) > 0 ? json_encode($newOrderSize) : $order['size'];
 					$data[$i]['description'] = $order['size'];
@@ -260,6 +289,12 @@ class OrdersController extends Controller
 					$data[$i]['extra_amount'] = $order['extra_amount'] ? $order['extra_amount'] : 0.00;
 					$data[$i]['financed'] = intval($order['dues']) > 3 ? Utils::formatPercent($setting['percent_f_'.$order['dues']], false) : 0.0;
 					$data[$i]['total_amount_products'] = Utils::format_price(Utils::validateQuantity($total_by_products, count(json_decode($order['size']))));
+					$data[$i]['school']['name'] = $order['schoolName'];
+					$data[$i]['school']['year_promo'] = $order['graduation_year'];
+					$data[$i]['school']['year'] = $order['year'];
+					$data[$i]['school']['division'] = $order['division'];
+					$data[$i]['school']['shift'] = $order['shift'];
+					$data[$i]['school']['province'] = $order['provinceName'];
 					
 					$i++;
 				}
@@ -295,7 +330,7 @@ class OrdersController extends Controller
 						$data["products"][$key] = array(
 							"i"=>$prod['idproducts'], 
 							"name"=>$prod['name'], 
-							"totalPriceProduct"=> ($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']) * $product->quantity,
+							"totalPriceProduct"=> Utils::format_price(($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']) * $product->quantity),
 							"unitPrice"=>intval(($_POST['old'] === 'true' ? $prod['price_old'] : $prod['price']))
 						);
 
@@ -399,13 +434,13 @@ class OrdersController extends Controller
 	}
 
 	public function downloadImage($base64Image){
-define('UPLOAD_DIR', 'images/');
-$image_parts = explode(";base64,", $base64Image);
-$image_type_aux = explode("image/", $image_parts[0]);
-$image_type = $image_type_aux[1];
-$image_base64 = base64_decode($image_parts[1]);
-$file = UPLOAD_DIR . uniqid() . '.png';
-file_put_contents($file, $image_base64);
+	define('UPLOAD_DIR', 'images/');
+		$image_parts = explode(";base64,", $base64Image);
+		$image_type_aux = explode("image/", $image_parts[0]);
+		$image_type = $image_type_aux[1];
+		$image_base64 = base64_decode($image_parts[1]);
+		$file = UPLOAD_DIR . uniqid() . '.png';
+		file_put_contents($file, $image_base64);	
 
 //falta descargarla :(
 
@@ -483,6 +518,57 @@ file_put_contents($file, $image_base64);
 		</tbody>
 		</table>";
 		echo $html;
+	}
+
+	public function actionPresupuesto() {
+		$model=new Orders;
+		if(isset($_POST['Orders'])){
+
+			$data = $_POST['Orders'];
+			$data['total_due'] = Utils::format_price(intval($_POST['Orders']['total_amount']) / intval($_POST['Orders']['dues']));
+			
+			$this->layout = 'print';
+			
+			$this->render('print_order', array(
+				'data' => $data
+			));die;
+		}
+		$this->render('create',array(
+			'model'=>$model,
+			'isPresupuesto'=>true
+		));
+	}
+
+	public function dataStudent($id)
+	{
+		$query = "SELECT 
+			students.idstudents, 
+			students.name, 
+			students.surname, 
+			schools.name as school,
+			schools.city,
+			years.year, 
+			shifts.shift, 
+			divisions.division, 
+			promos.* FROM students, promos, schools, years, shifts, divisions WHERE
+			promos.idschools = schools.idschools
+			AND promos.year_promo = students.graduation_year 
+			AND promos.idyears = years.idyears 
+			AND promos.iddivision = divisions.iddivision 
+			AND promos.idshifts = shifts.idshifts 
+			AND students.idschools = promos.idschools 
+			AND students.idyears = promos.idyears 
+			AND students.iddivision = promos.iddivision 
+			AND students.idshifts = promos.idshifts 
+			AND students.idstudents = '".$id."'";
+		$data = Yii::app()->db->createCommand($query)->queryAll();
+		// echo "<pre>";
+		if(count($data) > 0){
+			// print_r($data[0]);die;
+			return $data[0];
+		}
+		return [];
+		
 	}
 
 	/*public function outputCsv($response){

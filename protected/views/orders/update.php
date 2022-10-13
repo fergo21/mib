@@ -17,5 +17,5 @@ $this->menu=array(
 ?>
 
 <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone mdl-cell--top">
-	<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+	<?php $this->renderPartial('_form', array('model'=>$model, 'isPresupuesto' => $isPresupuesto)); ?>
 </div>

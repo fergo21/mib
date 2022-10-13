@@ -227,7 +227,10 @@ class StudentsController extends Controller
 						AND students.idyears = promos.idyears 
 						AND students.iddivision = promos.iddivision 
 						AND students.idshifts = promos.idshifts 
-						AND (students.ci = '".$_POST['q']."' OR students.idstudents = '".$_POST['id']."')";
+						AND (students.ci = '".$_POST['q']."' 
+							OR students.idstudents = '".$_POST['id']."' 
+							OR CONCAT_WS(' ', students.name, students.surname) LIKE '%".$_POST['q']."%' 
+							OR CONCAT_WS(' ', students.surname, students.name) LIKE '%".$_POST['q']."%')";
 			$data = Yii::app()->db->createCommand($query)->queryAll();
 			if(!empty($data)){
 				$responseOrder = Orders::model()->count("idstudents=:idstudents", array(":idstudents" => $data[0]['idstudents']));

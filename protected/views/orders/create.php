@@ -14,5 +14,5 @@ $this->menu=array(
 ?>
 
 <div class="mdl-grid mdl-grid--no-spacing">
-	<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+	<?php $this->renderPartial('_form', array('model'=>$model, 'isPresupuesto' => $isPresupuesto)); ?>
 </div>

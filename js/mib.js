@@ -266,6 +266,7 @@ $(document).ready(function(){
         let monthOrder = parseInt(order.date_create.split('-')[1]);
         let dayOrder = order.date_create.split('-')[2];
 
+        let totalDue = order.total_amount / parseInt(order.dues);
         //valido si el dia del pedido es mayor al proximo dia de vencimiento
         //y le sumo un mes, porque sería el proximo mes de vencimiento
         if(parseInt(dayOrder) > parseInt(order.expiration_day)){
@@ -295,13 +296,23 @@ $(document).ready(function(){
 
         for(let i = 1; i <= order.dues; i++){
             if(i <= order.ticket.dues_paid){
-                createCheckbox('ticket_dues_paid', i, true, `${i}° cuota pagada`, true, null);
+                createCheckbox('ticket_dues_paid', i, true, `${i}° cuota pagada $${totalDue}`, true, null);
             }else{
                 createCheckbox('ticket_dues_paid', i, false, `${i}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
             }
             monthOrder = monthOrder >= 12 ? 1 : (monthOrder + 1);
             fullYear = monthOrder >= 12 ? fullYear + 1 : fullYear;
         }
+    }
+
+    const fillDataSchool = (order) => {
+        let html = `<span><strong>Escuela: </strong>${order.school.name}</span>
+                    <span><strong>Curso: </strong>${order.school.year}</span>
+                    <span><strong>División: </strong>${order.school.division}</span>
+                    <span><strong>Turno: </strong>${order.school.shift}</span>
+                    <span><strong>Promo: </strong>${order.school.year_promo}</span>
+                    <span><strong>Provincia: </strong>${order.school.province}</span>`;
+        $("#data-school-student").html(html);
     }
 
     const createCheckbox = (containerId, item, checked, label, disabled, dataDate) => {
@@ -536,6 +547,7 @@ $(document).ready(function(){
         // console.log(dataOrder, e.target.value);
         formatTicket(dataOrder.find(order => order.value == e.target.value));
         renderTable(JSON.parse(dataOrder.find(order => order.value == e.target.value).description), false);
+        fillDataSchool(dataOrder.find(order => order.value == e.target.value));
         // console.log(dataOrder);
     });
 
@@ -699,7 +711,7 @@ $(document).ready(function(){
 
     $("#Orders_extra_amount").keyup(function(){
         if($(this).val() != ''){
-            $("#Orders_total_amount").val(parseFloat($("#Orders_total_amount").attr("data-value")) + parseFloat($(this).val()));
+            $("#Orders_total_amount").val(formatPrice(parseFloat($("#Orders_total_amount").attr("data-value")) + parseFloat($(this).val())));
         }else{
             $("#Orders_total_amount").val($("#Orders_total_amount").attr("data-value"));
         }
@@ -751,7 +763,7 @@ $(document).ready(function(){
 
     $("#Tutores_ci").on('keyup', function(){
         let ci_tutor = $("#Tutores_ci").val();
-        if(ci_tutor.length >= 7){
+        if(ci_tutor.length >= 3){
             $.ajax({
                 url: `${homeUrl}/tutores/getTutor`,
                 dataType: 'json',
@@ -815,9 +827,9 @@ $(document).ready(function(){
             return t - (t * settingJson['percent_cc']);
         }
     }
-    const formatPrice = (price) => {
-        if(price){
-            return Math.round(parseFloat(price));
+    const formatPrice = (n, x = 50) => {
+        if(n){
+            return (Math.ceil(n)%x === 0) ? Math.ceil(n) : Math.round((n+x/2)/x)*x; 
         }
     }
     const getNotification = () => {

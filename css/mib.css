@@ -215,16 +215,18 @@ form .mdl-selectfield.full-size{
 }
 #saldo_ticket {
     position: absolute;
-    font-size: 11px;
+    font-size: 15px;
     right: 0px;
     top: 0px;
+    font-weight: bold;
 }
 #mora_ticket {
     position: absolute;
-    font-size: 11px;
+    font-size: 15px;
     right: 0px;
     top: 11px;
     color: #f44336;
+    font-weight: bold;
 }
 #saldo_ticket.green{
     color: #00d45acc;
@@ -331,6 +333,10 @@ form .mdl-selectfield.full-size{
 }
 #ticket_dues_paid .mdl-checkbox__label.newMdl{
     line-height: unset;
+}
+#data-school-student{
+    display: flex;
+    justify-content: space-around;
 }
 @media (max-width: 768px) {
     .mdl-dialog {

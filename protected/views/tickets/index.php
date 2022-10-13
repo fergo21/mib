@@ -22,6 +22,7 @@ $this->menu=array(
             	<div>
             		<a href="<?=  Yii::app()->baseUrl; ?>/orders/create">Generar pedido</a>
             		<a href="<?=  Yii::app()->baseUrl; ?>/orders/admin">Consultar pedido</a>
+                    <a href="<?=  Yii::app()->baseUrl; ?>/orders/presupuesto">Presupuesto</a>
             	</div>
             	<i class="material-icons big-icon">shopping_cart</i>
                 <!-- <h3></h3> -->

@@ -27,9 +27,9 @@ class Utils{
 		}
 	}
 	public static function calculatePercent($percent, $total){
-		$finalTotal = self::format_price($total);
+		$finalTotal = $total;
 		if(isset($percent) && !empty($percent) && $percent != "-" && $percent != "0"){
-			$floatPercent = floatval(self::format_price($percent));
+			$floatPercent = floatval($percent);
 			// if($floatPercent<0){
 				$finalTotal = $finalTotal + ($finalTotal * ($floatPercent / 100));
 			// }
@@ -270,8 +270,8 @@ class Utils{
 		return self::roundUpToAny($newPrice);
 	}
 
-	public static function roundUpToAny($n, $x=10) {
-		//redondea a multiplos de 10
+	public static function roundUpToAny($n, $x=50) {
+		//redondea a multiplos de 50
 		return (ceil($n)%$x === 0) ? ceil($n) : round(($n+$x/2)/$x)*$x; 
 	}
 
