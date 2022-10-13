@@ -296,7 +296,7 @@ $(document).ready(function(){
 
         for(let i = 1; i <= order.dues; i++){
             if(i <= order.ticket.dues_paid){
-                createCheckbox('ticket_dues_paid', i, true, `${i}° cuota pagada $${totalDue}`, true, null);
+                createCheckbox('ticket_dues_paid', i, true, `${i}° cuota pagada $${Math.round(totalDue)}`, true, null);
             }else{
                 createCheckbox('ticket_dues_paid', i, false, `${i}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
             }
