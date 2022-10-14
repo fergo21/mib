@@ -204,7 +204,7 @@ class StudentsController extends Controller
 
 	public function actionGetStudents() 
 	{
-		if($_POST['q'] || $_POST['id']){
+		if(isset($_POST['q']) && !empty($_POST['q'])) {
 			// $response = Students::model()->findAll('ci=:ci', array(':ci'=>$_POST['q']));
 			
 			$data = array();
@@ -232,7 +232,34 @@ class StudentsController extends Controller
 							OR CONCAT_WS(' ', students.name, students.surname) LIKE '%".$_POST['q']."%' 
 							OR CONCAT_WS(' ', students.surname, students.name) LIKE '%".$_POST['q']."%')";
 			$data = Yii::app()->db->createCommand($query)->queryAll();
-			if(!empty($data)){
+		}
+
+		if(isset($_POST['id']) && !empty($_POST['id'])) {
+			$data = array();
+			$query = "SELECT 
+						students.idstudents, 
+						students.name, 
+						students.surname, 
+						schools.name as school,
+						schools.city,
+						years.year, 
+						shifts.shift, 
+						divisions.division, 
+						promos.* FROM students, promos, schools, years, shifts, divisions WHERE
+						promos.idschools = schools.idschools
+						AND promos.year_promo = students.graduation_year 
+						AND promos.idyears = years.idyears 
+						AND promos.iddivision = divisions.iddivision 
+						AND promos.idshifts = shifts.idshifts 
+						AND students.idschools = promos.idschools 
+						AND students.idyears = promos.idyears 
+						AND students.iddivision = promos.iddivision 
+						AND students.idshifts = promos.idshifts 
+						AND students.idstudents = '".$_POST['id']."' ";
+			$data = Yii::app()->db->createCommand($query)->queryAll();
+		}
+
+		if(!empty($data)){
 				$responseOrder = Orders::model()->count("idstudents=:idstudents", array(":idstudents" => $data[0]['idstudents']));
 				// echo "<pre>";
 				// print_r($responseOrder);die;
@@ -240,12 +267,9 @@ class StudentsController extends Controller
 					if(count($data)>0){
 						$data[0]['date_delivery'] = Utils::format_date($data[0]['date_delivery'], 'es');
 					}
-				// }else{
-				// 	$data = array();
 				}
-			}
-			echo json_encode($data);
 		}
+		echo json_encode($data);
 	}
 
 	public function actionMassiveImport($id)
