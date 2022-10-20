@@ -5,7 +5,7 @@
 	<meta name="language" content="en" />
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-  <link rel="stylesheet" href="<?php echo Yii::app()->baseUrl; ?>/css/print.css">
+  <link rel="stylesheet" href="<?php echo Yii::app()->baseUrl; ?>/css/print.css?q=<?= time(); ?>">
 </head>
 
 <body>
