@@ -35,7 +35,7 @@
 				<strong>Combo:</strong>
 				<ul>
 					<?php foreach(json_decode($data['size']) as $value){ ?>
-						<li><p><?= $value->product; ?></p></li>
+						<li><p><?= $value->quantity; ?> <?= $value->product; ?> - Talle: <?= $value->talles; ?></p></li>
 					<?php } ?>
 				</ul>
 			</li>

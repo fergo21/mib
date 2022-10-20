@@ -247,12 +247,12 @@ class OrdersController extends Controller
 				$ticketResponse = Tickets::model()->findAll('idorders=:idorders', array(':idorders'=>$order['idorders']));
 				$countTicket = count($ticketResponse);
 
-				foreach($ticketResponse as $t => $ticket){
-					if($countTicket <= 0){
-						$data[$i]['ticket'][$t]['dues_paid'] = 0; 
-						$data[$i]['ticket'][$t]['saldo'] = 0;
+				if($countTicket <= 0){
+						$data[$i]['ticket'] = array();
+				}else{
+					foreach($ticketResponse as $t => $ticket){
+					
 					// }else if($countTicket < $order['dues']){ //volver cuando se resuelva la agrupacion de pagos
-					}else{
 						$data[$i]['ticket'][$t]['dues_paid'] = intval(mb_substr($ticket->dues, -1));
 						$data[$i]['ticket'][$t]['paid'] = $ticket->paid;
 						$data[$i]['ticket'][$t]['saldo'] = $ticket->saldo;

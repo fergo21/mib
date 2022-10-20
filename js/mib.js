@@ -311,7 +311,7 @@ $(document).ready(function(){
         expiration_day_by_order = new Date().setDate(order.expiration_day);
 
         for(let i = 0; i < parseInt(order.dues); i++){
-            if(i <= order.ticket[i]?.dues_paid){
+            if(order.ticket.length > 0 && i <= order.ticket[i]?.dues_paid){
                 createCheckbox('ticket_dues_paid', i, true, `${i+1}° cuota pagada $${Math.round(order.ticket[i].paid)}`, true, null);
             }else{
                 createCheckbox('ticket_dues_paid', i, false, `${i+1}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
