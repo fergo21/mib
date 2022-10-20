@@ -161,6 +161,7 @@ span.address {
 .print-container {
     margin: 0 30px;
     position: relative;
+    height: 100vh;
 }
 .print-container::before {
     background-image: url("../mib/images/mib_logo.jpg");

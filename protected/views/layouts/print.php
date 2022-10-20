@@ -11,7 +11,14 @@
 <body>
 	<main class="">
 			<?php echo $content; ?>
+			<?php echo $content; ?>
 	</main>
 </body>
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() {
+		window.print();
+		// window.onfocus=function(){ window.history.back();}
+	});
+</script>
 </html>
 

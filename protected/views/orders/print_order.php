@@ -65,9 +65,3 @@
 	</div>
 	<p class="print-footer-signature">Firma:.....................................</p>
 </div>
-
-<script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() {
-		window.print();
-	});
-</script>

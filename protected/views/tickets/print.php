@@ -95,9 +95,3 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() {
-		window.print();
-		// window.onfocus=function(){ window.history.back();}
-	});
-</script>

@@ -200,7 +200,7 @@ $('#downloadFile').click(function(){
 								array(
 									'header' => 'Acciones',
 									'class'=>'ButtonColumn', //esta clase se encuentra en components (es personalizada)
-									'template'=>'{update}{erase}',
+									'template'=>'{update}{print}{erase}',
 									'evaluateID'=>true, // esta opcion va si o si cuando se usa ButtonColumn
 									'headerHtmlOptions'=>array('style'=>'width:10%;'),
 									'buttons'=>array(
@@ -209,6 +209,13 @@ $('#downloadFile').click(function(){
 											'imageUrl'=>false,
 											'url'=>'Yii::app()->createUrl("orders/update/$data->idorders")',
 											'options'=>array('title'=>'Editar'),
+											'visible'=>'Yii::app()->user->checkAccess(\'update\')'
+										),
+										'print' => array(
+											'label'=>'<i class="material-icons">print</i>',
+											'imageUrl'=>false,
+											'url'=>'Yii::app()->createUrl("orders/imprimir/$data->idorders")',
+											'options'=>array('title'=>'Imprimir'),
 											'visible'=>'Yii::app()->user->checkAccess(\'update\')'
 										),
 										'erase' => array(
@@ -220,7 +227,7 @@ $('#downloadFile').click(function(){
 												'onclick'=>'deleteItem(this, "orders-grid")',
 											),
 											'visible'=>'Yii::app()->user->checkAccess(\'delete\')'
-										)	
+										)
 									),
 								),
 							),
