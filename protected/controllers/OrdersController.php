@@ -28,7 +28,7 @@ class OrdersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('getorders', 'getcombos', 'out', 'downloadlist', 'getstatus', 'presupuesto'),
+				'actions'=>array('getorders', 'getcombos', 'out', 'downloadlist', 'getstatus', 'presupuesto', 'imprimir'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -62,20 +62,6 @@ class OrdersController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 		
-		if(isset($_POST['yt0']) && $_POST['yt0'] === "Imprimir"){
-			$data = $_POST['Orders'];
-			$student = Students::model()->findByPk($data['idstudents']);
-			$data['total_due'] = Utils::format_price(intval($_POST['Orders']['total_amount']) / intval($_POST['Orders']['dues']));
-			$data['student'] = $student->name.' '.$student->surname;
-
-			$data['promo'] = self::dataStudent($data['idstudents']);
-			
-			$this->layout = 'print';
-			
-			$this->render('print_order', array(
-				'data' => $data
-			));die;
-		}
 		if(isset($_GET['id'])){
 			$student = Students::model()->findByPk($_GET['id']);
 			$promo = Promos::model()->find("idschools=".$student->idschools." AND idyears=".$student->idyears." AND iddivision=".$student->iddivision." AND idshifts=".$student->idshifts." AND year_promo='".$student->graduation_year."'");
@@ -84,7 +70,6 @@ class OrdersController extends Controller
 
 		if(isset($_POST['Orders']))
 		{
-			// echo "<pre>";
 			// 	var_dump(json_encode($_POST['Orders']['size']));die;
 			$model->attributes=$_POST['Orders'];
 			$model->size = $_POST['Orders']['size'];
@@ -101,8 +86,14 @@ class OrdersController extends Controller
 			// print_r($promo);die;
 					Yii::app()->user->setFlash('success', 'ok');
 					Yii::app()->user->setFlash('redirect', '/students/create/'.$promo->idpromos);
+					Yii::app()->user->setFlash('print_order', '/orders/imprimir/'.$model->idorders);
 					$this->redirect(array('/orders'));
 				}else{
+					$student = Students::model()->findByPk($model->idstudents);
+					$promo = Promos::model()->find("idschools=".$student->idschools." AND idyears=".$student->idyears." AND iddivision=".$student->iddivision." AND idshifts=".$student->idshifts." AND year_promo='".$student->graduation_year."'");
+					Yii::app()->user->setFlash('success', 'ok');
+					Yii::app()->user->setFlash('redirect', '/students/create/'.$promo->idpromos);
+					Yii::app()->user->setFlash('print_order', '/orders/imprimir/'.$model->idorders);
 					$this->redirect(array('/orders'));
 				}
 			}
@@ -122,7 +113,6 @@ class OrdersController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -139,6 +129,7 @@ class OrdersController extends Controller
 			$model->advance_payment = $_POST['Orders']['advance_payment'] ? $_POST['Orders']['advance_payment'] : 0.0; 
 			$model->extra_amount = $_POST['Orders']['extra_amount'] ? $_POST['Orders']['extra_amount'] : 0.0;
 			if($model->save())
+				Yii::app()->user->setFlash('print_order', '/orders/imprimir/'.$model->idorders);
 				$this->redirect(array('/orders'));
 		}
 
@@ -255,21 +246,40 @@ class OrdersController extends Controller
 
 				$ticketResponse = Tickets::model()->findAll('idorders=:idorders', array(':idorders'=>$order['idorders']));
 				$countTicket = count($ticketResponse);
-				
-				if($countTicket <= 0){
-					$data[$i]['ticket']['dues_paid'] = 0; 
-					$data[$i]['ticket']['saldo'] = 0;
-				}else if($countTicket < $order['dues']){
-					$data[$i]['ticket']['dues_paid'] = intval(mb_substr($ticketResponse[$countTicket-1]['dues'], -1));
-					foreach($ticketResponse as $ticket){
-						$saldo = $ticket->saldo;
-					}
-				}else{
-					$paid = true;
-					//$data[$i]['option'] = array();
+
+				foreach($ticketResponse as $t => $ticket){
+					if($countTicket <= 0){
+						$data[$i]['ticket'][$t]['dues_paid'] = 0; 
+						$data[$i]['ticket'][$t]['saldo'] = 0;
+					// }else if($countTicket < $order['dues']){ //volver cuando se resuelva la agrupacion de pagos
+					}else{
+						$data[$i]['ticket'][$t]['dues_paid'] = intval(mb_substr($ticket->dues, -1));
+						$data[$i]['ticket'][$t]['paid'] = $ticket->paid;
+						$data[$i]['ticket'][$t]['saldo'] = $ticket->saldo;
+
+						// foreach($ticketResponse as $ticket){
+							$saldo = $ticket->saldo;
+						// }
+					// }else{ //volver cuando se resuelva la agrupacion de pagos
+						// $paid = true; //volver cuando se resuelva la agrupacion de pagos
+						//$data[$i]['option'] = array();
+					}	
 				}
+				
+				// if($countTicket <= 0){
+				// 	$data[$i]['ticket']['dues_paid'] = 0; 
+				// 	$data[$i]['ticket']['saldo'] = 0;
+				// }else if($countTicket < $order['dues']){
+				// 	$data[$i]['ticket']['dues_paid'] = intval(mb_substr($ticketResponse[$countTicket-1]['dues'], -1));
+				// 	foreach($ticketResponse as $ticket){
+				// 		$saldo = $ticket->saldo;
+				// 	}
+				// }else{
+				// 	$paid = true;
+				// 	//$data[$i]['option'] = array();
+				// }
 				if(!$paid){
-					
+
 					foreach(json_decode($order['size']) as $products){
 						$total_by_products = $total_by_products + intval($products->unitPrice);
 					}
@@ -344,9 +354,9 @@ class OrdersController extends Controller
 			// var_dump($total);die;
 
 			$total = Utils::validateQuantity($total, $quantity);
-			$total = Utils::calculatePercent($_POST['p'], $total);
+			$total = Utils::calculatePercent($_POST['p'], $total + $extra_amount);
 
-			$data["total"] = Utils::format_price($total + $extra_amount);
+			$data["total"] = Utils::format_price($total);
 
 			if(count($data)>0){
 				echo json_encode($data);
@@ -525,8 +535,12 @@ class OrdersController extends Controller
 		if(isset($_POST['Orders'])){
 
 			$data = $_POST['Orders'];
-			$data['total_due'] = Utils::format_price(intval($_POST['Orders']['total_amount']) / intval($_POST['Orders']['dues']));
-			
+			//$data['total_due'] = Utils::format_price(intval($_POST['Orders']['total_amount']) / intval($_POST['Orders']['dues']));
+
+			$dues = array(1, 2, 3, 4, 5, 6);
+			foreach($dues as $i => $due){
+				$data['total_per_due'][$i] = Utils::format_price(Utils::calculatePercentTicket(intval($_POST['Orders']['total_amount']), $due) / $due);
+			}
 			$this->layout = 'print';
 			
 			$this->render('print_order', array(
@@ -537,6 +551,29 @@ class OrdersController extends Controller
 			'model'=>$model,
 			'isPresupuesto'=>true
 		));
+	}
+
+	public function actionImprimir($id)
+	{
+		if(isset($_GET['id'])){
+			$order = Orders::model()->findByPk($id);
+
+			$student = Students::model()->findByPk($order->idstudents);
+
+			$data['total_due'] = Utils::format_price(Utils::calculatePercentTicket(intval($order->total_amount), intval($order->dues)) / intval($order->dues));
+			$data['student'] = $student->name.' '.$student->surname;
+			$data['size'] = $order->size;
+			$data['total_amount'] = $order->total_amount;
+			$data['dues'] = $order->dues;
+
+			$data['promo'] = self::dataStudent($order->idstudents);
+			
+			$this->layout = 'print';
+
+			$this->render('print_order', array(
+				'data' => $data
+			));
+		}
 	}
 
 	public function dataStudent($id)
@@ -570,59 +607,6 @@ class OrdersController extends Controller
 		return [];
 		
 	}
-
-	/*public function outputCsv($response){
-
-		$headMain = array('Escuela: '.utf8_decode($response[0]["schools"]), 'Promo: '.$response[0]["graduation_year"], 'Curso: '.$response[0]["year"], 'Division: '.$response[0]["division"], 'Turno: '.utf8_decode($response[0]["shift"]));
-		
-		$header = array('Nombre y Apellido', 'DNI', 'Productos/Talles/Apodo', 'Plan de pago', 'Cuotas Pagadas');
-	
-		
-		header('Content-Type: application/csv');
-    	header('Content-Disposition: attachment; filename="ListadoProduccion.csv";');
-
-		$f = @fopen('php://output','w');
-		// Escribo la cabecera en el documento
-		fputcsv($f, $headMain, ';');
-		fputcsv($f, $header, ';');
-
-		foreach($response as $i => $column){
-			$row[$i]['Nombre y Apellido'] = utf8_decode($column['fullName']);
-			$row[$i]['DNI'] = $column['ci'];
-			// $row[$i]['Promo'] = $column['graduation_year'];
-			// $row[$i]['Escuela'] = utf8_decode($column['schools']);
-			// $row[$i]['Curso'] = $column['year'];
-			// $row[$i]['Division'] = $column['division'];
-			// $row[$i]['Turno'] = utf8_decode($column['shift']);
-			$row[$i]['Productos/Talles/Apodo'] = self::formatListProduct(json_decode($column['size']));
-			$row[$i]['Plan de pago'] = $column['dues'];
-			$row[$i]['Cuotas pagadas'] = $column['duespaid'];
-			fputcsv($f, $row[$i], ';');
-		}
-		// echo "<pre>";
-		// print_r($row);die;
-
-		// flush buffer
-		ob_flush();
-		// fclose($f);
-		// exit();
-
-	}
-
-	public function formatListProduct($data){
-		$string = "";
-		foreach ($data as $key => $value) {
-			$string .= $value->product. ' - Cantidad: '.$value->quantity. ' - Talle: '.$value->talles.' - Apodo: '.$value->apodo."\r\n";
-		}
-		// echo $string;die;
-		return utf8_decode($string);
-	}*/
-
-	/*public function actionGetStatus(){
-		if(isset($_POST['view'])){
-			
-		}
-	}*/
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

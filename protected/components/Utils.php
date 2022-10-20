@@ -122,6 +122,11 @@ class Utils{
 		$color =( intval($date) > $setting['expiration_day'] || intval($date) > date_format(new DateTime($date_contract), "d")) && $validate ? 'color--orange mdl-color-text--grey-900' : 'background-color--primary';
 
 		switch(self::calculatePercentDue($duepaid, $data->dues)){
+			case "-1";
+					if(!$data->out_production){
+						$pills .= '<span class="label label--mini color--red">Falta Financiación</span>';
+					}
+				break;
 			case "0";
 					if(!$data->out_production){
 						$pills .= '<span class="label label--mini color--red">Impago</span>';
@@ -188,16 +193,18 @@ class Utils{
 	public static function calculatePercentDue($duepaid, $duetotal) {
 		$percent = "";
 		
-		if(intval($duepaid) == floatval(100 * intval($duetotal) / 100)){
+		if(intval($duepaid) == floatval(100 * intval($duetotal) / 100) && intval($duetotal) != 0){
 			$percent = "100";
-		}else if(intval($duepaid) >= floatval(75 * intval($duetotal) / 100)){
+		}else if(intval($duepaid) >= floatval(75 * intval($duetotal) / 100) && intval($duetotal) != 0){
 			$percent = "75";
-		}else if(intval($duepaid) >= floatval(50 * intval($duetotal) / 100)){
+		}else if(intval($duepaid) >= floatval(50 * intval($duetotal) / 100) && intval($duetotal) != 0){
 			$percent = "50";
-		}else if(intval($duepaid) >= floatval(25 * intval($duetotal) / 100)){
+		}else if(intval($duepaid) >= floatval(25 * intval($duetotal) / 100) && intval($duetotal) != 0){
 			$percent = "25";
-		}else if(intval($duepaid) == 0){
+		}else if(intval($duepaid) == 0 && intval($duetotal) != 0){
 			$percent = "0";
+		}else if(intval($duetotal) == 0){
+			$percent = "-1";
 		}
 
 		return $percent;
@@ -284,6 +291,9 @@ class Utils{
 		}
 
 		switch(self::calculatePercentDue($lastDuePaid, $dues)){
+			case "-1":
+					return "<td style='background:#ff7878;'>Falta Financiación</td>";
+				break;
 			case "0";
 					return "<td style='background:#ff7878;'>Impago</td>";
 				break;

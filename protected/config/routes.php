@@ -13,6 +13,7 @@ return array(
     'orders' => 'orders/admin',
     'orders/create/<id:\d+>' => 'orders/create',
     'orders/presupuesto' => 'orders/presupuesto',
+    'orders/imprimir/<id>' => 'orders/imprimir/id/<id>',
     'orders/update/<id>' => 'orders/update/id/<id>',
     'orders/out/<id>' => 'orders/out/id/<id>',
     'orders/downloadlist' => 'orders/downloadlist',

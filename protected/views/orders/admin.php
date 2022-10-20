@@ -237,7 +237,7 @@ $('#downloadFile').click(function(){
 			actionAlert("No se encontraron registros para descargar.", "warning");
 		<?php } ?>
 		<?php if(Yii::app()->user->getFlash("success") == 'ok'){ ?>
-			actionAlertPrompt("success", "Agregado con éxito", "¿Quieres cargar otro estudiante para el misma promo?", "<?= Yii::app()->user->getFlash("redirect") ?>");
+			actionAlertPrompt("success", "Agregado con éxito", "¿Quieres cargar otro estudiante para el misma promo o imprimir el pedido reciente?", "<?= Yii::app()->user->getFlash("redirect") ?>", "<?= Yii::app()->user->getFlash("print_order") ?>");
 		<?php } ?>	
 	});
 </script>

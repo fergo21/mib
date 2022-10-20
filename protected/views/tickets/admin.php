@@ -40,6 +40,14 @@ $('.search-form form').submit(function(){
 							'sortable'=>false
 						),
 						array(
+							'name'=>'paid',
+							'sortable'=>false
+						),
+						array(
+							'name'=>'saldo',
+							'sortable'=>false
+						),
+						array(
 							'header'=>'Estado',
 							'type' => 'raw',
 							'value' => 'Utils::renderStatusPaid()',

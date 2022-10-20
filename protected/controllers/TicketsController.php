@@ -110,6 +110,7 @@ class TicketsController extends Controller
 
 		$this->render('create',array(
 			'model'=>$model,
+			'isPresupuesto'=>false
 		));
 	}
 
@@ -188,11 +189,13 @@ class TicketsController extends Controller
 		$modelOrder = Orders::model()->findByPk($model->idorders);
 		$modelStudent = Students::model()->findByPk($modelOrder->idstudents);
 		$modelTutor = Tutores::model()->findByPk($modelStudent->idtutores);
+		$modelUser = Users::model()->findByPk($model->idusers);
 		$this->render('print',array(
 			'model'=>$model,
 			'modelOrder'=>$modelOrder,
 			'modelStudent'=>$modelStudent,
-			'modelTutor'=>$modelTutor
+			'modelTutor'=>$modelTutor,
+			'modelUser'=>$modelUser
 		));
 	}
 
@@ -203,22 +206,22 @@ class TicketsController extends Controller
 			$desde = $_POST['d'];
 			$hasta = $_POST['h'];
 
-			$query = "SELECT SUM(tickets.amount) as amount, branch_offices.office FROM tickets, users, branch_offices WHERE tickets.idusers = users.idusers AND users.idbranch_offices = branch_offices.idbranch_offices AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY branch_offices.idbranch_offices";
+			$query = "SELECT SUM(tickets.paid) as paid, branch_offices.office FROM tickets, users, branch_offices WHERE tickets.idusers = users.idusers AND users.idbranch_offices = branch_offices.idbranch_offices AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY branch_offices.idbranch_offices";
 
 			$response = Yii::app()->db->createCommand($query)->queryAll();
 
-			$queryU = "SELECT SUM(tickets.amount) as amount, users.name, users.surname, roles.type FROM tickets, users, roles WHERE tickets.idusers = users.idusers AND users.roles_idroles = roles.idroles AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY users.idusers";
+			$queryU = "SELECT SUM(tickets.paid) as paid, users.name, users.surname, roles.type FROM tickets, users, roles WHERE tickets.idusers = users.idusers AND users.roles_idroles = roles.idroles AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY users.idusers";
 
 			$responseU = Yii::app()->db->createCommand($queryU)->queryAll();
 
 			foreach($response as $i => $value){
 				$data['office'][$i]['label'] = $value['office'];
-				$data['office'][$i]['value'] = floatval($value['amount']);
+				$data['office'][$i]['value'] = floatval($value['paid']);
 			}
 
 			foreach ($responseU as $i => $value) {
 				$data['seller'][$i]['label'] = $value['name'].' '.$value['surname'].' ('.$value['type'].')';
-				$data['seller'][$i]['value'] = floatval($value['amount']);
+				$data['seller'][$i]['value'] = floatval($value['paid']);
 			}
 		}
 		echo json_encode($data);

@@ -48,12 +48,19 @@
 			<strong>Domicilio: </strong> <span><?= $modelStudent->address ?></span>
 		</div>
 		<div class="detail-text">
+			<strong>Estudiante: </strong> <span><?= $modelStudent->name.' '.$modelStudent->surname ?></span>
+		</div>
+		<div class="detail-text">
 			<strong>Institución: </strong> <span><?= Schools::model()->findByPk($modelStudent->idschools)->name.' - '.Years::model()->findByPk($modelStudent->idyears)->year.''.Divisions::model()->findByPk($modelStudent->iddivision)->division.' - T: '.Shifts::model()->findByPk($modelStudent->idshifts)->shift ?></span>
 		</div>
 	</div>
 	<div class="section3-print">
 		<div class="detail-text">
-			<strong>Recibí la cantidad de pesos:</strong> <span><?= $model->amount; ?></span>
+			<strong>Recibí la cantidad de pesos:</strong> <span><?= $model->paid; ?> 
+			<?php if(!empty($model->saldo)){ ?> 
+				(Saldo: <?= $model->saldo; ?>)
+			<?php } ?>
+			</span>
 		</div>
 		<div class="detail-text">
 			<strong>En concepto de:</strong> <span><?= $model->dues; ?> cuota(s) de <?= $modelOrder->dues ?> - </span>
@@ -67,7 +74,7 @@
 		<div class="paid-print">
 			<div class="detail-paid">
 				<div class="detail-text">
-					<strong>Efectivo:</strong> ........................... <span>$ <?= $model->amount; ?></span>
+					<strong>Efectivo:</strong> ........................... <span>$ <?= $model->paid; ?></span>
 				</div>
 				<div class="detail-text">
 					<strong>Cheque N°:</strong> ...................................................................
@@ -79,7 +86,7 @@
 		</div>
 		<div class="total-signature">
 			<div class="total-print">
-				TOTAL: $ <span class="total"><?= $model->amount; ?></span>
+				TOTAL: $ <span class="total"><?= $model->paid; ?></span>
 			</div>
 			<div class="signature-print">
 				<p><strong>Firma:</strong> ..................................................<p>
@@ -91,6 +98,6 @@
 <script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function() {
 		window.print();
-		window.onfocus=function(){ window.history.back();}
+		// window.onfocus=function(){ window.history.back();}
 	});
 </script>

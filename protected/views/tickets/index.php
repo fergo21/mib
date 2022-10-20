@@ -120,7 +120,7 @@ $this->menu=array(
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
         <?php if(Yii::app()->user->getFlash("success") == 'ok'){ ?>
-            actionAlertPrompt("success", "¡Pagado!", "¿Quieres imprimir la factura?", "<?= Yii::app()->user->getFlash("redirect") ?>");
+            actionAlertPrompt("success", "¡Pagado!", "¿Quieres imprimir la factura?", "", "<?= Yii::app()->user->getFlash("redirect") ?>");
         <?php } ?>  
     });
 </script>

@@ -18,6 +18,17 @@ array_unshift($listTallesArriba, 'Seleccionar');
 $listTallesAbajo = array("4"=>"4", "6"=>"6", "8"=>"8", "10"=>"10", "12"=>"12", "14"=>"14", "16"=>"16", "34"=>"34", "36"=>"36", "38"=>"38", "40"=>"40", "42"=>"42", "44"=>"44", "46"=>"46", "48"=>"48", "50"=>"50", "52"=>"52", "54"=>"54", "56"=>"56", "58"=>"58", "60"=>"60", "especial"=>"Especial");
 array_unshift($listTallesAbajo, 'Seleccionar');
 
+// var_dump($model->isNewRecord);
+// var_dump($model->isNewRecord && $isPresupuesto);die;
+
+if($model->isNewRecord && !$isPresupuesto){
+	$title = 'Crear Pedido';
+}else if($model->isNewRecord && $isPresupuesto){
+	$title = 'Presupuesto';
+}else{
+	$title = 'Modificar Pedido';
+}
+
 ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -33,7 +44,9 @@ array_unshift($listTallesAbajo, 'Seleccionar');
 		<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone form__article">
 		    <div class="mdl-card mdl-shadow--2dp">
 		        <div class="mdl-card__title">
-		            <h5 class="mdl-card__title-text text-color--white"><?= $model->isNewRecord && !$isPresupuesto ? 'Crear Pedido': !$isPresupuesto ? 'Modificar Pedido' : 'Presupuesto' ?></h5>
+		            <h5 class="mdl-card__title-text text-color--white">
+		            	<?= $title; ?>
+		            </h5>
 		        </div>
 		        <div class="mdl-card__supporting-text">
 		            <form class="form form--basic">
@@ -161,12 +174,12 @@ array_unshift($listTallesAbajo, 'Seleccionar');
 									<?php echo $form->error($model,'percent'); ?>
 								</div>
 
+								<?php if(!$isPresupuesto){ ?>
 								<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label getmdl-select full-size">
 									<?php echo $form->labelEx($model,'dues', array('class'=>'mdl-selectfield__label ')); ?>
 									<?php echo $form->dropDownList($model,'dues', $listDues, array('class'=>'mdl-selectfield__select select2')); ?>
 									<?php echo $form->error($model,'dues'); ?>
 								</div>
-								<?php if(!$isPresupuesto){ ?>
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-size">
 									<?php echo $form->labelEx($model,'advance_payment', array('class'=>'mdl-textfield__label ')); ?>
 									<?php echo $form->textField($model,'advance_payment', array('class'=>'mdl-textfield__input')); ?>
@@ -184,10 +197,12 @@ array_unshift($listTallesAbajo, 'Seleccionar');
 						<div class="row buttons">
 							<?php echo CHtml::link('Cancelar', Yii::app()->baseUrl.'/tickets', array('class'=>'btn btn-default buttonAction'));?>
 							<div>
-								<?php echo CHtml::submitButton('Imprimir', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange', 'id' => 'print-order')); ?>
+								
 								<?php if(!$isPresupuesto){
 								    echo CHtml::submitButton('Guardar', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange')); 
-								} ?> 
+								}else{ ?> 
+									<?php echo CHtml::submitButton('Imprimir', array('class'=>'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-orange', 'id' => 'print-order')); ?>
+								<?php } ?>
 							</div>
 						</div>
 					</form>

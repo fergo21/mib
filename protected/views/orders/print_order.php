@@ -40,9 +40,26 @@
 				</ul>
 			</li>
 			<li>
-				<strong>Oferta:</strong>
+				<strong><?= isset($data['total_per_due']) ? 'Oferta' : 'Pedido'; ?>:</strong>
 				<p>Total: $<?= $data['total_amount']; ?></p>
-				<p><?= $data['dues']; ?> cuotas de: $<?= $data['total_due']; ?></p>
+				<?php if(isset($data['total_per_due'])) { ?>
+					<?php foreach($data['total_per_due'] as $i => $due) { ?>
+						<p>
+							<?= $i+1; ?> 
+							<?= $i === 0 ? "pago" : "cuotas" ?> 
+							<?= ($i < 3 && $i !== 0) ? 'sin interés' : ''; ?> 
+							de 
+							$<?= $due; ?>
+						</p>
+					<?php } 
+				}else { ?>
+					<p>
+						<?= $data['dues']; ?> 
+						<?= intval($data['dues']) === 1 ? 'pago' : 'cuotas'; ?> 
+						<?= (intval($data['dues']) <= 3 && intval($data['dues']) !== 0) ? 'sin interés' : ''; ?> 
+						de 
+						$<?= $data['total_due']; ?></p>
+				<?php } ?>
 			</li>
 		</ul>
 	</div>

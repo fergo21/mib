@@ -136,6 +136,7 @@ $('.search-form form').submit(function(){
 									            	$("form#promos-form").attr("action","'.Yii::app()->createUrl("promos/update").'/"+data.idpromos)
 									            	$(".title-promo").html("Modificar promo");
 									            	$("#Promos_tel_manager").val(data.tel_manager);
+									            	$("#Promos_name_manager").val(data.name_manager);
 									            	$("#Promos_year_promo").val(data.year_promo);
 									            	$("#Promos_date_delivery").val(data.date_delivery);
 									            	$("#Promos_date_contract").val(data.date_contract);
@@ -144,7 +145,7 @@ $('.search-form form').submit(function(){
 									            	$("#Promos_idshifts").val(data.idshifts);
 									            	$("#data-image_promo").attr("src", data.image_promo);
 
-									            	$("#Promos_tel_manager").parent().addClass("is-dirty");
+									            	$("#Promos_tel_manager, #Promos_name_manager").parent().addClass("is-dirty");
 									            	$("#Promos_year_promo, #Promos_iddivision, #Promos_idyears, #Promos_idshifts").trigger("change");
 													$(".mdl-dialog").show();
 													$(".mib-background-modal").show();

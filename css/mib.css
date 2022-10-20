@@ -374,4 +374,14 @@ form .mdl-selectfield.full-size{
     .mdl-card > .mdl-card__title.mib-table--title.mib-content-actions{
         display: block;
     }
+    .form .mdl-cell {
+        width: 100% !important;
+    }
+    #data-school-student {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    #data-school-student span {
+        width: 50%;
+    }
 }

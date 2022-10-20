@@ -118,7 +118,7 @@ array_unshift($listOrders, 'Seleccionar');
 					<div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--12-col-phone form__article">
 						<div id="ticket_dues_paid" class="ui-components">
 	                        <h6 class="text-color--gray">Seleccione la cuota</h6>
-							<ul class="mdl-list" style="display:flex; justify-content: space-around; width: 100%;">
+							<ul class="mdl-list" style="width: 100%;">
                         	</ul>
 						</div>
 					</div>

@@ -1,22 +1,33 @@
-const actionAlertPrompt = (icon, title, text, url = null) => {
+const actionAlertPrompt = (icon, title, text, url = null, url2 = null) => {
+    let buttons = {
+        cancel: "No"
+    }
+
+    buttons['continue'] = url && {
+        text: url2 ? "Cargar otro" : "Continuar",
+        value: "continue"
+    };
+
+    buttons['print'] = url2 && {
+        text: "Imprimir",
+        value: "print"
+    };
+
     swal({
         icon: icon,
         title: title,
         text: text,
-        buttons: {
-            cancel: "No",
-            catch: {
-                text: "Continuar",
-                value: "ok",
-            }
-        },
+        buttons,
     })
     .then((value) => {
       switch (value) {
-        case "ok":
+        case "continue":
           //Redirigir
           window.location.href = homeUrl + url;
           break;
+        case "print":
+            window.location.href = homeUrl + url2;
+            break;
         default:
           //swal("Got away safely!");
           break;
@@ -163,25 +174,30 @@ $(document).ready(function(){
     let dataResponseProduct = 0;
     let total = 0.0;
 
-    let listProduct = $("#Orders_size").val() === "" || $("#Orders_size").val() === undefined ? "" : JSON.parse($("#Orders_size").val());
+    let listProduct = ($("#Orders_size").val() === "" || $("#Orders_size").val() === undefined) ? "" : JSON.parse($("#Orders_size").val());
+    let flagListProd = window.location.href.includes("orders/update");
 
-    const validateListProduct = (listProduct) => {
+    const validateListProduct = (listProduct, flag = false) => {
         if(typeof listProduct == 'object'){
-            parseDataTable(listProduct);
+            parseDataTable(listProduct, flag);
         }
     }
 
-    const parseDataTable = (list) => {
+    const parseDataTable = (list, flag = false) => {
         
-        postCombo(list, function(data){
-            $.each(list, function(i, item) {
-                list[i]['unitPrice'] = data.products.find(p=>p.i === item.idproducts)?.unitPrice;
+        if(!flag){
+            postCombo(list, function(data){
+                $.each(list, function(i, item) {
+                    list[i]['unitPrice'] = data.products.find(p=>p.i === item.idproducts)?.unitPrice;
+                });
+                //renderizo la tabla
+                renderTable(list);
+                // Resetea el formulario
+                $("#Orders_size").val(JSON.stringify(list));
             });
-            //renderizo la tabla
+        }else{
             renderTable(list);
-            // Resetea el formulario
-            $("#Orders_size").val(JSON.stringify(list));
-        });
+        }
         
     }
 
@@ -294,11 +310,11 @@ $(document).ready(function(){
         
         expiration_day_by_order = new Date().setDate(order.expiration_day);
 
-        for(let i = 1; i <= order.dues; i++){
-            if(i <= order.ticket.dues_paid){
-                createCheckbox('ticket_dues_paid', i, true, `${i}° cuota pagada $${Math.round(totalDue)}`, true, null);
+        for(let i = 0; i < parseInt(order.dues); i++){
+            if(i <= order.ticket[i]?.dues_paid){
+                createCheckbox('ticket_dues_paid', i, true, `${i+1}° cuota pagada $${Math.round(order.ticket[i].paid)}`, true, null);
             }else{
-                createCheckbox('ticket_dues_paid', i, false, `${i}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
+                createCheckbox('ticket_dues_paid', i, false, `${i+1}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
             }
             monthOrder = monthOrder >= 12 ? 1 : (monthOrder + 1);
             fullYear = monthOrder >= 12 ? fullYear + 1 : fullYear;
@@ -377,7 +393,7 @@ $(document).ready(function(){
         }
     }
 
-    validateListProduct(listProduct);
+    validateListProduct(listProduct, flagListProd);
 
     $("#Orders_percent").on("keyup", function(){
         $(this).val($(this).val().replace(",", "."));
