@@ -312,9 +312,9 @@ $(document).ready(function(){
 
         for(let i = 0; i < parseInt(order.dues); i++){
             if(order.ticket.length > 0 && i <= order.ticket[i]?.dues_paid){
-                createCheckbox('ticket_dues_paid', i, true, `${i+1}° cuota pagada $${Math.round(order.ticket[i].paid)}`, true, null);
+                createCheckbox('ticket_dues_paid', i+1, true, `${i+1}° cuota pagada $${Math.round(order.ticket[i].paid)}`, true, null);
             }else{
-                createCheckbox('ticket_dues_paid', i, false, `${i+1}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
+                createCheckbox('ticket_dues_paid', i+1, false, `${i+1}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
             }
             monthOrder = monthOrder >= 12 ? 1 : (monthOrder + 1);
             fullYear = monthOrder >= 12 ? fullYear + 1 : fullYear;
