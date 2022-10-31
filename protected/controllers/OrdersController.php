@@ -544,7 +544,8 @@ class OrdersController extends Controller
 			$this->layout = 'print';
 			
 			$this->render('print_order', array(
-				'data' => $data
+				'data' => $data,
+				'isPresupuesto'=>true
 			));die;
 		}
 		$this->render('create',array(
@@ -571,7 +572,8 @@ class OrdersController extends Controller
 			$this->layout = 'print';
 
 			$this->render('print_order', array(
-				'data' => $data
+				'data' => $data,
+				'isPresupuesto'=> false
 			));
 		}
 	}
