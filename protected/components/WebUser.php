@@ -29,7 +29,7 @@ class WebUser extends CWebUser {
 			return true;
 		}else{
 			foreach ($access['access'] as $key => $acc) {
-				if($acc['view'] == Yii::app()->getController()->getId()){
+				if($acc['view'] == Yii::app()->getController()->getId() || $acc['view'] == $params){
 					if(in_array($operation, $acc['access'])){
 						return true;
 					}
@@ -51,5 +51,19 @@ class WebUser extends CWebUser {
 			}
 		}
 		return $views;
+	}
+	function checkView() {
+		$access = json_decode($this->getRoles()->access, true);
+		$views = array('users', 'products', 'schools-settings', 'branchoffices', 'more-settings');
+		if($this->getRoles()->type == "Administrador"){
+			return true;
+		}else{
+			foreach ($access['access'] as $key => $acc) {
+				if(in_array($acc['view'], $views)){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

@@ -119,14 +119,14 @@ class StudentsController extends Controller
 		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['Students']) && isset($_POST['Tutores']))
 		{
 			$model->attributes=$_POST['Students'];
 
-			$model_tutor = Tutores::model()->find('ci=:ci', array(':ci'=>$_POST['Tutores']['ci']));
-			if($model_tutor){
+			// $model_tutor = Tutores::model()->find('ci=:ci', array(':ci'=>$_POST['Tutores']['ci']));
+			if($model_tutor->idtutores){
 				$model->idtutores = $model_tutor->idtutores;
+				$model_tutor->attributes = $_POST['Tutores'];
 			}else{
 				$model_tutor->attributes = $_POST['Tutores'];
 			}
