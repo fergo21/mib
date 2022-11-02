@@ -36,13 +36,13 @@ class Tickets extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('code, date, form_payment, amount, dues, paid, idorders, idusers', 'required'),
-			array('code, idorders, idusers', 'numerical', 'integerOnly'=>true),
+			array('code, idorders, idusers, canceled', 'numerical', 'integerOnly'=>true),
 			array('form_payment', 'length', 'max'=>45),
 			array('amount, paid, saldo', 'length', 'max'=>10),
-			array('description', 'length', 'max'=>100),
+			array('description, obs_canceled', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idtickets, code, date, form_payment, amount, dues, description, paid, saldo, idorders, idusers', 'safe', 'on'=>'search'),
+			array('idtickets, code, date, form_payment, amount, dues, description, paid, saldo, canceled, obs_canceled, idorders, idusers', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,7 +65,7 @@ class Tickets extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'idtickets' => 'Idtickets',
+			'idtickets' => 'N° Ticket',
 			'code' => 'Código',
 			'date' => 'Fecha',
 			'form_payment' => 'Forma de pago',
@@ -74,6 +74,8 @@ class Tickets extends CActiveRecord
 			'description' => 'Detalle',
 			'paid' => 'Pagado',
 			'saldo' => 'Saldo',
+			'canceled' => 'Anulado',
+			'obs_canceled' => 'Oservación',
 			'idorders' => 'Cliente'
 		);
 	}
@@ -105,6 +107,8 @@ class Tickets extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('paid',$this->paid,true);
 		$criteria->compare('saldo', $this->saldo,true);
+		$criteria->compare('canceled',$this->canceled);
+		$criteria->compare('obs_canceled',$this->obs_canceled,true);
 		$criteria->compare('idorders',$this->idorders);
 		$criteria->compare('idusers',$this->idusers);
 

@@ -825,6 +825,36 @@ $(document).ready(function(){
         });
     });
 
+    $("#search-tickets").click(function(e){
+        e.preventDefault();
+        let idT = $("#Tickets_idtickets").val();
+        let url = `${homeUrl}/tickets/getticket/${idT}`;
+        $.ajax({
+            url: url,
+            type: "GET"
+        })
+        .done(function(data){
+            let response = JSON.parse(data);
+            if(response.hasOwnProperty('idtickets')){
+                $("#fill-data-ticket").html(`
+                    <strong>Nombre y Apellido: </strong>${response.fullname}</br>
+                    <strong>Pedido N°: </strong>${response.idorders}</br>
+                    <strong>Fecha de pago: </strong>${new Date(response.date).toLocaleDateString()}</br>
+                    <strong>Total: </strong>$ ${response.amount}</br>
+                    <strong>Forma de pago: </strong>${response.form_of_payment}</br>
+                    <strong>Cuota(s) N°: </strong>${response.dues}</br>
+                    <strong>Pagado: </strong>$ ${response.paid}</br>
+                    <strong>Saldo: </strong>${response.saldo !== null ? '$ '+response.saldo : ''}</br>
+                    <strong>Descripción: </strong>${response.description}</br>
+                    <strong>Cobrado por: </strong>${response.user}</br>
+                `);
+            }
+        })
+        .fail(function(err){
+            console.log(err);
+        })
+    })
+
     const closeModal = () => {
         $('.mdl-dialog').hide();
         $('.mib-background-modal').hide();

@@ -29,7 +29,11 @@ class WebUser extends CWebUser {
 			return true;
 		}else{
 			foreach ($access['access'] as $key => $acc) {
-				if($acc['view'] == Yii::app()->getController()->getId() || $acc['view'] == $params){
+				if($acc['view'] == Yii::app()->getController()->getId() && $params === null){
+					if(in_array($operation, $acc['access'])){
+						return true;
+					}
+				}else if($acc['view'] == $params){
 					if(in_array($operation, $acc['access'])){
 						return true;
 					}

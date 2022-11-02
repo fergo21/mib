@@ -37,7 +37,7 @@ $this->menu=array(
                 <div class="mdl-card__supporting-text">
                 	<div>
     	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/create">Facturar</a>
-    	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets">Anular Factura</a>
+    	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/cancel">Anular Factura</a>
     	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/admin">Consultar Factura</a>
                 	</div>
                     <i class="material-icons big-icon">unarchive</i>
@@ -119,8 +119,10 @@ $this->menu=array(
 </div>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        <?php if(Yii::app()->user->getFlash("success") == 'ok'){ ?>
+        <?php if(Yii::app()->user->getFlash("success") == 'ok' && Yii::app()->user->getFlash("redirect")){ ?>
             actionAlertPrompt("success", "¡Pagado!", "¿Quieres imprimir la factura?", null, "<?= Yii::app()->user->getFlash("redirect") ?>");
-        <?php } ?>  
+        <?php }else if(Yii::app()->user->getFlash("success") == 'ok'){ ?>
+            actionAlert("¡Factura anulada con éxito!","success");
+        <?php } ?>
     });
 </script>

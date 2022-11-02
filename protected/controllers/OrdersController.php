@@ -244,7 +244,15 @@ class OrdersController extends Controller
 				$paid = false;
 				$total_by_products = 0.00;
 
-				$ticketResponse = Tickets::model()->findAll('idorders=:idorders', array(':idorders'=>$order['idorders']));
+				$criteria = new CDbCriteria;
+				$criteria->condition = "idorders = :idorders AND (canceled != :canceled OR canceled IS NULL)";
+				$criteria->params = array(
+					':idorders' => $order['idorders'],
+					':canceled' => 1
+				);
+
+				$ticketResponse = Tickets::model()->findAll($criteria);
+				
 				$countTicket = count($ticketResponse);
 
 				if($countTicket <= 0){

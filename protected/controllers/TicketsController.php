@@ -32,7 +32,7 @@ class TicketsController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow',
-				'actions' => array('getcollection'),
+				'actions' => array('getcollection', 'getticket', 'cancel'),
 				'users' => array('@'),
 			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -155,6 +155,26 @@ class TicketsController extends Controller
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
+	public function actionCancel()
+	{
+		
+		$model = new Tickets;
+
+		if(isset($_POST['Tickets'])){
+			$model=$this->loadModel($_POST['Tickets']['idtickets']);
+			$model->attributes = $_POST['Tickets'];
+			$model->canceled = 1;
+
+			if($model->save()){
+				Yii::app()->user->setFlash('success', 'ok');
+				$this->redirect(array('/tickets'));
+			}
+		}
+
+		$this->render('cancel',array(
+			'model'=>$model,
+		));
+	}
 	/**
 	 * Lists all models.
 	 */
@@ -206,11 +226,11 @@ class TicketsController extends Controller
 			$desde = $_POST['d'];
 			$hasta = $_POST['h'];
 
-			$query = "SELECT SUM(tickets.paid) as paid, branch_offices.office FROM tickets, users, branch_offices WHERE tickets.idusers = users.idusers AND users.idbranch_offices = branch_offices.idbranch_offices AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY branch_offices.idbranch_offices";
+			$query = "SELECT SUM(tickets.paid) as paid, branch_offices.office FROM tickets, users, branch_offices WHERE tickets.idusers = users.idusers AND users.idbranch_offices = branch_offices.idbranch_offices AND (tickets.canceled != 1 OR tickets.canceled IS NULL) AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY branch_offices.idbranch_offices";
 
 			$response = Yii::app()->db->createCommand($query)->queryAll();
 
-			$queryU = "SELECT SUM(tickets.paid) as paid, users.name, users.surname, roles.type FROM tickets, users, roles WHERE tickets.idusers = users.idusers AND users.roles_idroles = roles.idroles AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY users.idusers";
+			$queryU = "SELECT SUM(tickets.paid) as paid, users.name, users.surname, roles.type FROM tickets, users, roles WHERE tickets.idusers = users.idusers AND users.roles_idroles = roles.idroles AND (tickets.canceled != 1 OR tickets.canceled IS NULL) AND tickets.date BETWEEN '".$desde."' AND '".$hasta."' GROUP BY users.idusers";
 
 			$responseU = Yii::app()->db->createCommand($queryU)->queryAll();
 
@@ -228,6 +248,35 @@ class TicketsController extends Controller
 
 	}
 
+	public function actionGetTicket($id='')
+	{
+		$data = array();
+
+		if(!empty($id)){
+			$response = $this->loadModel($id);
+
+			$form_payment = array(
+				'CE'=>'Efectivo',
+				'CT'=>'Transferencia',
+				'CC'=>'Tarjeta de crédito',
+				'DC'=>'Tarjeta de débito'
+			);
+
+			if($response){
+				$orders = Orders::model()->findByPk($response->idorders);
+				$student = Students::model()->findByPk($orders->idstudents);
+				$tutor = Tutores::model()->findByPk($student->idtutores);
+				$user = Users::model()->findByPk($response->idusers);
+
+				$data = $response->attributes;
+				$data['fullname'] = $tutor->name.' '.$tutor->surname;
+				$data['user'] = $user->name.' '.$user->surname;
+				$data['form_of_payment'] = $form_payment[$response->form_payment];
+			}
+		}
+		echo json_encode($data);
+	}
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -239,7 +288,8 @@ class TicketsController extends Controller
 	{
 		$model=Tickets::model()->findByPk($id);
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			return false;
+			// throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
 

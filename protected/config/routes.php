@@ -3,6 +3,8 @@ return array(
     'tickets' => 'tickets',
     'tickets/print/<id>' => 'tickets/print/id/<id>',
     'tickets/getcollection' => 'tickets/getcollection',
+    'tickets/getticket/<id:\d+>' => 'tickets/getticket/id/<id>',
+    'tickets/cancel' => 'tickets/cancel',
     'students' => 'students/admin',
     'students/create/<id:\d+>' => 'students/create',
     'students/update/<id>' => 'students/update/id/<id>',

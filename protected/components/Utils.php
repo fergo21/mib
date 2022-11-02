@@ -98,6 +98,7 @@ class Utils{
 		$ticket = Tickets::model()->findAll("idorders=:idorders", array(":idorders"=>$data->idorders));
 		$duepaid = 0;
 		$firstDatedue = '';
+		$duesCanceled = 0;
 		// $firstDue = 0;
 
 		foreach($ticket as $i => $t){
@@ -106,8 +107,13 @@ class Utils{
 			// 	$firstDue = explode(",", $t->dues);
 			// }
 			$duepaid = explode(",", $t->dues);
+			if($t->canceled){
+				$duesCanceled = $duesCanceled + 1;
+			}
 		}
 		$duepaid = $duepaid != 0 ? $duepaid[count($duepaid)-1] : 0;
+
+		$duepaid = $duepaid - $duesCanceled; // le resto las canceladas
 
 		$pills = "<div class='pills-estados'>";
 
@@ -218,12 +224,18 @@ class Utils{
 	public static function renderSwitch($data){
 		$ticket = Tickets::model()->findAll("idorders=:idorders", array(":idorders"=>$data->idorders));
 		$duepaid = 0;
+		$duesCanceled = 0;
 
 		foreach($ticket as $t){
 			$duepaid = explode(",", $t->dues);
+			if($t->canceled){
+				$duesCanceled = $duesCanceled + 1;
+			}
 		}
 
 		$duepaid = $duepaid != 0 ? $duepaid[count($duepaid)-1] : 0;
+
+		$duepaid = $duepaid - $duesCanceled;
 
 		$disaled = self::calculatePercentDue($duepaid, $data->dues) == "100";
 
