@@ -98,7 +98,8 @@ class TicketsController extends Controller
 				}
 
 				Yii::app()->user->setFlash('success', 'ok');
-				Yii::app()->user->setFlash('redirect', '/tickets/print/'.$model->idtickets);
+				Yii::app()->user->setFlash('redirect', 'ok');
+				Yii::app()->user->setFlash('print', '/tickets/print/'.$model->idtickets);
 
 				// if($order->dues === $ticket){
 				// 	$this->redirect(array('/tickets')); //ver si redirecciono a algun lado una vez cancelado todo
