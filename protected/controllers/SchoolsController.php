@@ -89,11 +89,11 @@ class SchoolsController extends Controller
 		$mpromo->idschools = $id;
 
 		$modelPromo = new Promos('search');
-		$modelPromo->attributes = array('idschools'=>$id);
+		$modelPromo->attributes = array('idschools'=>$id, 'price_old'=>null);
 
 
 		// echo "<pre>";
-		// print_r();die;
+		// print_r($modelPromo);die;
 
 		setrawcookie("MIB-REFERER", $_SERVER["REQUEST_URI"], 0, "/");
 
