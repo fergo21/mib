@@ -312,7 +312,7 @@ $(document).ready(function(){
 
         for(let i = 0; i < parseInt(order.dues); i++){
             if(order.ticket.length > 0 && i <= order.ticket[i]?.dues_paid){
-                createCheckbox('ticket_dues_paid', i+1, true, `${i+1}° cuota pagada $${Math.round(order.ticket[i].paid)}`, true, null);
+                createCheckbox('ticket_dues_paid', i+1, true, `${i+1}° cuota pagada ${order.ticket[i].paid ? '$'+Math.round(order.ticket[i].paid) : 'con la anterior'}`, true, null);
             }else{
                 createCheckbox('ticket_dues_paid', i+1, false, `${i+1}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
             }

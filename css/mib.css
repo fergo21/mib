@@ -341,6 +341,25 @@ form .mdl-selectfield.full-size{
     display: flex;
     justify-content: space-around;
 }
+.ticket-view {
+    font-size: 12px;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    border: 1px inset;
+    margin: 1px;
+    width: fit-content;
+    height: 14px;
+}
+.button-column.ticket-column{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: flex-start;
+    position: relative;
+    box-sizing: content-box;
+}
 @media (max-width: 768px) {
     .mdl-dialog {
         width: 100%;

@@ -48,3 +48,11 @@
 		<?php $this->endWidget(); ?>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		let urlparams = window.location.href.split("/")[6];
+		if(isFinite(urlparams)){
+			document.querySelector("#search-tickets").click();
+		}
+	});
+</script>

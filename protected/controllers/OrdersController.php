@@ -259,9 +259,11 @@ class OrdersController extends Controller
 						$data[$i]['ticket'] = array();
 				}else{
 					foreach($ticketResponse as $t => $ticket){
-					
+						foreach(explode(",", $ticket->dues) as $td => $Tdue){
+							$data[$i]['ticket'][$td]['dues_paid'] = intval($Tdue);
+						}
 					// }else if($countTicket < $order['dues']){ //volver cuando se resuelva la agrupacion de pagos
-						$data[$i]['ticket'][$t]['dues_paid'] = intval(mb_substr($ticket->dues, -1));
+						// $data[$i]['ticket'][$t]['dues_paid'] = intval(mb_substr($ticket->dues, -1));
 						$data[$i]['ticket'][$t]['paid'] = $ticket->paid;
 						$data[$i]['ticket'][$t]['saldo'] = $ticket->saldo;
 

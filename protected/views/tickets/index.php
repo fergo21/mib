@@ -121,8 +121,6 @@ $this->menu=array(
     document.addEventListener('DOMContentLoaded', function() {
         <?php if(Yii::app()->user->getFlash("success") == 'ok' && Yii::app()->user->getFlash("redirect") != ''){ ?>
             actionAlertPrompt("success", "¡Pagado!", "¿Quieres imprimir la factura?", null, "<?= Yii::app()->user->getFlash('print'); ?>");
-        <?php }else if(Yii::app()->user->getFlash("success") == 'ok'){ ?>
-            actionAlert("¡Factura anulada con éxito!","success");
         <?php } ?>
     });
 </script>

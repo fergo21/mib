@@ -32,7 +32,7 @@ class TicketsController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow',
-				'actions' => array('getcollection', 'getticket', 'cancel'),
+				'actions' => array('getcollection', 'getticket', 'cancel', 'getaccounts'),
 				'users' => array('@'),
 			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -156,11 +156,13 @@ class TicketsController extends Controller
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
-	public function actionCancel()
+	public function actionCancel($id='')
 	{
 		
 		$model = new Tickets;
-
+		if(isset($_GET['id'])){
+			$model = $this->loadModel($_GET['id']);
+		}
 		if(isset($_POST['Tickets'])){
 			$model=$this->loadModel($_POST['Tickets']['idtickets']);
 			$model->attributes = $_POST['Tickets'];
@@ -168,7 +170,7 @@ class TicketsController extends Controller
 
 			if($model->save()){
 				Yii::app()->user->setFlash('success', 'ok');
-				$this->redirect(array('/tickets'));
+				$this->redirect(array('/tickets/admin'));
 			}
 		}
 
@@ -192,10 +194,8 @@ class TicketsController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Tickets('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Tickets']))
-			$model->attributes=$_GET['Tickets'];
+		$model = new Tutores('search');
+		$model->unsetAttributes();
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -273,6 +273,36 @@ class TicketsController extends Controller
 				$data['fullname'] = $tutor->name.' '.$tutor->surname;
 				$data['user'] = $user->name.' '.$user->surname;
 				$data['form_of_payment'] = $form_payment[$response->form_payment];
+			}
+		}
+		echo json_encode($data);
+	}
+
+	public function actionGetAccounts($id)
+	{	
+		$data = array();
+		if(!empty($id)){
+			$response = Students::model()->findAll('idtutores=:idtutores', array(':idtutores'=>$id));
+			if(count($response)>0){
+				foreach($response as $s => $student){
+					$data[$s]['fullname'] = $student->name.' '.$student->surname;
+					$data[$s]['idstudents'] = $student->idstudents;
+
+					$orders = Orders::model()->find('idstudents=:idstudents', array(':idstudents'=>$student->idstudents));
+					if($orders){
+						$tickets = Tickets::model()->findAll('idorders=:idorders', array(':idorders'=>$orders->idorders));
+						if(count($tickets)>0){
+							foreach($tickets as $t => $ticket){
+								$data[$s]['tickets'][$t]['idtickets'] = $ticket->idtickets;
+								$data[$s]['tickets'][$t]['canceled'] = $ticket->canceled;
+							}
+						}else{
+							$data[$s]['tickets'] = array();
+						}
+					}else{
+						$data[$s]['tickets'] = array();
+					}
+				}
 			}
 		}
 		echo json_encode($data);

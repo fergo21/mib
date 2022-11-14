@@ -79,7 +79,7 @@ $('.search-button').click(function(){
 									'imageUrl'=>false,
 									'url'=>'Yii::app()->createUrl("products/update/$data->idproducts")',
 									'options'=>array('title'=>'Editar'),
-									'visible'=>'$data->idproducts'
+									'visible'=>'Yii::app()->user->checkAccess(\'update\')'
 								),
 								'erase' => array(
 									'label'=>'<i class="material-icons">delete</i>',
@@ -89,7 +89,7 @@ $('.search-button').click(function(){
 										'title'=>'Eliminar',
 										'onclick'=>'deleteItem(this, "products-grid")',
 									),
-									'visible'=>'$data->idproducts',
+									'visible'=>'Yii::app()->user->checkAccess(\'delete\')'
 								)	
 							),
 						),
