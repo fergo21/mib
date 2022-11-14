@@ -38,7 +38,7 @@ $this->menu=array(
                 	<div>
     	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/create">Facturar</a>
     	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/cancel">Anular Factura</a>
-    	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/admin">Consultar Factura</a>
+    	            	<a href="<?=  Yii::app()->baseUrl; ?>/tickets/admin">Cuentas</a>
                 	</div>
                     <i class="material-icons big-icon">unarchive</i>
                 </div>
