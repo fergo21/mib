@@ -440,7 +440,35 @@ class OrdersController extends Controller
 				$response=Yii::app()->db->createCommand($query)->queryAll();
 
 				if(count($response)>0){
-					self::outputCsv($response);
+					$products = array();
+					$data = array();
+					$dataTalles = array();
+					foreach($response as $c => $column){
+						$data[$c]['Nombre y Apellido'] = $column['fullName'];
+						foreach(json_decode($column['size']) as $s => $size){
+							if(!in_array($size->product, $products)) {
+								array_push($products, $size->product);
+							}
+							if(!empty($size->apodo)){
+								$data[$c]['Apodo'] = $size->apodo;
+							}
+							$data[$c]['Cant. '.$size->product] = $size->quantity;
+							$data[$c]['Talle. '.$size->product] = $size->talles;
+							if(!array_key_exists($size->talles, $dataTalles)){
+								$dataTalles[$size->product][$size->talles] = $size->quantity;
+							}else{
+								$dataTalles[$size->product][$size->talles] = intval($dataTalles[$size->talles]) + intval($size->quantity);
+							}
+						}
+						$data[$c]['Observaciones'] = $column['description'];
+						$data[$c]['Estado'] = $column['out_production'] ? 'Fuera de produccion' : self::filterStatus($column);
+					}
+					$keysArr = self::filterKeyLength($data);
+
+					// echo "<pre>";
+					// print_r($dataTalles);die;
+
+					self::outputCsv($data, $keysArr, $response, $dataTalles);
 					// self::downloadImage($responsePromos->image_promo);
 				}else{
 					Yii::app()->user->setFlash('warning', 'ok');
@@ -465,8 +493,47 @@ class OrdersController extends Controller
 //falta descargarla :(
 
 	}
+	public function filterStatus($column) {
+		if($column['out_production'] === "1"){
+			$status = "Fuera de produccion";
+		}else{
+			$status = utf8_decode(Utils::displayStatusExcel($column['duespaid'], $column['dues']));
+		}
+		return $status;
+	}
+	public function filterKeyLength($data) {
+		$largeArr = array();
+		$length = 0;
+		foreach($data as $arr){
+			if(count($arr) > $length){
+				$largeArr = array_keys($arr);
+			}
+		}
+		return $largeArr;
+	}
+	public function combineKeyValue($keysArr, $data){
+		$arr = array();
+		// $arrbody = array();
+		foreach($keysArr as $k => $key){
+			foreach($data as $t => $ticket){
+				if(array_key_exists($key, $ticket)){
+					$arr[$t][$k] = $ticket[$key];
+					// $arrbody[$t][$key] = $ticket[$key];
+				}else{
+					$arr[$t][$k] = "";
+					// $arrbody[$t][$key] = "";
+				}
+			}
+		}
+		return $arr;
+	}
+	public function outputCsv($data, $header, $response, $dataTalles){
 
-	public function outputCsv($response){
+
+		$htmlRows = self::combineKeyValue($header, $data);
+
+		$arr[0] = $header; 
+		$arr = array_merge($arr, $htmlRows);
 		
 		header("Pragma: public");
 		header("Expires: 0");
@@ -475,68 +542,82 @@ class OrdersController extends Controller
 		header("Content-Disposition: attachment; filename=$filename");
 		header("Pragma: no-cache");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-
-		$rows = "";
-		$size = "";
-		foreach($response as $column){
-			$status = "";
-			if($column['out_production'] === "1"){
-				$status = "<td style='background:#ff7878;'>Fuera de produccion</td>";
-			}else{
-				$status = utf8_decode(Utils::displayStatusExcel($column['duespaid'], $column['dues']));
-			}
-			$size = "<table>";
-			$rowspan = count(json_decode($column['size']));
-			foreach(json_decode($column['size']) as $sizes){
-				$size .= "<tr>
-							<td>".utf8_decode($sizes->apodo)."</td>
-							<td>".utf8_decode($sizes->product)."</td>
-							<td>".$sizes->quantity."</td>
-							<td>".$sizes->talles."</td>
-						</tr>";
-
-			}
-			$size .= "</table>";
-			$rows .= "<tr>
-				<td>". utf8_decode($column['fullName'])."</td>
-				<td>".$column['ci']."</td>
-				<td>".$size."</td>"
-				. $status .
-				"<td>".utf8_decode($column['description'])."</td>
-			</tr>";
-		}
 		
 
+		$htmlHeaders = "<tr id='encabezado'>";
+		foreach($arr as $h => $head) {
+			if($h == 0){
+				foreach($head as $hd => $header){
+					$htmlHeaders .= "<td><b>".$header."</b></td>";
+				}
+			}
+		}
+		$htmlHeaders .= "</tr>";
+		
+		$td = "";
+		foreach($arr as $t => $tickets) {
+			if($t !== 0){
+			$td .= "<tr>";
+				foreach($tickets as $tk => $ticket) {
+					$td .= "<td>".$ticket."</td>";
+				}
+			$td .= "</tr>";
+			}
+		}
+
+		$tdt = "";
+		foreach($dataTalles as $pdt => $product){
+			$tdt .= "<tr><th colspan='2'>".$pdt."</th></tr>";
+			$tdt .= "<tr>
+					<th>Talles</th>
+					<th>Cantidad</th>
+				</tr>";
+			foreach($product as $dt => $talle){
+				$tdt .= "<tr><td>".$dt."</td>";
+				$tdt .= "<td>".$talle."</td></tr>";
+			}
+		}
+
+
+		$colspan = count($head);
+
 		$html = "
+		<html>
+		<head>
 		<style>
 		table td, table th{
 			border: 1px solid;
+			text-transform: capitalize;
 		}
 		table th{
 			font-size: 18px;
 			background-color: #ff9d6e;
 		}
+		table #title-encabezado{
+			text-transform: uppercase !important;
+		}
 		table #encabezado td {
-			background-color: #ff9d6e;	
+			background-color: #ff9d6e;
 		}
 		</style>
+		</head>
 		<table>
 		<tbody>
-			<tr>
-				<th colspan='5'>
+			<tr id='title-encabezado'>
+				<th colspan='".$colspan."'>
 					".utf8_decode($response[0]["schools"])." - ".$response[0]["year"]."".$response[0]["division"]." - T: ".utf8_decode($response[0]["shift"])." - ".$response[0]["graduation_year"]."
 				</th>
 			</tr>
-			<tr id='encabezado'>
-				<td><b>Nombre y Apellido</b></td>
-				<td><b>DNI</b></td>
-				<td><b>Apodo | Producto | Cantidad | Talle</b></td>
-				<td><b>Estado</b></td>
-				<td><b>Observaciones</b></td>
-			</tr>
-			". $rows ."
+			".utf8_decode($htmlHeaders)."
+			".utf8_decode($td)."
 		</tbody>
-		</table>";
+		</table>
+		<br><br>
+		<table>
+			<tbody>
+				".utf8_decode($tdt)."
+			</tbody>
+		</table></html>";
 		echo $html;
 	}
 

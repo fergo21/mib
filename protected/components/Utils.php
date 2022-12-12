@@ -304,21 +304,40 @@ class Utils{
 
 		switch(self::calculatePercentDue($lastDuePaid, $dues)){
 			case "-1":
-					return "<td style='background:#ff7878;'>Falta Financiación</td>";
+					return "Falta Financiacion";
 				break;
 			case "0";
-					return "<td style='background:#ff7878;'>Impago</td>";
+					return "Impago";
 				break;
 			case "25":
-					return "<td style='background:yellow;'>".$lastDuePaid."/".$dues." Pago parcial</td>";
+					return $lastDuePaid."/".$dues." Pago parcial";
 				break;
 			case "75":
 			case "50":
-					return "<td style='background:#89cf5d;'>Producción</td>";
+					return "Produccion";
 				break;
 			case "100";
-					return "<td style='background:#89cf5d;'>Producción</td>";
+					return "Produccion";
 				break;
 		}
+	}
+	public static function getTickets($idstudents){
+		$html = "";
+		$orders = Orders::model()->find('idstudents=:idstudents', array(':idstudents'=>$idstudents));
+		if($orders){
+			$tickets = Tickets::model()->findAll('idorders=:idorders', array(':idorders'=>$orders->idorders));
+			if(count($tickets)>0){
+				foreach($tickets as $t => $ticket){
+					if($ticket->canceled == "1"){
+						$color = "color:#f44336";
+					}else{
+						$color = "color:#00d45a";
+					}
+					$html .= "<a class='view ticket-view' style='".$color."' title='Factura N° ".$ticket->idtickets."' onClick='renderTicket(".$ticket->idtickets.")'><span>FN° ".$ticket->idtickets."</span></a>";
+				}
+			}	
+		}
+		return $html;
+
 	}
 }
