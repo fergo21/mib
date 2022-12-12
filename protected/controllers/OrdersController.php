@@ -466,7 +466,7 @@ class OrdersController extends Controller
 					$keysArr = self::filterKeyLength($data);
 
 					// echo "<pre>";
-					// print_r($dataTalles);die;
+					// print_r($keysArr);die;
 
 					self::outputCsv($data, $keysArr, $response, $dataTalles);
 					// self::downloadImage($responsePromos->image_promo);
@@ -506,7 +506,11 @@ class OrdersController extends Controller
 		$length = 0;
 		foreach($data as $arr){
 			if(count($arr) > $length){
-				$largeArr = array_keys($arr);
+				foreach($arr as $a => $value){
+					if(!in_array($a, $largeArr)){
+						array_push($largeArr, $a);
+					}
+				}
 			}
 		}
 		return $largeArr;
