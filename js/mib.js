@@ -286,7 +286,7 @@ $(document).ready(function(){
         //valido si el dia del pedido es mayor al proximo dia de vencimiento
         //y le sumo un mes, porque sería el proximo mes de vencimiento
         if(parseInt(dayOrder) > parseInt(order.expiration_day)){
-            monthOrder = monthOrder + 1; 
+            monthOrder = monthOrder >= 12 ? 1 : monthOrder + 1; 
         }
 
         $("#total_order").val(order.total_amount);
@@ -313,7 +313,7 @@ $(document).ready(function(){
         for(let i = 0; i < parseInt(order.dues); i++){
             if(order.ticket.length > 0 && i <= order.ticket[i]?.dues_paid){
                 createCheckbox('ticket_dues_paid', i+1, true, `${i+1}° cuota pagada ${order.ticket[i].paid ? '$'+Math.round(order.ticket[i].paid) : 'con la anterior'}`, true, null);
-                monthOrder = monthOrder == 12 ? 1 : monthOrder + 1;
+                monthOrder = monthOrder >= 12 ? 1 : monthOrder + 1;
             }else{
                 createCheckbox('ticket_dues_paid', i+1, false, `${i+1}° cuota - Vence: ${order.expiration_day}/${monthOrder}`, false, `${fullYear}/${monthOrder}/${order.expiration_day}`);
                 fullYear = monthOrder >= 12 ? fullYear + 1 : fullYear;
@@ -854,6 +854,11 @@ $(document).ready(function(){
         .fail(function(err){
             console.log(err);
         })
+    });
+
+    $(".row.buttons input[value='Guardar']").click(function(e){
+        $(this).attr('disabled', 'disabled');
+       $("form[method='post']").submit();
     })
 
     const closeModal = () => {
