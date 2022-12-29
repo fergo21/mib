@@ -329,9 +329,11 @@ if($model->isNewRecord && !$isPresupuesto){
 	                        <label class="mdl-textfield__label" for="order-product-apodo">Apodo</label>
 	                    </div>
 					</div>
+					<input class="mib-field mdl-textfield__input hidden" type="text" id="order-product-price" name="Order_products">
 			    </div>
 			    <div class="mdl-dialog__actions">
 				    <button type="button" class="mdl-button add-product">Agregar</button>
+				    <button type="button" class="mdl-button modify-product hidden">Modificar</button>
 				    <button type="button" class="mdl-button close">Cancelar</button>
 				</div>
 				

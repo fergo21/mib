@@ -210,7 +210,8 @@ $(document).ready(function(){
                         <td class="mdl-data-table__cell--non-numeric">${item.talles}</td>
                         <td class="mdl-data-table__cell--non-numeric">${item.apodo}</td>
                         <td class="mdl-data-table__cell--non-numeric">${item.unitPrice}</td>
-                        ${editable ? '<td class="mdl-data-table__cell--non-numeric deleteTr"><i class="material-icons">delete_forever</i></td>' : ''}
+                        <td class="mdl-data-table__cell--non-numeric" style="display: none;">${JSON.stringify(item)}</td>
+                        ${editable ? '<td class="mdl-data-table__cell--non-numeric"><i class="material-icons editTr">create</i><i class="material-icons deleteTr">delete_forever</i></td>' : ''}
                     </tr>`;
         });
         $('#mib-tbody').html(trHTML);
@@ -422,7 +423,7 @@ $(document).ready(function(){
             if(e.value == "" || e.value == "Seleccionar"){
                 validateField = validateField + 1;
             }
-        })
+        });
 
         if(validateField == 0){
             listProduct = [...listProduct,{
@@ -442,9 +443,64 @@ $(document).ready(function(){
         }else{
             $(".errorForm").html("Todos los campos son requeridos.");
         }
-    })
+    });
 
-    $('body').on('click', 'td.deleteTr', function() {
+    $(".modify-product").click(function(){
+        let id = $("#productos").val();
+        let validateField = 0;
+        $("form#formAddProduct .mib-field:visible").each((i,e)=>{ 
+            if(e.value == "" || e.value == "Seleccionar"){
+                validateField = validateField + 1;
+            }
+        });
+
+        listProduct = listProduct.filter(function(item, i){
+            return item.idproducts !== id
+        });
+
+
+        if(validateField == 0){
+            listProduct = [...listProduct,{
+                idproducts: $(".mdl-grid.dialog .mdl-cell select")[0].value, 
+                product: $(".mdl-grid.dialog .mdl-cell select:first option:selected")[0].text,
+                quantity: $(".mdl-grid.dialog .mdl-cell input")[0].value,
+                talles: $(".mdl-grid.dialog .mdl-cell .mdl-selectfield:visible select")[1].value,
+                apodo: $(".mdl-grid.dialog .mdl-cell input")[1].value,
+                unitPrice: $(".mdl-grid.dialog input#order-product-price").val()
+            }];
+            $("#Orders_size").val(JSON.stringify(listProduct));
+            // Cierra el modal
+            closeModal();
+            // Renderiza la tabla
+            renderTable(listProduct);
+            // Resetea el formulario
+            // $("#Orders_size").val(JSON.stringify(listProduct));
+            $(".mdl-dialog__actions button.add-product").toggleClass("hidden");
+            $(".mdl-dialog__actions button.modify-product").toggleClass("hidden");
+            $("#productos, #order-product-cantidad").removeAttr('disabled');
+
+            resetForm("#formAddProduct");
+        }else{
+            $(".errorForm").html("Todos los campos son requeridos.");
+        }
+    });
+
+
+    $('body').on('click', '.editTr', function(e) {
+        let dataTr = JSON.parse($(this).parents('tr')[0].children[5].innerText);
+
+        $("#productos").val(dataTr.idproducts).trigger('change').attr('disabled', 'disabled');
+        $("#order-product-cantidad").val(dataTr.quantity).attr('disabled', 'disabled');
+        $("#talles-tar").val(dataTr.talles).trigger('change');
+        $("#order-product-apodo").val(dataTr.apodo).parent().addClass('is-dirty');
+        $("#order-product-price").val(dataTr.unitPrice);
+        $(".mdl-dialog__actions button.add-product").toggleClass("hidden");
+        $(".mdl-dialog__actions button.modify-product").toggleClass("hidden");
+
+        openModal();
+    });
+
+    $('body').on('click', '.deleteTr', function() {
 
         let index = parseInt($(this).parents('tr').attr('data-id'));
 
@@ -452,7 +508,8 @@ $(document).ready(function(){
             return i !== index
         });
         $("#Orders_size").val(JSON.stringify(listProduct));
-        parseDataTable(listProduct);
+        renderTable(listProduct);
+        //parseDataTable(listProduct);
     });
 
     let dataStudent = {};
@@ -864,6 +921,11 @@ $(document).ready(function(){
     const closeModal = () => {
         $('.mdl-dialog').hide();
         $('.mib-background-modal').hide();
+        resetForm('#formAddProduct, #promos-form');
+        $(".mdl-grid.dialog .mdl-cell .mib-field").trigger("change");
+        $(".mdl-dialog__actions button.add-product").removeClass("hidden");
+        $(".mdl-dialog__actions button.modify-product").addClass("hidden");
+        $("#productos, #order-product-cantidad").removeAttr('disabled');
     }
 
     const openModal = () => {
