@@ -255,6 +255,8 @@ class OrdersController extends Controller
 				
 				$countTicket = count($ticketResponse);
 
+				$data[$i]['out_production'] = $order['out_production'] == "1" ? true : false;
+
 				if($countTicket <= 0){
 						$data[$i]['ticket'] = array();
 				}else{

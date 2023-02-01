@@ -622,6 +622,18 @@ $(document).ready(function(){
         formatTicket(dataOrder.find(order => order.value == e.target.value));
         renderTable(JSON.parse(dataOrder.find(order => order.value == e.target.value).description), false);
         fillDataSchool(dataOrder.find(order => order.value == e.target.value));
+
+        let orderSelected = dataOrder.find(order => order.value == e.target.value);
+        if(orderSelected.out_production){
+            let boxInfo = '<div class="box-info danger"><i class="material-icons">error</i>Este pedido está fuera de producción.</div>';
+            $("#tickets-form .mdl-card__supporting-text:first").prepend(boxInfo);
+            $("#tickets-form #submitTicket").attr("disabled", "disabled");
+        }else{
+            if($(".box-info")){
+                $(".box-info").remove();
+            }
+            $("#tickets-form #submitTicket").removeAttr("disabled");
+        }
         // console.log(dataOrder);
     });
 
