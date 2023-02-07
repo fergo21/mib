@@ -243,7 +243,7 @@ class Utils{
 
 		$html = !$disaled ? '<div style="display:flex; justify-content:center;">
 					<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect switch--colored-red" for="out_production_'.$data->idorders.'">
-                    	<input type="checkbox" id="out_production_'.$data->idorders.'" data-id="'.$data->idorders.'" class="mdl-switch__input" '.$checked.'>
+                    	<input type="checkbox" id="out_production_'.$data->idorders.'" data-id="'.$data->idorders.'" class="mdl-switch__input" '.$checked.' onClick="outProduction(this, '.$data->idorders.')">
                 	</label>
                 </div>' : "";
 		return $html;

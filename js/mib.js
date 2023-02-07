@@ -88,6 +88,28 @@ const actionAjax = (url, method, table_id, data = null) => {
         console.log(`${textStatus}: ${errorThrown}`);
     })
 }
+const outProduction = (el, id) => {
+    let idpromos = id;
+    let check = el.checked;
+
+    $.ajax({
+        url: `${homeUrl}/orders/out`,
+        dataType: 'json',
+        type: 'POST',
+        data: {q:idpromos, i: check ? 1 : 0}
+    })
+    .done(function(data){
+        if(data.status){
+            window.location.reload();
+            //  $.fn.yiiGridView.update('orders-grid',{
+            //  data: $(this).serialize()
+            // });
+        }
+    })
+    .fail(function(err){
+        console.log(err);
+    });
+}
 
 
 $(document).ready(function(){
@@ -928,7 +950,7 @@ $(document).ready(function(){
     $(".row.buttons input[value='Guardar']").click(function(e){
         $(this).attr('disabled', 'disabled');
        $("form[method='post']").submit();
-    })
+    });
 
     const closeModal = () => {
         $('.mdl-dialog').hide();

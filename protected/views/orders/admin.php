@@ -28,30 +28,6 @@ $('.search-button').click(function(){
 	return false;
 });*/
 
-$('[type=checkbox]').change(function(){
-	console.log($(this)[0].checked);
-	let idpromos = $(this).attr('data-id');
-	let check = $(this)[0].checked;
-
-	    $.ajax({
-	        url: `".Yii::app()->baseUrl."/orders/out`,
-	        dataType: 'json',
-	        type: 'POST',
-	        data: {q:idpromos, i: check ? 1 : 0}
-	    })
-	    .done(function(data){
-	        if(data.status){
-	        	window.location.reload();
-	   			//  $.fn.yiiGridView.update('orders-grid',{
-				// 	data: $(this).serialize()
-				// });
-	        }
-	    })
-	    .fail(function(err){
-	        console.log(err);
-	    });
-});
-
 $('#downloadFile').click(function(){
 	$.ajax({
 		url: `".Yii::app()->baseUrl."/orders/downloadlist`,
