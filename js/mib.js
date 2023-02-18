@@ -301,7 +301,7 @@ $(document).ready(function(){
         $("#ticket_dues_paid .mdl-list").html("");
         let signo = order.saldo > 0 ? "↑" : "↓";
 
-        let fullYear = new Date().getFullYear();
+        let fullYear = new Date(order.date_create).getFullYear();
         let monthOrder = parseInt(order.date_create.split('-')[1]);
         let dayOrder = order.date_create.split('-')[2];
 
